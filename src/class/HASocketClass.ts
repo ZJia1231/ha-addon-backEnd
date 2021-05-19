@@ -47,8 +47,6 @@ class HaSocket {
                 this.client.send(
                     JSON.stringify({
                         type: 'auth',
-                        // todo
-                        // access_token: HaToken,
                         access_token: AuthClass.curAuth,
                     })
                 );
@@ -188,6 +186,11 @@ class HaSocket {
         console.log('Jia ~ file: HASocketClass.ts ~ line 125 ~ HaSocket ~ getLovelace ~ res', res);
         return res;
     }
+    /**
+     *
+     * @memberof HaSocket
+     * @deprecated 无须申请长期令牌
+     */
     async getLongLivedToken() {
         if (this.client.readyState !== 1) {
             return null;
@@ -197,7 +200,6 @@ class HaSocket {
             client_name: 'eWeLink Smart Home',
             lifespan: 3650,
         });
-        // todo --> save token
         return res;
     }
 }

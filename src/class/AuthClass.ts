@@ -55,6 +55,7 @@ class AuthClass {
         appendData('auth.json', [origin], JSON.stringify(data));
         setTimeout(() => {
             this.refresh(origin);
+            console.log("it's time to refresh token");
         }, (auth.expires_in - 300) * 1000);
     }
 
@@ -62,7 +63,9 @@ class AuthClass {
         const auth = AuthClass.AuthMap.get(origin);
         if (auth) {
             const { cliend_id, refresh_token } = auth;
+            console.log('refreshing...');
             const res = await refreshAuth(cliend_id, refresh_token);
+            console.log('refresh token success!');
             if (res && res.status === 200) {
                 this.setAuth(origin, cliend_id, {
                     ...auth,
