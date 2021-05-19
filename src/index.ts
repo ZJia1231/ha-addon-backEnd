@@ -14,7 +14,6 @@ import initCkApi from './utils/initCkApi';
 import { appId, appSecret } from './config/app';
 import { debugMode } from './config/config';
 import sleep from './utils/sleep';
-
 import serviceRegistered from './utils/serviceRegistered';
 import generateLovelace from './utils/generateLovelace';
 import redirectToAuth from './middleware/redirectToAuth';
@@ -24,13 +23,10 @@ import eventBus from './utils/eventBus';
 CkApi.init({
     appId,
     appSecret,
-    debug:true
 });
 
 (async () => {
     initMdns(); // 扫描局域网设备
-    // todo
-    // 完善认证逻辑
     const res = await AuthClass.init();
     if (AuthClass.curAuth) {
         eventBus.emit('init-ha-socket');
@@ -56,8 +52,9 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use(`${apiPrefix}/user`, userRouter);
 
-app.use(redirectToAuth);
 app.use('/', express.static(path.join(__dirname, '/pages')));
+// app.use('/loading/', express.static(path.join(__dirname, '/pages')));
+app.use(redirectToAuth);
 
 app.use(`${apiPrefix}/devices`, devicesRouter);
 app.use(`${apiPrefix}/language`, languageRouter);

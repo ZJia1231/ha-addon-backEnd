@@ -138,7 +138,6 @@ const auth = async (req: Request, res: Response) => {
             });
         }
     } catch (err) {
-        console.log(err);
         res.json({
             error: 500,
             data: err,

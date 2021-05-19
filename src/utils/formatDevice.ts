@@ -36,9 +36,12 @@ const formatDevice = (data: DiyController | CloudDeviceController | LanDeviceCon
     }
 
     if (data instanceof LanDeviceController) {
-        let tags;
+        let tags, unit;
         if (data instanceof LanMultiChannelSwitchController) {
             tags = data.channelName;
+        }
+        if (data instanceof LanTandHModificationController) {
+            unit = data.unit;
         }
         return {
             key: data.deviceId,
@@ -56,6 +59,7 @@ const formatDevice = (data: DiyController | CloudDeviceController | LanDeviceCon
             online: data.online,
             index: data.index,
             tags,
+            unit,
         };
     }
 
@@ -64,7 +68,7 @@ const formatDevice = (data: DiyController | CloudDeviceController | LanDeviceCon
         if (data instanceof CloudMultiChannelSwitchController) {
             tags = data.channelName;
         }
-        if (data instanceof CloudTandHModificationController || data instanceof LanTandHModificationController) {
+        if (data instanceof CloudTandHModificationController) {
             unit = data.unit;
         }
         if (data instanceof CloudPowerDetectionSwitchController || data instanceof CloudDualR3Controller) {

@@ -37,8 +37,6 @@ class AuthClass {
 
     isValid(host: string) {
         const auth = AuthClass.AuthMap.get(host);
-        console.log('=====', AuthClass.AuthMap);
-
         if (auth && auth.expires_time > Date.now()) {
             this.curAuth = auth.access_token;
             return true;

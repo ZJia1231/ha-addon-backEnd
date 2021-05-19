@@ -188,6 +188,18 @@ class HaSocket {
         console.log('Jia ~ file: HASocketClass.ts ~ line 125 ~ HaSocket ~ getLovelace ~ res', res);
         return res;
     }
+    async getLongLivedToken() {
+        if (this.client.readyState !== 1) {
+            return null;
+        }
+        const res = await this.query({
+            type: 'auth/long_lived_access_token',
+            client_name: 'eWeLink Smart Home',
+            lifespan: 3650,
+        });
+        // todo --> save token
+        return res;
+    }
 }
 
 const instance = HaSocket.createInstance();

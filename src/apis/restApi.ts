@@ -68,7 +68,7 @@ const getAuth = async (clientId: string, code: string) => {
         data: `grant_type=authorization_code&client_id=${clientId}&code=${code}`,
     });
     res.catch((e) => {
-        console.log('获取Auth出错:', clientId, '\ncode:' + code + '\n', e);
+        console.log('获取Auth出错: \n client_id:', clientId, '\ncode:' + code);
     });
     return await res;
 };
