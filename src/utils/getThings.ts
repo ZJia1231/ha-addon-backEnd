@@ -17,6 +17,7 @@ import CloudDualR3Controller from '../controller/CloudDualR3Controller';
 import { getDataSync } from './dataUtil';
 import LanDualR3Controller from '../controller/LanDualR3Controller';
 import LanTandHModificationController from '../controller/LanTandHModificationController';
+import LanPowerDetectionSwitchController from '../controller/LanPowerDetectionSwitchController';
 
 // 获取设备并同步到HA
 export default async () => {
@@ -64,6 +65,12 @@ export default async () => {
                         const decryptData = old.parseEncryptedData() as any;
                         if (decryptData) {
                             old.updateState(decryptData.switches);
+                        }
+                    }
+                    if (old instanceof LanPowerDetectionSwitchController) {
+                        const decryptData = old.parseEncryptedData() as any;
+                        if (decryptData) {
+                            old.updateState(decryptData.switch);
                         }
                     }
                     continue;

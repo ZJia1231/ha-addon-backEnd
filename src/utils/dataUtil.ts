@@ -6,7 +6,7 @@ import { debugMode, isSupervisor } from '../config/config';
 let basePath = path.join('/data');
 
 if (debugMode || !isSupervisor) {
-    basePath = path.join(__dirname, '../data');
+    basePath = path.join(__dirname, '../../data');
 }
 
 if (!fs.existsSync(basePath)) {

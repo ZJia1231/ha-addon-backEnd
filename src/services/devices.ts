@@ -25,6 +25,7 @@ import CloudMultiChannelSwitchController from '../controller/CloudMultiChannelSw
 import { modifyDeviceStatus, changeDeviceUnit, setDeviceRate } from '../utils/modifyDeviceStatus';
 import CloudPowerDetectionSwitchController from '../controller/CloudPowerDetectionSwitchController';
 import { updateDiyPulseAPI, updateDiySledOnlineAPI, updateDiyStartupAPI, updateDiySwitchAPI } from '../apis/diyDeviceApi';
+import LanPowerDetectionSwitchController from '../controller/LanPowerDetectionSwitchController';
 
 const mdns = initMdns();
 
@@ -227,6 +228,9 @@ const updateChannelName = async (req: Request, res: Response) => {
     }
 };
 
+/**
+ * @description 仅针对云端设备
+ */
 const proxy2ws = async (req: Request, res: Response) => {
     try {
         const { apikey, id, params } = req.body;
@@ -245,7 +249,7 @@ const proxy2ws = async (req: Request, res: Response) => {
             });
 
             const device = Controller.getDevice(id);
-            if (device instanceof CloudDeviceController || device instanceof LanDeviceController) {
+            if (device instanceof CloudDeviceController) {
                 device.params = mergeDeviceParams(device.params, params);
                 device.online = true;
                 eventBus.emit('sse');
@@ -402,6 +406,9 @@ const updateLanDevice = async (req: Request, res: Response) => {
             if (device instanceof LanTandHModificationController) {
                 result = await device.setSwitch(params.switch);
             }
+            if (device instanceof LanPowerDetectionSwitchController) {
+                result = await device.setSwitch(params.switch);
+            }
 
             if (result === 0) {
                 res.json({
@@ -495,7 +502,12 @@ const setRate = async (req: Request, res: Response) => {
     try {
         const { id, rate } = req.body;
         const device = Controller.getDevice(id);
-        if (device instanceof CloudPowerDetectionSwitchController || device instanceof CloudDualR3Controller) {
+        if (
+            device instanceof CloudPowerDetectionSwitchController ||
+            device instanceof CloudDualR3Controller ||
+            device instanceof LanPowerDetectionSwitchController ||
+            device instanceof LanDualR3Controller
+        ) {
             const code = await setDeviceRate(id, rate);
             if (code === 0) {
                 res.json({

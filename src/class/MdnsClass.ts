@@ -135,7 +135,13 @@ export default class Mdns {
                 }
                 if (tmp.txt?.type === 'enhanced_plug') {
                     console.log('Found Lan 单通道插座增强版（用电统计）');
-                    // todo
+                    const device = Controller.setDevice({
+                        id: key,
+                        data: tmp as TypeLanDevice,
+                        type: 2,
+                        lanType: 'enhanced_plug',
+                    });
+                    callback && callback(device);
                 }
                 if (tmp.txt?.type === 'th_plug') {
                     console.log('Found Lan 单通道温湿度控制器');

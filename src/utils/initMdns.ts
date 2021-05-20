@@ -10,6 +10,9 @@ import { appendData, saveData } from './dataUtil';
 import eventBus from './eventBus';
 import _ from 'lodash';
 import mergeDeviceParams from './mergeDeviceParams';
+import LanDualR3Controller from '../controller/LanDualR3Controller';
+import LanPowerDetectionSwitchController from '../controller/LanPowerDetectionSwitchController';
+import LanTandHModificationController from '../controller/LanTandHModificationController';
 
 export default () => {
     return Mdns.createInstance({
@@ -32,14 +35,14 @@ export default () => {
                 // 表示该diy设备在线
                 appendData('diy.json', [diyDevice.id, 'online'], true);
             }
-            if (device instanceof LanSwitchController) {
+            if (device instanceof LanSwitchController || device instanceof LanPowerDetectionSwitchController || device instanceof LanTandHModificationController) {
                 const decryptData = device.parseEncryptedData();
                 if (decryptData) {
                     device.updateState(decryptData.switch);
                     device.params = decryptData;
                 }
             }
-            if (device instanceof LanMultiChannelSwitchController) {
+            if (device instanceof LanMultiChannelSwitchController || device instanceof LanDualR3Controller) {
                 const decryptData = device.parseEncryptedData();
                 if (decryptData) {
                     device.updateState(decryptData.switches);

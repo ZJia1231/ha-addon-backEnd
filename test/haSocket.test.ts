@@ -1,4 +1,4 @@
-import HaSocket from '../class/HASocketClass';
+import HaSocket from '../src/class/HASocketClass';
 // HaSocket.getConfig()
 (async () => {
     const status = await HaSocket.init();

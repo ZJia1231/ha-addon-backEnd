@@ -1,9 +1,9 @@
 import CkApi from 'coolkit-open-api';
 import coolKitWs from 'coolkit-ws';
-import { appId, appSecret } from '../config/app';
-import { getDataSync } from '../utils/dataUtil';
-import Controller from '../controller/Controller';
-import { updateStates } from '../apis/restApi';
+import { appId, appSecret } from '../src/config/app';
+import { getDataSync } from '../src/utils/dataUtil';
+import Controller from '../src/controller/Controller';
+import { updateStates } from '../src/apis/restApi';
 (async () => {
     const at = getDataSync('user.json', ['at']);
     const apikey = getDataSync('user.json', ['user', 'apikey']);

@@ -1,9 +1,10 @@
-import CloudDeviceController from './CloudDeviceController';
-import { ICloudPowerDetectionSwitchParams } from '../ts/interface/ICloudDeviceParams';
-import ICloudDeviceConstrucotr from '../ts/interface/ICloudDeviceConstrucotr';
-import { updateStates } from '../apis/restApi';
+import _ from 'lodash';
 import coolKitWs from 'coolkit-ws';
+import { updateStates } from '../apis/restApi';
 import { getDataSync } from '../utils/dataUtil';
+import CloudDeviceController from './CloudDeviceController';
+import ICloudDeviceConstrucotr from '../ts/interface/ICloudDeviceConstrucotr';
+import { ICloudPowerDetectionSwitchParams } from '../ts/interface/ICloudDeviceParams';
 class CloudPowerDetectionSwitchController extends CloudDeviceController {
     online: boolean;
     disabled: boolean;
@@ -12,27 +13,16 @@ class CloudPowerDetectionSwitchController extends CloudDeviceController {
     params: ICloudPowerDetectionSwitchParams;
     updateSwitch!: (status: string) => Promise<void>;
     updateState!: (params: { status: string; power?: string; current?: string; voltage?: string }) => Promise<void>;
-    current?: string;
-    voltage?: string;
-    power: string;
-    state: string;
     rate?: number;
     constructor(params: ICloudDeviceConstrucotr<ICloudPowerDetectionSwitchParams>) {
         super(params);
         this.entityId = `switch.${params.deviceId}`;
         this.params = params.params;
         this.disabled = params.disabled!;
-        this.state = params.params.switch;
 
         this.uiid = params.extra.uiid;
-        this.power = params.params.power;
         this.online = params.online;
         this.rate = +getDataSync('rate.json', [this.deviceId]) || 0;
-
-        if (this.uiid === 32) {
-            this.current = params.params.current;
-            this.voltage = params.params.voltage;
-        }
         // // 如果电流电压功率有更新就通知我
         // setInterval(() => {
         //     coolKitWs.updateThing({
@@ -74,28 +64,23 @@ CloudPowerDetectionSwitchController.prototype.updateState = async function ({ po
         restored: true,
         supported_features: 0,
         friendly_name: this.deviceName,
-        power: `${power || this.power || 0} W`,
-        state: state || this.state,
+        power: `${power || _.get(this, ['params', 'power'], 0)} W`,
+        state: state || _.get(this, ['params', 'switch']),
     };
 
     if (this.uiid === 32) {
         attributes = {
             ...attributes,
-            current: `${current || this.current || 0} A`,
-            voltage: `${voltage || this.voltage || 0} V`,
+            current: `${current || _.get(this, ['params', 'current'], 0)} A`,
+            voltage: `${voltage || _.get(this, ['params', 'voltage'], 0)} V`,
         };
     }
 
     const res = await updateStates(this.entityId, {
         entity_id: this.entityId,
-        state: state || this.state,
+        state: state || _.get(this, ['params', 'switch']),
         attributes,
     });
-
-    state && (this.state = state);
-    power && (this.power = power);
-    current && (this.current = current);
-    voltage && (this.voltage = voltage);
 };
 
 export default CloudPowerDetectionSwitchController;

@@ -10,6 +10,8 @@ import CloudTandHModificationController from '../controller/CloudTandHModificati
 import CloudPowerDetectionSwitchController from '../controller/CloudPowerDetectionSwitchController';
 import CloudDualR3Controller from '../controller/CloudDualR3Controller';
 import LanTandHModificationController from '../controller/LanTandHModificationController';
+import LanDualR3Controller from '../controller/LanDualR3Controller';
+import LanPowerDetectionSwitchController from '../controller/LanPowerDetectionSwitchController';
 
 const ghostManufacturer = (manufacturer: string = 'eWeLink') => {
     if (~manufacturer.indexOf('松诺') || ~manufacturer.toLocaleUpperCase().indexOf('SONOFF')) {
@@ -71,7 +73,12 @@ const formatDevice = (data: DiyController | CloudDeviceController | LanDeviceCon
         if (data instanceof CloudTandHModificationController) {
             unit = data.unit;
         }
-        if (data instanceof CloudPowerDetectionSwitchController || data instanceof CloudDualR3Controller) {
+        if (
+            data instanceof CloudPowerDetectionSwitchController ||
+            data instanceof CloudDualR3Controller ||
+            data instanceof LanDualR3Controller ||
+            data instanceof LanPowerDetectionSwitchController
+        ) {
             rate = data.rate;
         }
         return {

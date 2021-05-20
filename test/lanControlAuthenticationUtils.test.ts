@@ -1,4 +1,4 @@
-import LanControlAuthenticationUtils from '../utils/lanControlAuthenticationUtils';
+import LanControlAuthenticationUtils from '../src/utils/lanControlAuthenticationUtils';
 function test() {
     let iv = 'OTU0MTc4NTg3MjQzMjU4Mw';
     iv = LanControlAuthenticationUtils.decryptionBase64(iv);

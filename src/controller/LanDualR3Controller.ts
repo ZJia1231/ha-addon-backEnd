@@ -3,6 +3,7 @@ import { setSwitches } from '../apis/lanDeviceApi';
 import { updateStates } from '../apis/restApi';
 import { ICloudDualR3Params } from '../ts/interface/ICloudDeviceParams';
 import ILanDeviceConstrucotr from '../ts/interface/ILanDeviceConstrucotr';
+import { getDataSync } from '../utils/dataUtil';
 import mergeDeviceParams from '../utils/mergeDeviceParams';
 import LanDeviceController from './LanDeviceController';
 
@@ -15,6 +16,7 @@ class LanDualR3Controller extends LanDeviceController {
     params?: ICloudDualR3Params;
     entityId: string;
     maxChannel: number = 2;
+    rate?: number;
     channelName?: { [key: string]: string };
     setSwitch!: (switches: TypeSwitch[]) => Promise<0 | -1>;
     updateState!: (switches: TypeSwitches) => Promise<any>;
@@ -22,6 +24,7 @@ class LanDualR3Controller extends LanDeviceController {
         super(props);
         const { deviceId } = props;
         this.entityId = `switch.${deviceId}`;
+        this.rate = +getDataSync('rate.json', [this.deviceId]) || 0;
     }
 }
 

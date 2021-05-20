@@ -34,6 +34,7 @@ import CloudDualR3Controller from './CloudDualR3Controller';
 import { device } from 'coolkit-open-api/dist/api';
 import LanDualR3Controller from './LanDualR3Controller';
 import LanTandHModificationController from './LanTandHModificationController';
+import LanPowerDetectionSwitchController from './LanPowerDetectionSwitchController';
 
 class Controller {
     static deviceMap: Map<string, DiyDeviceController | CloudDeviceController | LanDeviceController> = new Map();
@@ -98,6 +99,10 @@ class Controller {
             if (old instanceof LanDeviceController) {
                 old.iv = params?.iv;
                 old.encryptedData = params?.encryptedData;
+
+                if (old.iv && old.devicekey && old.encryptedData) {
+                    old.params = old.parseEncryptedData()
+                }
                 return old;
             }
 
@@ -146,6 +151,15 @@ class Controller {
             }
             if (lanType === 'th_plug') {
                 const lanDevice = new LanTandHModificationController({
+                    ...params,
+                    disabled,
+                    index: tmpIndex,
+                });
+                Controller.deviceMap.set(id, lanDevice);
+                return lanDevice;
+            }
+            if (lanType === 'enhanced_plug') {
+                const lanDevice = new LanPowerDetectionSwitchController({
                     ...params,
                     disabled,
                     index: tmpIndex,

@@ -31,6 +31,7 @@ class DiyController {
         this.disabled = disabled;
         this.txt = txt;
         this.deviceName = getDataSync('diy.json', [deviceId, 'deviceName']) || `DIY-${deviceId}`;
+        console.log("Jia ~ file: DiyDeviceController.ts ~ line 34 ~ DiyController ~ constructor ~ this", this);
     }
 }
 

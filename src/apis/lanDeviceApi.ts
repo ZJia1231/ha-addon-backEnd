@@ -6,7 +6,7 @@ const setSwitch = async (params: { ip: string; port: number; deviceid: string; d
     const { ip, port, deviceid, devicekey, data, selfApikey } = params;
     const iv = `abcdef${Date.now()}abcdef`.slice(0, 16);
     const reqData = {
-        iv: AuthUtil.encryptionBase64(`abcdef${Date.now()}abcdef`.slice(0, 16)),
+        iv: AuthUtil.encryptionBase64(iv),
         deviceid,
         selfApikey,
         encrypt: true,
@@ -36,7 +36,7 @@ const setSwitches = async (params: { ip: string; port: number; deviceid: string;
     console.log('Jia ~ file: lanDeviceApi.ts ~ line 28 ~ setSwitches ~ params', params);
     const iv = `abcdef${Date.now()}abcdef`.slice(0, 16);
     const reqData = {
-        iv: AuthUtil.encryptionBase64(`abcdef${Date.now()}abcdef`.slice(0, 16)),
+        iv: AuthUtil.encryptionBase64(iv),
         deviceid,
         selfApikey,
         encrypt: true,
@@ -61,4 +61,32 @@ const setSwitches = async (params: { ip: string; port: number; deviceid: string;
     return await res;
 };
 
-export { setSwitch, setSwitches };
+/**
+ *
+ * @deprecated 局域网设备好像不支持该接口
+ */
+const getLanDeviceParams = async (params: { ip: string; port: number; deviceid: string; devicekey: string; selfApikey: string }) => {
+    const { ip, port, deviceid, devicekey, selfApikey } = params;
+    const iv = `abcdef${Date.now()}abcdef`.slice(0, 16);
+    const reqData = {
+        iv: AuthUtil.encryptionBase64(iv),
+        deviceid,
+        selfApikey,
+        encrypt: true,
+        sequence: `${Date.now()}`,
+        data: AuthUtil.encryptionData({
+            iv,
+            data: JSON.stringify({}),
+            key: devicekey,
+        }),
+    };
+    const res = axios.post(`http://${ip}:${port}/zeroconf/info`, reqData);
+
+    res.catch(async (e) => {
+        console.log('get lan device params failed:', deviceid);
+    });
+
+    return await res;
+};
+
+export { setSwitch, setSwitches, getLanDeviceParams };

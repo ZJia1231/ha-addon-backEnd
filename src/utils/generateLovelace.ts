@@ -9,6 +9,7 @@ import Controller from '../controller/Controller';
 import DiyController from '../controller/DiyDeviceController';
 import LanDualR3Controller from '../controller/LanDualR3Controller';
 import LanMultiChannelSwitchController from '../controller/LanMultiChannelSwitchController';
+import LanPowerDetectionSwitchController from '../controller/LanPowerDetectionSwitchController';
 import LanSwitchController from '../controller/LanSwitchController';
 import LanTandHModificationController from '../controller/LanTandHModificationController';
 type TypeCard = {
@@ -56,7 +57,7 @@ const generateLovelace = async () => {
                 singalSwitchCard.entities.push(device.entityId);
                 continue;
             }
-            if (device instanceof LanSwitchController) {
+            if (device instanceof LanSwitchController || device instanceof LanPowerDetectionSwitchController) {
                 if (device.selfApikey && device.devicekey) {
                     singalSwitchCard.entities.push(device.entityId);
                 }

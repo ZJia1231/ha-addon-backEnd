@@ -1,7 +1,7 @@
 import CkApi from 'coolkit-open-api';
-import { updateStates } from '../apis/restApi';
-import Controller from '../controller/Controller';
-import DiyController from '../controller/DiyDeviceController';
+import { updateStates } from '../src/apis/restApi';
+import Controller from '../src/controller/Controller';
+import DiyController from '../src/controller/DiyDeviceController';
 
 export default async () => {
     await CkApi.user.login({
