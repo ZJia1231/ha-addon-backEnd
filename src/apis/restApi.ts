@@ -1,6 +1,6 @@
 import axios from 'axios';
 import AuthClass from '../class/AuthClass';
-import { HaToken } from '../config/auth';
+// import { HaToken } from '../config/auth';
 import { HaRestURL } from '../config/url';
 
 const restRequest = axios.create({
@@ -10,7 +10,7 @@ const restRequest = axios.create({
 
 restRequest.interceptors.request.use((val) => {
     val.headers = {
-        Authorization: `Bearer ${HaToken}`,
+        Authorization: `Bearer ${AuthClass.curAuth}`,
     };
     return val;
 });

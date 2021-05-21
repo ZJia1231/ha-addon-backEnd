@@ -31,7 +31,6 @@ class DiyController {
         this.disabled = disabled;
         this.txt = txt;
         this.deviceName = getDataSync('diy.json', [deviceId, 'deviceName']) || `DIY-${deviceId}`;
-        console.log("Jia ~ file: DiyDeviceController.ts ~ line 34 ~ DiyController ~ constructor ~ this", this);
     }
 }
 
@@ -58,7 +57,7 @@ DiyController.prototype.updateState = async function (status) {
         attributes: {
             restored: true,
             supported_features: 0,
-            friendly_name: this.entityId,
+            friendly_name: this.deviceName || this.entityId,
             state: status,
         },
     }).catch((e) => {
