@@ -61,7 +61,7 @@ CloudPowerDetectionSwitchController.prototype.updateState = async function ({ po
         state = 'unavailable';
     }
     let attributes: any = {
-        restored: true,
+        restored: false,
         supported_features: 0,
         friendly_name: this.deviceName,
         power: `${power || _.get(this, ['params', 'power'], 0)} W`,

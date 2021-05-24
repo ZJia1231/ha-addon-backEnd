@@ -208,7 +208,7 @@ CloudRGBLightController.prototype.updateState = async function ({ status, bright
         entity_id: this.entityId,
         state,
         attributes: {
-            restored: true,
+            restored: false,
             supported_features: 19,
             friendly_name: this.deviceName,
             state,

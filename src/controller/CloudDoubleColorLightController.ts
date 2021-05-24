@@ -82,7 +82,7 @@ CloudDoubleColorLightController.prototype.updateState = async function (params) 
         entity_id: this.entityId,
         state,
         attributes: {
-            restored: true,
+            restored: false,
             supported_features: 3,
             friendly_name: this.deviceName,
             state,

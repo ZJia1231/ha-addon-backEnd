@@ -35,7 +35,7 @@ CloudDW2Controller.prototype.updateState = async function (status) {
         entity_id: this.entityId,
         state,
         attributes: {
-            restored: true,
+            restored: false,
             friendly_name: this.deviceName,
             state,
         },

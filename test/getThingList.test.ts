@@ -34,7 +34,7 @@ export default async () => {
                         entity_id: `switch.${deviceid}`,
                         state: params.switch,
                         attributes: {
-                            restored: true,
+                            restored: false,
                             supported_features: 0,
                             friendly_name: name,
                         },

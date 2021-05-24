@@ -63,7 +63,7 @@ CloudDualR3Controller.prototype.updateState = async function (switches) {
                 entity_id: `${this.entityId}_${outlet + 1}`,
                 state,
                 attributes: {
-                    restored: true,
+                    restored: false,
                     supported_features: 0,
                     friendly_name: `${this.deviceName}-${name}`,
                     state,

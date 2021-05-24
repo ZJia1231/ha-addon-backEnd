@@ -55,7 +55,7 @@ CloudTandHModificationController.prototype.updateState = async function (status)
         entity_id: `switch.${this.deviceId}`,
         state,
         attributes: {
-            restored: true,
+            restored: false,
             supported_features: 0,
             friendly_name: this.deviceName,
             state,
@@ -67,7 +67,7 @@ CloudTandHModificationController.prototype.updateTandH = async function (current
         entity_id: `sensor.${this.deviceId}_t`,
         state: currentTemperature,
         attributes: {
-            restored: true,
+            restored: false,
             supported_features: 0,
             friendly_name: `${this.deviceName}-Temperature`,
             device_class: 'temperature',
@@ -79,7 +79,7 @@ CloudTandHModificationController.prototype.updateTandH = async function (current
         entity_id: `sensor.${this.deviceId}_h`,
         state: currentHumidity,
         attributes: {
-            restored: true,
+            restored: false,
             supported_features: 0,
             friendly_name: `${this.deviceName}-Humidity`,
             device_class: 'humidity',

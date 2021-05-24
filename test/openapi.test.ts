@@ -29,7 +29,7 @@ import { updateStates } from '../src/apis/restApi';
                     entity_id: `switch.${tmp.deviceid}`,
                     state: tmp.params.switch,
                     attributes: {
-                        restored: true,
+                        restored: false,
                         supported_features: 0,
                         friendly_name: deviceName,
                     },
@@ -70,7 +70,7 @@ import { updateStates } from '../src/apis/restApi';
                         entity_id: `switch.${deviceid}`,
                         state: params.switch,
                         attributes: {
-                            restored: true,
+                            restored: false,
                             supported_features: 0,
                             friendly_name: name,
                         },

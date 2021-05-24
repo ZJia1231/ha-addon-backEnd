@@ -54,7 +54,7 @@ LanSwitchController.prototype.updateState = async function (status) {
         entity_id: this.entityId,
         state,
         attributes: {
-            restored: true,
+            restored: false,
             supported_features: 0,
             friendly_name: this.deviceName || this.entityId,
             state,
