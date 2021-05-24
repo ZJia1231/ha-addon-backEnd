@@ -15,6 +15,8 @@ import CloudDoubleColorLightController from '../controller/CloudDoubleColorLight
 import eventBus from './eventBus';
 import CloudDualR3Controller from '../controller/CloudDualR3Controller';
 import LanDualR3Controller from '../controller/LanDualR3Controller';
+import CloudDW2WiFiController from '../controller/CloudDW2WiFiController';
+import { ICloudDW2Params } from '../ts/interface/ICloudDeviceParams';
 
 const apikey = getDataSync('user.json', ['user', 'apikey']);
 
@@ -94,6 +96,12 @@ export default async () => {
                         console.log('接收到DualR3的信息：', tmp.params);
                         if (tmp.params && tmp.params.switches) {
                             device.updateState(tmp.params.switches);
+                        }
+                    }
+                    if (device instanceof CloudDW2WiFiController) {
+                        console.log('接收到DW2的信息：', tmp.params);
+                        if (tmp.params) {
+                            device.updateState(tmp.params as ICloudDW2Params);
                         }
                     }
 

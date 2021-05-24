@@ -20,7 +20,6 @@ interface ICloudDevice<P = ICloudDeviceParams> {
     brandLogo: string;
     showBrand: false;
     productModel: string;
-    devConfig: Object;
     settings: Object;
     family: {
         familyid: string;
@@ -35,6 +34,10 @@ interface ICloudDevice<P = ICloudDeviceParams> {
         ck_channel_name: {
             [key: string]: string;
         };
+    };
+    devConfig: {
+        // 目前只有DW2-WiFi门磁用到
+        lowVolAlarm?: number;
     };
 }
 

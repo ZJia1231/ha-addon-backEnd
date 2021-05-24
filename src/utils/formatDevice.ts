@@ -12,6 +12,7 @@ import CloudDualR3Controller from '../controller/CloudDualR3Controller';
 import LanTandHModificationController from '../controller/LanTandHModificationController';
 import LanDualR3Controller from '../controller/LanDualR3Controller';
 import LanPowerDetectionSwitchController from '../controller/LanPowerDetectionSwitchController';
+import CloudDW2WiFiController from '../controller/CloudDW2WiFiController';
 
 const ghostManufacturer = (manufacturer: string = 'eWeLink') => {
     if (~manufacturer.indexOf('松诺') || ~manufacturer.toLocaleUpperCase().indexOf('SONOFF')) {
@@ -38,12 +39,15 @@ const formatDevice = (data: DiyController | CloudDeviceController | LanDeviceCon
     }
 
     if (data instanceof LanDeviceController) {
-        let tags, unit;
+        let tags, unit, rate;
         if (data instanceof LanMultiChannelSwitchController) {
             tags = data.channelName;
         }
         if (data instanceof LanTandHModificationController) {
             unit = data.unit;
+        }
+        if (data instanceof LanDualR3Controller || data instanceof LanPowerDetectionSwitchController) {
+            rate = data.rate;
         }
         return {
             key: data.deviceId,
@@ -62,24 +66,23 @@ const formatDevice = (data: DiyController | CloudDeviceController | LanDeviceCon
             index: data.index,
             tags,
             unit,
+            rate,
         };
     }
 
     if (data instanceof CloudDeviceController) {
-        let tags, unit, rate;
+        let tags, unit, rate, lowVolAlarm;
         if (data instanceof CloudMultiChannelSwitchController) {
             tags = data.channelName;
         }
         if (data instanceof CloudTandHModificationController) {
             unit = data.unit;
         }
-        if (
-            data instanceof CloudPowerDetectionSwitchController ||
-            data instanceof CloudDualR3Controller ||
-            data instanceof LanDualR3Controller ||
-            data instanceof LanPowerDetectionSwitchController
-        ) {
+        if (data instanceof CloudPowerDetectionSwitchController || data instanceof CloudDualR3Controller) {
             rate = data.rate;
+        }
+        if (data instanceof CloudDW2WiFiController) {
+            lowVolAlarm = data.lowVolAlarm;
         }
         return {
             key: data.deviceId,
@@ -98,6 +101,7 @@ const formatDevice = (data: DiyController | CloudDeviceController | LanDeviceCon
             tags,
             unit,
             rate,
+            lowVolAlarm,
         };
     }
 };

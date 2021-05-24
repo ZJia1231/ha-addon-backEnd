@@ -3,6 +3,7 @@ import _ from 'lodash';
 import {
     ICloudDimmingParams,
     ICloudDualR3Params,
+    ICloudDW2Params,
     ICloudMultiChannelSwitchParams,
     ICloudPowerDetectionSwitchParams,
     ICloudRGBLightParams,
@@ -35,6 +36,7 @@ import { device } from 'coolkit-open-api/dist/api';
 import LanDualR3Controller from './LanDualR3Controller';
 import LanTandHModificationController from './LanTandHModificationController';
 import LanPowerDetectionSwitchController from './LanPowerDetectionSwitchController';
+import CloudDW2WiFiController from './CloudDW2WiFiController';
 
 class Controller {
     static deviceMap: Map<string, DiyDeviceController | CloudDeviceController | LanDeviceController> = new Map();
@@ -101,7 +103,7 @@ class Controller {
                 old.encryptedData = params?.encryptedData;
 
                 if (old.iv && old.devicekey && old.encryptedData) {
-                    old.params = old.parseEncryptedData()
+                    old.params = old.parseEncryptedData();
                 }
                 return old;
             }
@@ -314,6 +316,24 @@ class Controller {
                     disabled,
                     online: tmp.online,
                     index: _index,
+                });
+                Controller.deviceMap.set(id, device);
+                return device;
+            }
+            // DW2-WiFi 门磁
+            if (data.extra.uiid === 102) {
+                const tmp = data as ICloudDevice<ICloudDW2Params>;
+                const device = new CloudDW2WiFiController({
+                    deviceId: tmp.deviceid,
+                    deviceName: tmp.name,
+                    apikey: tmp.apikey,
+                    extra: tmp.extra,
+                    params: tmp.params,
+                    devicekey: tmp.devicekey,
+                    disabled,
+                    online: tmp.online,
+                    index: _index,
+                    devConfig: tmp.devConfig as any,
                 });
                 Controller.deviceMap.set(id, device);
                 return device;

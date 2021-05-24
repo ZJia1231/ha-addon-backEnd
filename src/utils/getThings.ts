@@ -18,6 +18,8 @@ import { getDataSync } from './dataUtil';
 import LanDualR3Controller from '../controller/LanDualR3Controller';
 import LanTandHModificationController from '../controller/LanTandHModificationController';
 import LanPowerDetectionSwitchController from '../controller/LanPowerDetectionSwitchController';
+import CloudDW2WiFiController from '../controller/CloudDW2WiFiController';
+import { ICloudDW2Params } from '../ts/interface/ICloudDeviceParams';
 
 // 获取设备并同步到HA
 export default async () => {
@@ -122,8 +124,10 @@ export default async () => {
                     !device.disabled && device.updateState(params);
                 }
                 if (device instanceof CloudDualR3Controller) {
-                    console.log('Jia ~ file: getThings.ts ~ CloudDualR3Controller ~ params', params);
                     !device.disabled && device.updateState(params.switches);
+                }
+                if (device instanceof CloudDW2WiFiController) {
+                    !device.disabled && device.updateState(params as ICloudDW2Params);
                 }
             }
         }
