@@ -8,7 +8,6 @@ class CloudSwitchController extends CloudDeviceController {
     entityId: string;
     uiid: number = 1;
     params: ICloudSwitchParams;
-    online: boolean;
     updateSwitch!: (status: string) => Promise<void>;
     updateState!: (status: string) => Promise<void>;
     constructor(params: ICloudDeviceConstrucotr<ICloudSwitchParams>) {
@@ -17,7 +16,6 @@ class CloudSwitchController extends CloudDeviceController {
         this.params = params.params;
         this.disabled = params.disabled!;
         this.uiid = params.extra.uiid;
-        this.online = params.online;
     }
 }
 

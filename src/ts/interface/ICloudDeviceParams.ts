@@ -148,6 +148,15 @@ interface ICloudRGBLightStripParams extends ICloudDeviceParams {
     speed: number; // 灯带在不同颜色之间的变化快慢速度，取值范围1-100，值越大速度越快
     sensitive: number; // 灯带在音乐可视化模式下灯光变化的灵敏度，取值范围1-10，值越大灵敏度越高
 }
+interface ICloudDW2Params extends ICloudDeviceParams {
+    actionTime: string;
+    battery: number;
+    chipID: string;
+    lastUpdateTime: string;
+    mac: string;
+    switch: string;
+    type: number;
+}
 
 export {
     ICloudDeviceParams,
@@ -160,4 +169,5 @@ export {
     ICloudRGBLightStripParams,
     IDoubleCloudLightParams,
     ICloudDualR3Params,
+    ICloudDW2Params,
 };

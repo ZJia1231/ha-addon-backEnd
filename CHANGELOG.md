@@ -1,5 +1,10 @@
 # Change Log
 
+## v2.0.7-beta
+
+-   使用 HomeAsistant 内置的鉴权机制，优化认证流程
+-   ~~Docker 版未测试，Docker 用户请谨慎升级~~
+
 ## v2.0.6-beta
 
 -   恒温恒湿改装件支持局域网控制
