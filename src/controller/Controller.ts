@@ -272,21 +272,22 @@ class Controller {
             //     return dimming;
             // }
             // RGB灯带
-            // if (data.extra.uiid === 59) {
-            //     const tmp = data as ICloudDevice<ICloudRGBLightStripParams>;
-            //     const device = new CloudRGBLightStripController({
-            //         deviceId: tmp.deviceid,
-            //         deviceName: tmp.name,
-            //         apikey: tmp.apikey,
-            //         extra: tmp.extra,
-            //         params: tmp.params,
-            //         online: tmp.online,
-            //         disabled,
-            //         index: _index,
-            //     });
-            //     Controller.deviceMap.set(id, device);
-            //     return device;
-            // }
+            if (data.extra.uiid === 59) {
+                const tmp = data as ICloudDevice<ICloudRGBLightStripParams>;
+                const device = new CloudRGBLightStripController({
+                    deviceId: tmp.deviceid,
+                    devicekey: tmp.devicekey,
+                    deviceName: tmp.name,
+                    apikey: tmp.apikey,
+                    extra: tmp.extra,
+                    params: tmp.params,
+                    online: tmp.online,
+                    disabled,
+                    index: _index,
+                });
+                Controller.deviceMap.set(id, device);
+                return device;
+            }
             // 双色冷暖灯
             // if (data.extra.uiid === 103) {
             //     const tmp = data as ICloudDevice<IDoubleCloudLightParams>;

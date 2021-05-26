@@ -6,43 +6,23 @@ import coolKitWs from 'coolkit-ws';
 import { parseHS2RGB, parseRGB2HS } from '../utils/colorUitl';
 import { IRGBLightStripSocketParams } from '../ts/interface/ICkSocketParams';
 import _ from 'lodash';
+import { effectList, fakeTempList } from '../config/rgbLight';
+
+type TypeHaRgbLightParams = { state: string; brightness_pct?: number; brightness?: number; rgb_color: number[]; color_temp: number; effect: string };
+
 class CloudRGBLightStripController extends CloudDeviceController {
     online: boolean;
     disabled: boolean;
     entityId: string;
     uiid: number = 59;
     params: ICloudRGBLightStripParams;
-    brightness: number;
     mode: number;
-    speed: number;
-    sensitive: number;
-    hsColor: [number, number];
-    updateLight!: (params: { switch: string; colorR?: number; colorG?: number; colorB?: number; bright?: number }) => Promise<void>;
-    updateState!: (params: { status: string; mode?: number; speed?: number; sensitive?: number; brightness?: number; hs_color?: [number, number] }) => Promise<void>;
+    effectList = effectList;
+    updateLight!: (params: Partial<ICloudRGBLightStripParams>) => Promise<void>;
+    updateState!: (params: TypeHaRgbLightParams) => Promise<void>;
 
-    parseRGB2HS!: (red: number, green: number, blue: number) => [number, number];
-    parseHS2RGB!: (hs: [number, number]) => [number, number, number];
-    parseCkData2Ha!: (params: {
-        switch: string;
-        colorR: number;
-        colorB: number;
-        colorG: number;
-        bright: number;
-        mode: number;
-        speed: number;
-        sensitive: number;
-    }) => { mode: number; speed: number; hs_color?: [number, number]; sensitive: any; brightness?: number; status: string };
-    parseHaData2Ck!: (params: {
-        state: string;
-        hs_color?: [number, number];
-        brightness_pct?: number;
-    }) => {
-        switch: string;
-        colorR?: number;
-        colorG?: number;
-        colorB?: number;
-        bright?: number;
-    };
+    parseCkData2Ha!: (params: Partial<ICloudRGBLightStripParams>) => TypeHaRgbLightParams;
+    parseHaData2Ck!: (params: TypeHaRgbLightParams) => Partial<ICloudRGBLightStripParams>;
 
     constructor(params: ICloudDeviceConstrucotr<ICloudRGBLightStripParams>) {
         super(params);
@@ -50,79 +30,94 @@ class CloudRGBLightStripController extends CloudDeviceController {
         this.params = params.params;
         this.disabled = params.disabled!;
         this.online = params.online;
-        this.brightness = this.params.bright * 2.55;
         this.mode = this.params.mode;
-        this.speed = this.params.speed;
-        this.sensitive = this.params.sensitive;
-        this.hsColor = this.parseRGB2HS(this.params.colorR, this.params.colorG, this.params.colorB);
     }
 }
 
-CloudRGBLightStripController.prototype.parseRGB2HS = parseRGB2HS;
-CloudRGBLightStripController.prototype.parseHS2RGB = parseHS2RGB;
-
-CloudRGBLightStripController.prototype.parseHaData2Ck = function ({ hs_color, brightness_pct, state }) {
-    let colorR,
-        colorG,
-        colorB,
-        bright = this.brightness / 2.55;
-    if (hs_color) {
-        [colorR, colorG, colorB] = this.parseHS2RGB(hs_color);
-    }
-    if (brightness_pct) {
-        bright = brightness_pct;
-    }
-    return {
+CloudRGBLightStripController.prototype.parseHaData2Ck = function (params) {
+    const { state, effect, brightness_pct, rgb_color, color_temp } = params;
+    const res = {
         switch: state,
-        colorR,
-        colorG,
-        colorB,
-        bright,
-    };
+        mode: 1,
+    } as Partial<ICloudRGBLightStripParams>;
+    brightness_pct && (res.bright = brightness_pct);
+
+    if (rgb_color) {
+        res.colorR = rgb_color[0];
+        res.colorG = rgb_color[1];
+        res.colorB = rgb_color[2];
+        res.light_type = 1;
+    }
+    if (color_temp) {
+        res.light_type = 2;
+        const [r, g, b] = fakeTempList[color_temp].split(',');
+        res.colorR = +r;
+        res.colorG = +g;
+        res.colorB = +b;
+    }
+    if (effect) {
+        res.mode = this.effectList.indexOf(effect);
+    }
+    return res;
 };
 
-CloudRGBLightStripController.prototype.parseCkData2Ha = function ({ colorR, colorB, colorG, bright, mode, speed, sensitive, switch: status = 'on' }) {
-    let hs_color, brightness;
-    if (colorR !== undefined && colorG !== undefined && colorB !== undefined) {
-        hs_color = this.parseRGB2HS(colorR, colorG, colorB);
+CloudRGBLightStripController.prototype.parseCkData2Ha = function (params) {
+    const { colorR, colorG, colorB, mode, bright, light_type, switch: state = 'on' } = params;
+    const res = {
+        state,
+        effect: this.effectList[1],
+    } as TypeHaRgbLightParams;
+
+    bright && (res.brightness = (bright * 2.55) << 0);
+
+    // * 彩光
+    if (light_type === 1) {
+        if (colorR && colorG && colorB) {
+            res.rgb_color = [colorR, colorG, colorB];
+        }
     }
-    if (bright !== undefined) {
-        brightness = bright * 2.55;
+
+    // * 白光
+    if (light_type === 2) {
+        // todo
+        if (colorR && colorG && colorB) {
+            const temp = fakeTempList.indexOf(`${colorR},${colorG},${colorB}`);
+            if (temp !== -1) {
+                res.color_temp = temp;
+            } else {
+                // todo
+                // ? 找不到对应的值时取临近值
+            }
+        }
     }
-    return {
-        mode,
-        status,
-        speed,
-        hs_color,
-        sensitive,
-        brightness,
-    };
+    if (mode) {
+        res.effect = this.effectList[mode];
+    }
+
+    return res;
 };
 
 CloudRGBLightStripController.prototype.updateLight = async function (params) {
     const res = await coolKitWs.updateThing({
         ownerApikey: this.apikey,
         deviceid: this.deviceId,
-        params: {
-            ...params,
-            mode: 1,
-            speed: this.speed,
-            sensitive: this.sensitive,
-        },
+        params,
     });
-
     if (res.error === 0) {
-        this.updateState({
-            status: params.switch,
-            mode: 1,
-        });
+        this.params = {
+            ...this.params,
+            ...params,
+        };
+        this.updateState(this.parseCkData2Ha(params));
     }
 };
 
 /**
  * @description 更新状态到HA
  */
-CloudRGBLightStripController.prototype.updateState = async function ({ status, brightness, hs_color, mode, speed, sensitive }) {
+CloudRGBLightStripController.prototype.updateState = async function (params) {
+    const { state: status } = params;
+
     if (this.disabled) {
         return;
     }
@@ -137,21 +132,17 @@ CloudRGBLightStripController.prototype.updateState = async function ({ status, b
         state,
         attributes: {
             restored: false,
-            supported_features: 17,
+            supported_features: 4,
+            supported_color_modes: ['color_temp', 'rgb'],
+            effect_list: this.effectList.slice(1),
+            min_mireds: 1,
+            max_mireds: 142,
             friendly_name: this.deviceName,
+            ...this.parseCkData2Ha(this.params),
+            ...params,
             state,
-            brightness: brightness === undefined ? this.brightness : brightness,
-            hs_color,
-            mode: mode === undefined ? this.mode : mode,
-            speed: speed === undefined ? this.speed : speed,
-            sensitive: sensitive === undefined ? this.sensitive : sensitive,
         },
     });
-    brightness !== undefined && (this.brightness = brightness);
-    mode !== undefined && (this.mode = mode);
-    speed !== undefined && (this.speed = speed);
-    sensitive !== undefined && (this.sensitive = sensitive);
-    hs_color && (this.hsColor = hs_color);
 };
 
 export default CloudRGBLightStripController;

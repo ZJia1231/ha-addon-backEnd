@@ -86,6 +86,8 @@ export default async () => {
                         }
                     }
                     if (device instanceof CloudRGBLightStripController) {
+                        console.log('接收到灯带的消息：', tmp.params);
+
                         device.updateState(device.parseCkData2Ha(tmp.params));
                     }
                     if (device instanceof CloudDoubleColorLightController) {

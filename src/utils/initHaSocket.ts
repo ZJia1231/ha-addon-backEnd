@@ -106,15 +106,15 @@ const handleDeviceByEntityId = async (entity_id: string, state: string, res: any
     }
 
     if (device instanceof CloudRGBLightStripController) {
-        if (state === 'off') {
-            await device.updateLight({
-                switch: state,
-            });
-            return;
-        }
-        const { hs_color, color_temp, brightness_pct = 0 } = res.service_data;
-        const params = device.parseHaData2Ck({ hs_color, brightness_pct, state });
-        await device.updateLight(params);
+        const { brightness_pct, rgb_color, color_temp, effect } = res.service_data;
+        const params = device.parseHaData2Ck({
+            state,
+            effect,
+            brightness_pct,
+            rgb_color,
+            color_temp,
+        });
+        device.updateLight(params);
     }
 
     if (device instanceof CloudDoubleColorLightController) {

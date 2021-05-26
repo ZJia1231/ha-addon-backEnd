@@ -117,8 +117,7 @@ export default async () => {
                     !device.disabled && device.updateState(params.switches.slice(0, device.maxChannel));
                 }
                 if (device instanceof CloudRGBLightStripController) {
-                    const data = device.parseCkData2Ha(params);
-                    !device.disabled && device.updateState(data);
+                    !device.disabled && device.updateState(device.parseCkData2Ha(params));
                 }
                 if (device instanceof CloudDoubleColorLightController) {
                     !device.disabled && device.updateState(params);
