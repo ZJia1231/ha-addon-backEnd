@@ -7,8 +7,7 @@ import { parseHS2RGB, parseRGB2HS } from '../utils/colorUitl';
 import { IRGBLightStripSocketParams } from '../ts/interface/ICkSocketParams';
 import _ from 'lodash';
 import { effectList, fakeTempList } from '../config/rgbLight';
-
-type TypeHaRgbLightStripParams = { state: string; brightness_pct?: number; brightness?: number; rgb_color: number[]; color_temp: number; effect: string };
+import { TypeHaRgbLightParams } from '../ts/type/TypeHaLightParams';
 
 class CloudRGBLightStripController extends CloudDeviceController {
     online: boolean;
@@ -19,10 +18,10 @@ class CloudRGBLightStripController extends CloudDeviceController {
     mode: number;
     effectList = effectList;
     updateLight!: (params: Partial<ICloudRGBLightStripParams>) => Promise<void>;
-    updateState!: (params: TypeHaRgbLightStripParams) => Promise<void>;
+    updateState!: (params: TypeHaRgbLightParams) => Promise<void>;
 
-    parseCkData2Ha!: (params: Partial<ICloudRGBLightStripParams>) => TypeHaRgbLightStripParams;
-    parseHaData2Ck!: (params: TypeHaRgbLightStripParams) => Partial<ICloudRGBLightStripParams>;
+    parseCkData2Ha!: (params: Partial<ICloudRGBLightStripParams>) => TypeHaRgbLightParams;
+    parseHaData2Ck!: (params: TypeHaRgbLightParams) => Partial<ICloudRGBLightStripParams>;
 
     constructor(params: ICloudDeviceConstrucotr<ICloudRGBLightStripParams>) {
         super(params);
@@ -66,7 +65,7 @@ CloudRGBLightStripController.prototype.parseCkData2Ha = function (params) {
     const res = {
         state,
         effect: this.effectList[1],
-    } as TypeHaRgbLightStripParams;
+    } as TypeHaRgbLightParams;
 
     bright && (res.brightness = (bright * 2.55) << 0);
 

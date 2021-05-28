@@ -59,9 +59,7 @@ export default async () => {
                         }
                     }
                     if (device instanceof CloudRGBBulbController) {
-                        // todo
-                        // const params = device.parseCkData2Ha(tmp.params);
-                        // device.updateState(params);
+                        device.updateState(device.parseCkData2Ha(tmp.params));
                     }
                     if (device instanceof CloudDimmingController) {
                         const { bright, switch: status } = tmp.params;

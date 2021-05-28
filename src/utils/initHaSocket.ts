@@ -67,15 +67,18 @@ const handleDeviceByEntityId = async (entity_id: string, state: string, res: any
     }
     if (device instanceof CloudRGBBulbController) {
         // todo
-        // if (state === 'off') {
-        //     await device.updateLight({
-        //         state,
-        //     });
-        //     return;
-        // }
-        // const { hs_color, brightness_pct = 0 } = res.service_data;
-        // const params = device.parseHaData2Ck({ hs_color, brightness_pct, state });
-        // await device.updateLight(params);
+        if (state === 'off') {
+            await device.updateLight({
+                state,
+            });
+            return;
+        }
+        await device.updateLight(
+            device.parseHaData2Ck({
+                state,
+                ...res.service_data,
+            })
+        );
     }
     if (device instanceof CloudDimmingController) {
         const { brightness_pct } = res.service_data;
@@ -107,13 +110,9 @@ const handleDeviceByEntityId = async (entity_id: string, state: string, res: any
     }
 
     if (device instanceof CloudRGBLightStripController) {
-        const { brightness_pct, rgb_color, color_temp, effect } = res.service_data;
         const params = device.parseHaData2Ck({
             state,
-            effect,
-            brightness_pct,
-            rgb_color,
-            color_temp,
+            ...res.service_data,
         });
         device.updateLight(params);
     }

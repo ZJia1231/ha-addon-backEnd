@@ -94,8 +94,7 @@ export default async () => {
                     !device.disabled && device.updateTandH(params.currentTemperature, params.currentHumidity);
                 }
                 if (device instanceof CloudRGBBulbController) {
-                    // todo
-                    // !device.disabled && device.updateState(device.parseCkData2Ha(params));
+                    !device.disabled && device.updateState(device.parseCkData2Ha(params));
                 }
                 if (device instanceof CloudDimmingController) {
                     !device.disabled &&

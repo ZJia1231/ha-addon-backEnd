@@ -1,25 +1,25 @@
 import CloudDeviceController from './CloudDeviceController';
-import { ICloudRGBLightParams } from '../ts/interface/ICloudDeviceParams';
+import { ICloudRGBBulbParams } from '../ts/interface/ICloudDeviceParams';
 import ICloudDeviceConstrucotr from '../ts/interface/ICloudDeviceConstrucotr';
 import { updateStates } from '../apis/restApi';
 import coolKitWs from 'coolkit-ws';
-import { parseHS2RGB, parseRGB2HS } from '../utils/colorUitl';
 import _ from 'lodash';
-
-type TypeHaRgbLightParams = { state: string; brightness_pct?: number; brightness?: number; rgb_color: number[]; color_temp: number; effect: string };
+import { TypeHaRgbBulbParams } from '../ts/type/TypeHaLightParams';
+import { presetEffectMap, rgbBulbEffectList } from '../config/rgbLight';
 
 class CloudRGBBulbController extends CloudDeviceController {
     disabled: boolean;
     entityId: string;
     uiid: number = 22;
-    params: ICloudRGBLightParams;
-    updateLight!: (params: Partial<ICloudRGBLightParams>) => Promise<void>;
-    updateState!: (params: TypeHaRgbLightParams) => Promise<void>;
+    params: ICloudRGBBulbParams;
+    effectList = rgbBulbEffectList;
+    updateLight!: (params: Partial<ICloudRGBBulbParams>) => Promise<void>;
+    updateState!: (params: TypeHaRgbBulbParams) => Promise<void>;
 
-    parseHaData2Ck!: (params: TypeHaRgbLightParams) => Partial<ICloudRGBLightParams>;
-    parseCkData2Ha!: (params: Partial<ICloudRGBLightParams>) => TypeHaRgbLightParams;
+    parseHaData2Ck!: (params: TypeHaRgbBulbParams) => Partial<ICloudRGBBulbParams>;
+    parseCkData2Ha!: (params: Partial<ICloudRGBBulbParams>) => TypeHaRgbBulbParams;
 
-    constructor(params: ICloudDeviceConstrucotr<ICloudRGBLightParams>) {
+    constructor(params: ICloudDeviceConstrucotr<ICloudRGBBulbParams>) {
         super(params);
         this.entityId = `light.${params.deviceId}`;
         this.params = params.params;
@@ -28,11 +28,70 @@ class CloudRGBBulbController extends CloudDeviceController {
 }
 
 CloudRGBBulbController.prototype.parseHaData2Ck = function (params) {
-    return {};
+    const { rgbww_color, brightness_pct, effect, state } = params;
+    console.log('Jia ~ file: CloudRGBBulbController.ts ~ line 32 ~ state', state);
+    let res = {
+        state,
+        zyx_mode: 1,
+    } as Partial<ICloudRGBBulbParams>;
+    if (rgbww_color) {
+        res = {
+            ...res,
+            channel0: `${rgbww_color[3]}`,
+            channel1: `${rgbww_color[4]}`,
+            channel2: `${rgbww_color[0]}`,
+            channel3: `${rgbww_color[1]}`,
+            channel4: `${rgbww_color[2]}`,
+        };
+        if (rgbww_color[0] !== 0 || rgbww_color[1] !== 0 || rgbww_color[2] !== 0) {
+            res = {
+                ...res,
+                channel0: '0',
+                channel1: '0',
+                zyx_mode: 2,
+            };
+        }
+    }
+    if (brightness_pct) {
+        const tmp = (brightness_pct * 2.55).toFixed(0);
+        res = {
+            ...res,
+            channel0: tmp,
+            channel1: tmp,
+            zyx_mode: 1,
+        };
+    }
+    if (effect) {
+        res = {
+            ...res,
+            zyx_mode: this.effectList.indexOf(effect),
+            ...presetEffectMap.get(effect),
+        };
+    }
+    return res;
 };
 
 CloudRGBBulbController.prototype.parseCkData2Ha = function (params) {
-    return {} as TypeHaRgbLightParams;
+    const {
+        zyx_mode,
+        state = 'on',
+        channel0 = this.params.channel0,
+        channel1 = this.params.channel1,
+        channel2 = this.params.channel2,
+        channel3 = this.params.channel3,
+        channel4 = this.params.channel4,
+    } = params;
+
+    const res = {
+        state,
+        brightness: Math.max(+(channel0 || 0), +(channel1 || 0)),
+        rgbww_color: [+channel2, +channel3, +channel4, +channel0, +channel1],
+    } as TypeHaRgbBulbParams;
+
+    if (zyx_mode) {
+        res.effect = this.effectList[zyx_mode || 0];
+    }
+    return res;
 };
 
 CloudRGBBulbController.prototype.updateLight = async function (params) {
@@ -44,6 +103,13 @@ CloudRGBBulbController.prototype.updateLight = async function (params) {
         deviceid: this.deviceId,
         params,
     });
+    if (res.error === 0) {
+        this.params = {
+            ...this.params,
+            ...params,
+        };
+        this.updateState(this.parseCkData2Ha(params));
+    }
 };
 
 /**
@@ -64,13 +130,11 @@ CloudRGBBulbController.prototype.updateState = async function (params) {
         entity_id: this.entityId,
         state,
         attributes: {
-            min_mireds: 1,
-            max_mireds: 3,
             restored: false,
             supported_features: 4,
             friendly_name: this.deviceName,
-            supported_color_modes: ['color_temp', 'rgb'],
-            effect_list: [],
+            supported_color_modes: ['rgbww'],
+            effect_list: this.effectList.slice(3),
             ...this.parseCkData2Ha(this.params),
             ...params,
             state,

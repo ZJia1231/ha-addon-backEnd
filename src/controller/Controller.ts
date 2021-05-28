@@ -6,7 +6,7 @@ import {
     ICloudDW2Params,
     ICloudMultiChannelSwitchParams,
     ICloudPowerDetectionSwitchParams,
-    ICloudRGBLightParams,
+    ICloudRGBBulbParams,
     ICloudRGBLightStripParams,
     ICloudSwitchParams,
     IDoubleCloudLightParams,
@@ -224,7 +224,7 @@ class Controller {
             }
             // RGB灯球
             if (data.extra.uiid === 22) {
-                const tmp = data as ICloudDevice<ICloudRGBLightParams>;
+                const tmp = data as ICloudDevice<ICloudRGBBulbParams>;
                 const rgbLight = new CloudRGBBulbController({
                     deviceId: tmp.deviceid,
                     devicekey: tmp.devicekey,
