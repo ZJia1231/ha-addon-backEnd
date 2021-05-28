@@ -5,7 +5,8 @@ let url = 'http://homeassistant:8123';
 
 
 if (!debugMode && isSupervisor) {
-    url = getDataSync('options.json', ['home_assistant_url']);
+    // url = getDataSync('options.json', ['home_assistant_url']);
+    url = 'http://supervisor/core';
 }
 
 if (!debugMode && !isSupervisor) {

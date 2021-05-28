@@ -4,7 +4,7 @@ import Controller from '../controller/Controller';
 import DiyDeviceController from '../controller/DiyDeviceController';
 import LanSwitchController from '../controller/LanSwitchController';
 import CloudSwitchController from '../controller/CloudSwitchController';
-import CloudRGBLightController from '../controller/CloudRGBLightController';
+import CloudRGBBulbController from '../controller/CloudRGBBulbController';
 import CloudDimmingController from '../controller/CloudDimmingController';
 import CloudPowerDetectionSwitchController from '../controller/CloudPowerDetectionSwitchController';
 import CloudMultiChannelSwitchController from '../controller/CloudMultiChannelSwitchController';
@@ -65,16 +65,17 @@ const handleDeviceByEntityId = async (entity_id: string, state: string, res: any
     if (device instanceof CloudSwitchController) {
         await device.updateSwitch(state);
     }
-    if (device instanceof CloudRGBLightController) {
-        if (state === 'off') {
-            await device.updateLight({
-                state,
-            });
-            return;
-        }
-        const { hs_color, brightness_pct = 0 } = res.service_data;
-        const params = device.parseHaData2Ck({ hs_color, brightness_pct, state });
-        await device.updateLight(params);
+    if (device instanceof CloudRGBBulbController) {
+        // todo
+        // if (state === 'off') {
+        //     await device.updateLight({
+        //         state,
+        //     });
+        //     return;
+        // }
+        // const { hs_color, brightness_pct = 0 } = res.service_data;
+        // const params = device.parseHaData2Ck({ hs_color, brightness_pct, state });
+        // await device.updateLight(params);
     }
     if (device instanceof CloudDimmingController) {
         const { brightness_pct } = res.service_data;

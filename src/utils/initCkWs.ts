@@ -4,7 +4,7 @@ import Controller from '../controller/Controller';
 import { appId, appSecret } from '../config/app';
 import CloudSwitchController from '../controller/CloudSwitchController';
 import CloudTandHModificationController from '../controller/CloudTandHModificationController';
-import CloudRGBLightController from '../controller/CloudRGBLightController';
+import CloudRGBBulbController from '../controller/CloudRGBBulbController';
 import CloudDimmingController from '../controller/CloudDimmingController';
 import CloudPowerDetectionSwitchController from '../controller/CloudPowerDetectionSwitchController';
 import CloudMultiChannelSwitchController from '../controller/CloudMultiChannelSwitchController';
@@ -58,9 +58,10 @@ export default async () => {
                             device.updateState(state);
                         }
                     }
-                    if (device instanceof CloudRGBLightController) {
-                        const params = device.parseCkData2Ha(tmp.params);
-                        device.updateState(params);
+                    if (device instanceof CloudRGBBulbController) {
+                        // todo
+                        // const params = device.parseCkData2Ha(tmp.params);
+                        // device.updateState(params);
                     }
                     if (device instanceof CloudDimmingController) {
                         const { bright, switch: status } = tmp.params;

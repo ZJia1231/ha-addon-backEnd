@@ -4,7 +4,7 @@ import DiyController from '../controller/DiyDeviceController';
 import LanController from '../controller/LanDeviceController';
 import CloudSwitchController from '../controller/CloudSwitchController';
 import CloudTandHModificationController from '../controller/CloudTandHModificationController';
-import CloudRGBLightController from '../controller/CloudRGBLightController';
+import CloudRGBBulbController from '../controller/CloudRGBBulbController';
 import CloudDimmingController from '../controller/CloudDimmingController';
 import CloudPowerDetectionSwitchController from '../controller/CloudPowerDetectionSwitchController';
 import CloudMultiChannelSwitchController from '../controller/CloudMultiChannelSwitchController';
@@ -93,8 +93,9 @@ export default async () => {
                     !device.disabled && device.updateState(params.switch);
                     !device.disabled && device.updateTandH(params.currentTemperature, params.currentHumidity);
                 }
-                if (device instanceof CloudRGBLightController) {
-                    !device.disabled && device.updateState(device.parseCkData2Ha(params));
+                if (device instanceof CloudRGBBulbController) {
+                    // todo
+                    // !device.disabled && device.updateState(device.parseCkData2Ha(params));
                 }
                 if (device instanceof CloudDimmingController) {
                     !device.disabled &&

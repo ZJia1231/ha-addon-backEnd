@@ -20,7 +20,7 @@ import DiyDeviceController from './DiyDeviceController';
 import { getDataSync } from '../utils/dataUtil';
 import TypeLanDevice from '../ts/type/TypeMdnsLanDevice';
 import LanDeviceController from './LanDeviceController';
-import CloudRGBLightController from './CloudRGBLightController';
+import CloudRGBBulbController from './CloudRGBBulbController';
 import CloudDimmingController from './CloudDimmingController';
 import CloudPowerDetectionSwitchController from './CloudPowerDetectionSwitchController';
 import CloudMultiChannelSwitchController from './CloudMultiChannelSwitchController';
@@ -223,21 +223,22 @@ class Controller {
                 return thmDevice;
             }
             // RGB灯球
-            // if (data.extra.uiid === 22) {
-            //     const tmp = data as ICloudDevice<ICloudRGBLightParams>;
-            //     const rgbLight = new CloudRGBLightController({
-            //         deviceId: tmp.deviceid,
-            //         deviceName: tmp.name,
-            //         apikey: tmp.apikey,
-            //         extra: tmp.extra,
-            //         params: tmp.params,
-            //         online: tmp.online,
-            //         disabled,
-            //         index: _index,
-            //     });
-            //     Controller.deviceMap.set(id, rgbLight);
-            //     return rgbLight;
-            // }
+            if (data.extra.uiid === 22) {
+                const tmp = data as ICloudDevice<ICloudRGBLightParams>;
+                const rgbLight = new CloudRGBBulbController({
+                    deviceId: tmp.deviceid,
+                    devicekey: tmp.devicekey,
+                    deviceName: tmp.name,
+                    apikey: tmp.apikey,
+                    extra: tmp.extra,
+                    params: tmp.params,
+                    online: tmp.online,
+                    disabled,
+                    index: _index,
+                });
+                Controller.deviceMap.set(id, rgbLight);
+                return rgbLight;
+            }
             // 功率检测告警开关
             if (data.extra.uiid === 32 || data.extra.uiid === 5) {
                 const tmp = data as ICloudDevice<ICloudPowerDetectionSwitchParams>;

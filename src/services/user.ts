@@ -113,7 +113,6 @@ const isLogin = async (req: Request, res: Response) => {
 };
 const auth = async (req: Request, res: Response) => {
     try {
-        console.log('Jia ~ file: user.ts ~ line 110 ~ auth ~ req.body', req.body);
         if (AuthClass.isValid(req.ip)) {
             res.json({
                 error: 0,

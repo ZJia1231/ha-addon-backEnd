@@ -18,6 +18,12 @@ class AuthClass {
     }
 
     async init() {
+        // 通过Addon方式安装自带TOKEN
+        if (process.env.SUPERVISOR_TOKEN) {
+            this.curAuth = process.env.SUPERVISOR_TOKEN;
+            return;
+        }
+        // 针对Docker方式安装
         try {
             const auths = getDataSync('auth.json', []);
             for (let origin in auths) {
@@ -36,6 +42,9 @@ class AuthClass {
     }
 
     isValid(host: string) {
+        if (process.env.SUPERVISOR_TOKEN) {
+            return true;
+        }
         const auth = AuthClass.AuthMap.get(host);
         if (auth && auth.expires_time > Date.now()) {
             this.curAuth = auth.access_token;

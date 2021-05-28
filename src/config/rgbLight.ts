@@ -1,6 +1,6 @@
 // * 灯带模式映射: number --> string
 export const effectList = [
-    'Colorful',
+    '',
     'Colorful',
     'Colorful Gradient',
     'Colorful Breath',
@@ -164,3 +164,59 @@ export const fakeTempList = [
     '255,137,18',
     '255,141,11',
 ];
+
+export const rgbBulbEffectList = ['', 'White', 'Color', 'Sleep', 'Reading', 'Party', 'Relax'];
+
+/**
+ * @description 停产设备UIID 22 Sense预设值
+ */
+export const presetEffectMap = new Map([
+    [
+        'Sleep',
+        {
+            channel0: '0',
+            channel1: '0',
+            channel2: '189',
+            channel3: '118',
+            channel4: '0',
+            zyx_mode: 3,
+            type: 'middle',
+        },
+    ],
+    [
+        'Reading',
+        {
+            channel0: '0',
+            channel1: '0',
+            channel2: '255',
+            channel3: '255',
+            channel4: '255',
+            zyx_mode: 4,
+            type: 'middle',
+        },
+    ],
+    [
+        'Party',
+        {
+            channel0: '0',
+            channel1: '0',
+            channel2: '207',
+            channel3: '56',
+            channel4: '3',
+            zyx_mode: 5,
+            type: 'middle',
+        },
+    ],
+    [
+        'Relax',
+        {
+            channel0: '0',
+            channel1: '0',
+            channel2: '56',
+            channel3: '85',
+            channel4: '179',
+            zyx_mode: 6,
+            type: 'middle',
+        },
+    ],
+]);
