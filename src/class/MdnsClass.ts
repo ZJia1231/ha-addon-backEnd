@@ -153,6 +153,18 @@ export default class Mdns {
                     });
                     callback && callback(device);
                 }
+                if (tmp.txt?.type === 'light') {
+                    console.log('Found Lan 双色灯球 or RBG五色灯');
+                    // todo
+                    // * 目前发现无法通过局域网进行控制
+                    // const device = Controller.setDevice({
+                    //     id: key,
+                    //     data: tmp as TypeLanDevice,
+                    //     type: 2,
+                    //     lanType: 'light',
+                    // });
+                    // callback && callback(device);
+                }
             }
         });
     }

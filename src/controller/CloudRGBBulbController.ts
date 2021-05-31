@@ -5,7 +5,7 @@ import { updateStates } from '../apis/restApi';
 import coolKitWs from 'coolkit-ws';
 import _ from 'lodash';
 import { TypeHaRgbBulbParams } from '../ts/type/TypeHaLightParams';
-import { presetEffectMap, rgbBulbEffectList } from '../config/rgbLight';
+import { presetEffectMap, rgbBulbEffectList } from '../config/light';
 
 class CloudRGBBulbController extends CloudDeviceController {
     disabled: boolean;
@@ -32,7 +32,6 @@ CloudRGBBulbController.prototype.parseHaData2Ck = function (params) {
     console.log('Jia ~ file: CloudRGBBulbController.ts ~ line 32 ~ state', state);
     let res = {
         state,
-        zyx_mode: 1,
     } as Partial<ICloudRGBBulbParams>;
     if (rgbww_color) {
         res = {
@@ -42,6 +41,7 @@ CloudRGBBulbController.prototype.parseHaData2Ck = function (params) {
             channel2: `${rgbww_color[0]}`,
             channel3: `${rgbww_color[1]}`,
             channel4: `${rgbww_color[2]}`,
+            zyx_mode: 1,
         };
         if (rgbww_color[0] !== 0 || rgbww_color[1] !== 0 || rgbww_color[2] !== 0) {
             res = {

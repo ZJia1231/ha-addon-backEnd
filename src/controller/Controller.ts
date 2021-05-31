@@ -9,7 +9,7 @@ import {
     ICloudRGBBulbParams,
     ICloudRGBLightStripParams,
     ICloudSwitchParams,
-    IDoubleCloudLightParams,
+    IDoubleColorLightParams,
     ITemperatureAndHumidityModificationParams,
 } from '../ts/interface/ICloudDeviceParams';
 import TypeMdnsDiyDevice from '../ts/type/TypeMdnsDiyDevice';
@@ -29,7 +29,7 @@ import formatLanDevice from '../utils/formatLanDevice';
 import LanSwitchController from './LanSwitchController';
 import LanMultiChannelSwitchController from './LanMultiChannelSwitchController';
 import { multiChannelSwitchUiidSet, switchUiidSet } from '../config/uiid';
-import CloudDoubleColorLightController from './CloudDoubleColorLightController';
+import CloudDoubleColorBulbController from './CloudDoubleColorBulbController';
 import UnsupportDeviceController from './UnsupportDeviceController';
 import CloudDualR3Controller from './CloudDualR3Controller';
 import { device } from 'coolkit-open-api/dist/api';
@@ -37,6 +37,7 @@ import LanDualR3Controller from './LanDualR3Controller';
 import LanTandHModificationController from './LanTandHModificationController';
 import LanPowerDetectionSwitchController from './LanPowerDetectionSwitchController';
 import CloudDW2WiFiController from './CloudDW2WiFiController';
+import LanDoubleColorLightController from './LanDoubleColorLightController';
 
 class Controller {
     static deviceMap: Map<string, DiyDeviceController | CloudDeviceController | LanDeviceController> = new Map();
@@ -169,6 +170,15 @@ class Controller {
                 Controller.deviceMap.set(id, lanDevice);
                 return lanDevice;
             }
+            if (lanType === 'light') {
+                const lanDevice = new LanDoubleColorLightController({
+                    ...params,
+                    disabled,
+                    index: tmpIndex,
+                });
+                Controller.deviceMap.set(id, lanDevice);
+                return lanDevice;
+            }
         }
         // CLOUD
         if (type === 4) {
@@ -290,21 +300,22 @@ class Controller {
                 return device;
             }
             // 双色冷暖灯
-            // if (data.extra.uiid === 103) {
-            //     const tmp = data as ICloudDevice<IDoubleCloudLightParams>;
-            //     const device = new CloudDoubleColorLightController({
-            //         deviceId: tmp.deviceid,
-            //         deviceName: tmp.name,
-            //         apikey: tmp.apikey,
-            //         extra: tmp.extra,
-            //         params: tmp.params,
-            //         disabled,
-            //         online: tmp.online,
-            //         index: _index,
-            //     });
-            //     Controller.deviceMap.set(id, device);
-            //     return device;
-            // }
+            if (data.extra.uiid === 103) {
+                const tmp = data as ICloudDevice<IDoubleColorLightParams>;
+                const device = new CloudDoubleColorBulbController({
+                    devicekey: tmp.devicekey,
+                    deviceId: tmp.deviceid,
+                    deviceName: tmp.name,
+                    params: tmp.params,
+                    online: tmp.online,
+                    apikey: tmp.apikey,
+                    extra: tmp.extra,
+                    index: _index,
+                    disabled,
+                });
+                Controller.deviceMap.set(id, device);
+                return device;
+            }
             // DualR3
             if (data.extra.uiid === 126) {
                 const tmp = data as ICloudDevice<ICloudDualR3Params>;

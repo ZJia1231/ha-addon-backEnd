@@ -1,10 +1,8 @@
 import axios from 'axios';
 import { setSwitch } from '../apis/lanDeviceApi';
 import { updateStates } from '../apis/restApi';
-import ICloudDeviceConstrucotr from '../ts/interface/ICloudDeviceConstrucotr';
-import { ICloudDeviceParams, ICloudSwitchParams } from '../ts/interface/ICloudDeviceParams';
+import { ICloudSwitchParams } from '../ts/interface/ICloudDeviceParams';
 import ILanDeviceConstrucotr from '../ts/interface/ILanDeviceConstrucotr';
-import AuthUtils from '../utils/lanControlAuthenticationUtils';
 import LanDeviceController from './LanDeviceController';
 class LanSwitchController extends LanDeviceController {
     entityId: string;

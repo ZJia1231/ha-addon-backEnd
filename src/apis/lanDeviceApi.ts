@@ -24,7 +24,7 @@ const setSwitch = async (params: { ip: string; port: number; deviceid: string; d
         return await coolKitWs.updateThing({
             deviceid,
             ownerApikey: selfApikey,
-            params: data,
+            params: JSON.parse(data),
         });
     });
 
@@ -33,7 +33,6 @@ const setSwitch = async (params: { ip: string; port: number; deviceid: string; d
 
 const setSwitches = async (params: { ip: string; port: number; deviceid: string; devicekey: string; data: string; selfApikey: string }) => {
     const { ip, port, deviceid, devicekey, data, selfApikey } = params;
-    console.log('Jia ~ file: lanDeviceApi.ts ~ line 28 ~ setSwitches ~ params', params);
     const iv = `abcdef${Date.now()}abcdef`.slice(0, 16);
     const reqData = {
         iv: AuthUtil.encryptionBase64(iv),
@@ -54,7 +53,7 @@ const setSwitches = async (params: { ip: string; port: number; deviceid: string;
         return await coolKitWs.updateThing({
             deviceid,
             ownerApikey: selfApikey,
-            params: data,
+            params: JSON.parse(data),
         });
     });
 
@@ -89,4 +88,37 @@ const getLanDeviceParams = async (params: { ip: string; port: number; deviceid: 
     return await res;
 };
 
-export { setSwitch, setSwitches, getLanDeviceParams };
+/**
+ * @description 调整灯的模式及亮度、色温
+ * @description 目前仅针对UIID 103
+ */
+const updateLanLight = async (params: { ip: string; port: number; deviceid: string; devicekey: string; data: string; selfApikey: string }) => {
+    const { ip, port, deviceid, devicekey, data, selfApikey } = params;
+    const iv = `abcdef${Date.now()}abcdef`.slice(0, 16);
+    const reqData = {
+        iv: AuthUtil.encryptionBase64(iv) ,
+        deviceid,
+        selfApikey,
+        encrypt: true,
+        sequence: `${Date.now()}`,
+        data: AuthUtil.encryptionData({
+            iv,
+            data,
+            key: devicekey,
+        }),
+    };
+    let res = axios.post(`http://${ip}:${port}/zeroconf/dimmable`, reqData);
+
+    res.catch(async (e) => {
+        console.log('控制局域网单通道设备出错', reqData);
+        return await coolKitWs.updateThing({
+            deviceid,
+            ownerApikey: selfApikey,
+            params: JSON.parse(data),
+        });
+    });
+
+    return await res;
+};
+
+export { setSwitch, setSwitches, getLanDeviceParams, updateLanLight };

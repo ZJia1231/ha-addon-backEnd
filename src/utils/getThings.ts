@@ -11,7 +11,7 @@ import CloudMultiChannelSwitchController from '../controller/CloudMultiChannelSw
 import CloudRGBLightStripController from '../controller/CloudRGBLightStripController';
 import LanMultiChannelSwitchController from '../controller/LanMultiChannelSwitchController';
 import { getMaxChannelByUiid } from '../config/channelMap';
-import CloudDoubleColorLightController from '../controller/CloudDoubleColorLightController';
+import CloudDoubleColorBulbController from '../controller/CloudDoubleColorBulbController';
 import LanSwitchController from '../controller/LanSwitchController';
 import CloudDualR3Controller from '../controller/CloudDualR3Controller';
 import { getDataSync } from './dataUtil';
@@ -20,6 +20,7 @@ import LanTandHModificationController from '../controller/LanTandHModificationCo
 import LanPowerDetectionSwitchController from '../controller/LanPowerDetectionSwitchController';
 import CloudDW2WiFiController from '../controller/CloudDW2WiFiController';
 import { ICloudDW2Params } from '../ts/interface/ICloudDeviceParams';
+import LanDoubleColorLightController from '../controller/LanDoubleColorLightController';
 
 // 获取设备并同步到HA
 export default async () => {
@@ -75,6 +76,12 @@ export default async () => {
                             old.updateState(decryptData.switch);
                         }
                     }
+                    if (old instanceof LanDoubleColorLightController) {
+                        const decryptData = old.parseEncryptedData() as any;
+                        if (decryptData) {
+                            old.updateState(decryptData);
+                        }
+                    }
                     continue;
                 }
 
@@ -119,7 +126,7 @@ export default async () => {
                 if (device instanceof CloudRGBLightStripController) {
                     !device.disabled && device.updateState(device.parseCkData2Ha(params));
                 }
-                if (device instanceof CloudDoubleColorLightController) {
+                if (device instanceof CloudDoubleColorBulbController) {
                     !device.disabled && device.updateState(params);
                 }
                 if (device instanceof CloudDualR3Controller) {

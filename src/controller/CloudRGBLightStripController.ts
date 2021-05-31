@@ -6,7 +6,7 @@ import coolKitWs from 'coolkit-ws';
 import { parseHS2RGB, parseRGB2HS } from '../utils/colorUitl';
 import { IRGBLightStripSocketParams } from '../ts/interface/ICkSocketParams';
 import _ from 'lodash';
-import { effectList, fakeTempList } from '../config/rgbLight';
+import { effectList, fakeTempList } from '../config/light';
 import { TypeHaRgbLightParams } from '../ts/type/TypeHaLightParams';
 
 class CloudRGBLightStripController extends CloudDeviceController {

@@ -220,3 +220,48 @@ export const presetEffectMap = new Map([
         },
     ],
 ]);
+
+export const doubleColorBulbEffectList = ['', 'bright', 'read', 'computer', 'nightLight'];
+
+export const doubleColorBulbLtypeMap = new Map([
+    [
+        'bright',
+        {
+            ltype: 'bright',
+            bright: {
+                br: 100,
+                ct: 255,
+            },
+        },
+    ],
+    [
+        'read',
+        {
+            ltype: 'read',
+            read: {
+                br: 50,
+                ct: 0,
+            },
+        },
+    ],
+    [
+        'computer',
+        {
+            ltype: 'computer',
+            computer: {
+                br: 20,
+                ct: 255,
+            },
+        },
+    ],
+    [
+        'nightLight',
+        {
+            ltype: 'nightLight',
+            nightLight: {
+                br: 5,
+                ct: 0,
+            },
+        },
+    ],
+]);

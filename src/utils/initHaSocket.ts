@@ -12,12 +12,13 @@ import CloudRGBLightStripController from '../controller/CloudRGBLightStripContro
 import { TypeHaSocketCallServiceData } from '../ts/type/TypeHaSocketMsg';
 import LanMultiChannelSwitchController from '../controller/LanMultiChannelSwitchController';
 import CloudTandHModificationController from '../controller/CloudTandHModificationController';
-import CloudDoubleColorLightController from '../controller/CloudDoubleColorLightController';
+import CloudDoubleColorBulbController from '../controller/CloudDoubleColorBulbController';
 import CloudDualR3Controller from '../controller/CloudDualR3Controller';
 import eventBus from './eventBus';
 import LanDualR3Controller from '../controller/LanDualR3Controller';
 import LanTandHModificationController from '../controller/LanTandHModificationController';
 import LanPowerDetectionSwitchController from '../controller/LanPowerDetectionSwitchController';
+import LanDoubleColorLightController from '../controller/LanDoubleColorLightController';
 
 /**
  * @param {string} entity_id 实体id
@@ -60,19 +61,21 @@ const handleDeviceByEntityId = async (entity_id: string, state: string, res: any
     if (device instanceof LanPowerDetectionSwitchController) {
         device.setSwitch(state);
     }
+    // lan 双色灯球
+    if (device instanceof LanDoubleColorLightController) {
+        device.updateLight(
+            device.parseHaData2Ck({
+                state,
+                ...res.service_data,
+            })
+        );
+    }
 
     // Cloud
     if (device instanceof CloudSwitchController) {
         await device.updateSwitch(state);
     }
     if (device instanceof CloudRGBBulbController) {
-        // todo
-        if (state === 'off') {
-            await device.updateLight({
-                state,
-            });
-            return;
-        }
         await device.updateLight(
             device.parseHaData2Ck({
                 state,
@@ -117,19 +120,13 @@ const handleDeviceByEntityId = async (entity_id: string, state: string, res: any
         device.updateLight(params);
     }
 
-    if (device instanceof CloudDoubleColorLightController) {
-        if (state === 'off') {
-            await device.updateLight({
-                switch: state,
-            });
-            return;
-        }
-        const { color_temp, brightness_pct } = res.service_data;
-        await device.updateLight({
-            switch: state,
-            ct: color_temp,
-            br: brightness_pct,
-        });
+    if (device instanceof CloudDoubleColorBulbController) {
+        await device.updateLight(
+            device.parseHaData2Ck({
+                state,
+                ...res.service_data,
+            })
+        );
     }
 };
 

@@ -90,7 +90,7 @@ interface ICloudRGBBulbParams extends ICloudDeviceParams {
     zyx_mode: number;
 }
 
-type IDoubleCloudLightParams = ICloudDeviceParams &
+type IDoubleColorLightParams = ICloudDeviceParams &
     TypeLtypeParams & {
         switch: string;
         ltype: TypeLtype;
@@ -304,7 +304,7 @@ export {
     ICloudPowerDetectionSwitchParams,
     ICloudMultiChannelSwitchParams,
     ICloudRGBLightStripParams,
-    IDoubleCloudLightParams,
+    IDoubleColorLightParams,
     ICloudDualR3Params,
     ICloudDW2Params,
 };
