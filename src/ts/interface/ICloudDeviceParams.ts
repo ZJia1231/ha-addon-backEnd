@@ -1,4 +1,4 @@
-import { TypeLtypeParams, TypeLtype } from '../type/TypeLtype';
+import { TypeLtypeParams, TypeLtype, TypeRGBBulbLtypeParams, TypeRGBBulbLtype } from '../type/TypeLtype';
 
 interface ICloudDeviceParams {
     bindInfos: any;
@@ -94,6 +94,12 @@ type IDoubleColorLightParams = ICloudDeviceParams &
     TypeLtypeParams & {
         switch: string;
         ltype: TypeLtype;
+    };
+
+type IUIID104Params = ICloudDeviceParams &
+    TypeRGBBulbLtypeParams & {
+        switch: string;
+        ltype: TypeRGBBulbLtype;
     };
 
 interface ICloudDimmingParams extends ICloudDeviceParams {
@@ -307,4 +313,5 @@ export {
     IDoubleColorLightParams,
     ICloudDualR3Params,
     ICloudDW2Params,
+    IUIID104Params,
 };

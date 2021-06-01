@@ -117,7 +117,7 @@ LanDoubleColorLightController.prototype.updateState = async function (params) {
             supported_features: 4,
             friendly_name: this.deviceName,
             supported_color_modes: ['color_temp'],
-            effect_list: this.effectList.slice(1),
+            effect_list: this.effectList,
             state,
             min_mireds: 1,
             max_mireds: 255,

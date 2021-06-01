@@ -11,6 +11,7 @@ import {
     ICloudSwitchParams,
     IDoubleColorLightParams,
     ITemperatureAndHumidityModificationParams,
+    IUIID104Params,
 } from '../ts/interface/ICloudDeviceParams';
 import TypeMdnsDiyDevice from '../ts/type/TypeMdnsDiyDevice';
 import CloudDeviceController from './CloudDeviceController';
@@ -38,6 +39,7 @@ import LanTandHModificationController from './LanTandHModificationController';
 import LanPowerDetectionSwitchController from './LanPowerDetectionSwitchController';
 import CloudDW2WiFiController from './CloudDW2WiFiController';
 import LanDoubleColorLightController from './LanDoubleColorLightController';
+import CloudUIID104Controller from './CloudUIID104Controller';
 
 class Controller {
     static deviceMap: Map<string, DiyDeviceController | CloudDeviceController | LanDeviceController> = new Map();
@@ -316,6 +318,23 @@ class Controller {
                 Controller.deviceMap.set(id, device);
                 return device;
             }
+            // 五色灯球——支持随调场景
+            if (data.extra.uiid === 104) {
+                const tmp = data as ICloudDevice<IUIID104Params>;
+                const device = new CloudUIID104Controller({
+                    devicekey: tmp.devicekey,
+                    deviceId: tmp.deviceid,
+                    deviceName: tmp.name,
+                    params: tmp.params,
+                    online: tmp.online,
+                    apikey: tmp.apikey,
+                    extra: tmp.extra,
+                    index: _index,
+                    disabled,
+                });
+                Controller.deviceMap.set(id, device);
+                return device;
+            }
             // DualR3
             if (data.extra.uiid === 126) {
                 const tmp = data as ICloudDevice<ICloudDualR3Params>;
@@ -353,7 +372,17 @@ class Controller {
             }
             // 暂不支持的设备
             if (!Controller.deviceMap.has(id)) {
-                const unsupportDevice = new UnsupportDeviceController(data);
+                const unsupportDevice = new UnsupportDeviceController({
+                    deviceId: data.deviceid,
+                    deviceName: data.name,
+                    apikey: data.apikey,
+                    extra: data.extra,
+                    params: data.params,
+                    online: data.online,
+                    devicekey: data.devicekey,
+                    disabled,
+                    index: -_index,
+                });
                 Controller.unsupportDeviceMap.set(id, unsupportDevice);
             }
         }

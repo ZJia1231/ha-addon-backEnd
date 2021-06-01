@@ -221,7 +221,7 @@ export const presetEffectMap = new Map([
     ],
 ]);
 
-export const doubleColorBulbEffectList = ['', 'bright', 'read', 'computer', 'nightLight'];
+export const doubleColorBulbEffectList = ['bright', 'read', 'computer', 'party'];
 
 export const doubleColorBulbLtypeMap = new Map([
     [
@@ -261,6 +261,115 @@ export const doubleColorBulbLtypeMap = new Map([
             nightLight: {
                 br: 5,
                 ct: 0,
+            },
+        },
+    ],
+]);
+
+export const rbgLEDBulbEffectList = ['bright', 'goodNight', 'read', 'nightLight', 'party', 'leisure', 'soft', 'colorful'];
+
+export const rbgLEDBulbLtypeMap = new Map([
+    [
+        'bright',
+        {
+            ltype: 'bright',
+            bright: {
+                r: 255,
+                g: 255,
+                b: 255,
+                br: 100,
+            },
+        },
+    ],
+    [
+        'goodNight',
+        {
+            ltype: 'goodNight',
+            goodNight: {
+                r: 255,
+                g: 254,
+                b: 127,
+                br: 25,
+            },
+        },
+    ],
+    [
+        'read',
+        {
+            ltype: 'read',
+            read: {
+                r: 255,
+                g: 255,
+                b: 255,
+                br: 60,
+            },
+        },
+    ],
+    [
+        'nightLight',
+        {
+            ltype: 'nightLight',
+            nightLight: {
+                r: 255,
+                g: 242,
+                b: 226,
+                br: 5,
+            },
+        },
+    ],
+    [
+        'party',
+        {
+            ltype: 'party',
+            party: {
+                r: 254,
+                g: 132,
+                b: 0,
+                br: 45,
+                tf: 1,
+                sp: 1,
+            },
+        },
+    ],
+    [
+        'leisure',
+        {
+            ltype: 'leisure',
+            leisure: {
+                r: 0,
+                g: 40,
+                b: 254,
+                br: 55,
+                tf: 1,
+                sp: 1,
+            },
+        },
+    ],
+    [
+        'soft',
+        {
+            ltype: 'soft',
+            soft: {
+                r: 38,
+                g: 254,
+                b: 0,
+                br: 20,
+                tf: 1,
+                sp: 1,
+            },
+        },
+    ],
+    [
+        'colorful',
+        {
+            ltype: 'colorful',
+            colorful: {
+                r: 255,
+                g: 0,
+                b: 0,
+                br: 100,
+                tf: 1,
+                sp: 1,
             },
         },
     ],

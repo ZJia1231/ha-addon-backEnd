@@ -155,7 +155,7 @@ export default class Mdns {
                 }
                 if (tmp.txt?.type === 'light') {
                     console.log('Found Lan 双色灯球 or RBG五色灯');
-                    // todo
+                    // todo 如何区分双色灯跟五色灯
                     // * 目前发现无法通过局域网进行控制
                     // const device = Controller.setDevice({
                     //     id: key,

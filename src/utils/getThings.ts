@@ -21,6 +21,7 @@ import LanPowerDetectionSwitchController from '../controller/LanPowerDetectionSw
 import CloudDW2WiFiController from '../controller/CloudDW2WiFiController';
 import { ICloudDW2Params } from '../ts/interface/ICloudDeviceParams';
 import LanDoubleColorLightController from '../controller/LanDoubleColorLightController';
+import CloudUIID104Controller from '../controller/CloudUIID104Controller';
 
 // 获取设备并同步到HA
 export default async () => {
@@ -127,6 +128,9 @@ export default async () => {
                     !device.disabled && device.updateState(device.parseCkData2Ha(params));
                 }
                 if (device instanceof CloudDoubleColorBulbController) {
+                    !device.disabled && device.updateState(params);
+                }
+                if (device instanceof CloudUIID104Controller) {
                     !device.disabled && device.updateState(params);
                 }
                 if (device instanceof CloudDualR3Controller) {

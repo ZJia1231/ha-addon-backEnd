@@ -17,6 +17,7 @@ import CloudDualR3Controller from '../controller/CloudDualR3Controller';
 import LanDualR3Controller from '../controller/LanDualR3Controller';
 import CloudDW2WiFiController from '../controller/CloudDW2WiFiController';
 import { ICloudDW2Params } from '../ts/interface/ICloudDeviceParams';
+import CloudUIID104Controller from '../controller/CloudUIID104Controller';
 
 const apikey = getDataSync('user.json', ['user', 'apikey']);
 
@@ -91,6 +92,10 @@ export default async () => {
                     }
                     if (device instanceof CloudDoubleColorBulbController) {
                         console.log('接收到双色灯的信息：', tmp.params);
+                        device.updateState(tmp.params);
+                    }
+                    if (device instanceof CloudUIID104Controller) {
+                        console.log('接收到随调五色灯的信息：', tmp.params);
                         device.updateState(tmp.params);
                     }
                     if (device instanceof CloudDualR3Controller || device instanceof LanDualR3Controller) {

@@ -19,6 +19,7 @@ import LanDualR3Controller from '../controller/LanDualR3Controller';
 import LanTandHModificationController from '../controller/LanTandHModificationController';
 import LanPowerDetectionSwitchController from '../controller/LanPowerDetectionSwitchController';
 import LanDoubleColorLightController from '../controller/LanDoubleColorLightController';
+import CloudUIID104Controller from '../controller/CloudUIID104Controller';
 
 /**
  * @param {string} entity_id 实体id
@@ -121,6 +122,15 @@ const handleDeviceByEntityId = async (entity_id: string, state: string, res: any
     }
 
     if (device instanceof CloudDoubleColorBulbController) {
+        await device.updateLight(
+            device.parseHaData2Ck({
+                state,
+                ...res.service_data,
+            })
+        );
+    }
+
+    if (device instanceof CloudUIID104Controller) {
         await device.updateLight(
             device.parseHaData2Ck({
                 state,
