@@ -3,7 +3,7 @@ import coolKitWs from 'coolkit-ws';
 import { updateStates } from '../apis/restApi';
 import { getDataSync } from '../utils/dataUtil';
 import CloudDeviceController from './CloudDeviceController';
-import ICloudDeviceConstrucotr from '../ts/interface/ICloudDeviceConstrucotr';
+import ICloudDeviceConstructor from '../ts/interface/ICloudDeviceConstructor';
 import { ICloudPowerDetectionSwitchParams } from '../ts/interface/ICloudDeviceParams';
 class CloudPowerDetectionSwitchController extends CloudDeviceController {
     online: boolean;
@@ -14,7 +14,7 @@ class CloudPowerDetectionSwitchController extends CloudDeviceController {
     updateSwitch!: (status: string) => Promise<void>;
     updateState!: (params: { status: string; power?: string; current?: string; voltage?: string }) => Promise<void>;
     rate?: number;
-    constructor(params: ICloudDeviceConstrucotr<ICloudPowerDetectionSwitchParams>) {
+    constructor(params: ICloudDeviceConstructor<ICloudPowerDetectionSwitchParams>) {
         super(params);
         this.entityId = `switch.${params.deviceId}`;
         this.params = params.params;

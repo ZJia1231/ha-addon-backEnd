@@ -1,6 +1,6 @@
 import CloudDeviceController from './CloudDeviceController';
 import { ICloudMultiChannelSwitchParams } from '../ts/interface/ICloudDeviceParams';
-import ICloudDeviceConstrucotr from '../ts/interface/ICloudDeviceConstrucotr';
+import ICloudDeviceConstructor from '../ts/interface/ICloudDeviceConstructor';
 import { updateStates } from '../apis/restApi';
 import coolKitWs from 'coolkit-ws';
 import { getMaxChannelByUiid } from '../config/channelMap';
@@ -15,7 +15,7 @@ class CloudMultiChannelSwitchController extends CloudDeviceController {
     params: ICloudMultiChannelSwitchParams;
     updateSwitch!: (switches: ICloudMultiChannelSwitchParams['switches']) => Promise<void>;
     updateState!: (switches: ICloudMultiChannelSwitchParams['switches']) => Promise<void>;
-    constructor(params: ICloudDeviceConstrucotr<ICloudMultiChannelSwitchParams>) {
+    constructor(params: ICloudDeviceConstructor<ICloudMultiChannelSwitchParams>) {
         super(params);
         this.entityId = `switch.${params.deviceId}`;
         this.disabled = params.disabled!;

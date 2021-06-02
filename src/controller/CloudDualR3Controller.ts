@@ -1,6 +1,6 @@
 import CloudDeviceController from './CloudDeviceController';
 import { ICloudDualR3Params } from '../ts/interface/ICloudDeviceParams';
-import ICloudDeviceConstrucotr from '../ts/interface/ICloudDeviceConstrucotr';
+import ICloudDeviceConstructor from '../ts/interface/ICloudDeviceConstructor';
 import { updateStates } from '../apis/restApi';
 import coolKitWs from 'coolkit-ws';
 import { getDataSync } from '../utils/dataUtil';
@@ -17,7 +17,7 @@ class CloudDualR3Controller extends CloudDeviceController {
     channelName?: { [key: string]: string };
     updateSwitch!: (switches: ICloudDualR3Params['switches']) => Promise<void>;
     updateState!: (switches: ICloudDualR3Params['switches']) => Promise<void>;
-    constructor(params: ICloudDeviceConstrucotr<ICloudDualR3Params>) {
+    constructor(params: ICloudDeviceConstructor<ICloudDualR3Params>) {
         super(params);
         this.entityId = `switch.${params.deviceId}`;
         this.params = params.params;

@@ -1,6 +1,6 @@
 import CloudDeviceController from './CloudDeviceController';
 import { IDoubleColorLightParams } from '../ts/interface/ICloudDeviceParams';
-import ICloudDeviceConstrucotr from '../ts/interface/ICloudDeviceConstrucotr';
+import ICloudDeviceConstructor from '../ts/interface/ICloudDeviceConstructor';
 import { updateStates } from '../apis/restApi';
 import coolKitWs from 'coolkit-ws';
 import _ from 'lodash';
@@ -16,7 +16,7 @@ class CloudDoubleColorBulbController extends CloudDeviceController {
     parseHaData2Ck!: (params: TypeHaDoubleColorBulbParams) => Partial<IDoubleColorLightParams>;
     updateLight!: (params: Partial<IDoubleColorLightParams>) => Promise<void>;
     updateState!: (params: Partial<IDoubleColorLightParams>) => Promise<void>;
-    constructor(params: ICloudDeviceConstrucotr<IDoubleColorLightParams>) {
+    constructor(params: ICloudDeviceConstructor<IDoubleColorLightParams>) {
         super(params);
         this.entityId = `light.${params.deviceId}`;
         this.disabled = params.disabled!;

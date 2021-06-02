@@ -4,7 +4,7 @@ import { getDataSync } from '../utils/dataUtil';
 import { getLanDeviceParams, setSwitch } from '../apis/lanDeviceApi';
 import LanDeviceController from './LanDeviceController';
 import mergeDeviceParams from '../utils/mergeDeviceParams';
-import ILanDeviceConstrucotr from '../ts/interface/ILanDeviceConstrucotr';
+import ILanDeviceConstructor from '../ts/interface/ILanDeviceConstructor';
 import { ICloudPowerDetectionSwitchParams } from '../ts/interface/ICloudDeviceParams';
 
 class LanPowerDetectionSwitchController extends LanDeviceController {
@@ -14,7 +14,7 @@ class LanPowerDetectionSwitchController extends LanDeviceController {
     setSwitch!: (status: string) => Promise<0 | -1>;
     updateState!: (params: { status: string; power?: string; current?: string; voltage?: string }) => Promise<void>;
     rate?: number;
-    constructor(params: ILanDeviceConstrucotr) {
+    constructor(params: ILanDeviceConstructor) {
         super(params);
         this.entityId = `switch.${params.deviceId}`;
         this.rate = +getDataSync('rate.json', [this.deviceId]) || 0;

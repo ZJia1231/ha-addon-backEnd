@@ -1,6 +1,6 @@
 import CloudDeviceController from './CloudDeviceController';
 import { ICloudDeviceParams, ICloudDimmingParams } from '../ts/interface/ICloudDeviceParams';
-import ICloudDeviceConstrucotr from '../ts/interface/ICloudDeviceConstrucotr';
+import ICloudDeviceConstructor from '../ts/interface/ICloudDeviceConstructor';
 import { updateStates } from '../apis/restApi';
 import coolKitWs from 'coolkit-ws';
 class CloudDimmingController extends CloudDeviceController {
@@ -10,7 +10,7 @@ class CloudDimmingController extends CloudDeviceController {
     params: ICloudDimmingParams;
     updateLight!: (params: { switch: string; bright?: number }) => Promise<void>;
     updateState!: (params: { status: string; bright: number }) => Promise<void>;
-    constructor(params: ICloudDeviceConstrucotr<ICloudDimmingParams>) {
+    constructor(params: ICloudDeviceConstructor<ICloudDimmingParams>) {
         super(params);
         this.entityId = `light.${params.deviceId}`;
         this.disabled = params.disabled!;

@@ -2,7 +2,7 @@ import axios from 'axios';
 import { setSwitches } from '../apis/lanDeviceApi';
 import { updateStates } from '../apis/restApi';
 import { ICloudDualR3Params } from '../ts/interface/ICloudDeviceParams';
-import ILanDeviceConstrucotr from '../ts/interface/ILanDeviceConstrucotr';
+import ILanDeviceConstructor from '../ts/interface/ILanDeviceConstructor';
 import { getDataSync } from '../utils/dataUtil';
 import mergeDeviceParams from '../utils/mergeDeviceParams';
 import LanDeviceController from './LanDeviceController';
@@ -20,7 +20,7 @@ class LanDualR3Controller extends LanDeviceController {
     channelName?: { [key: string]: string };
     setSwitch!: (switches: TypeSwitch[]) => Promise<0 | -1>;
     updateState!: (switches: TypeSwitches) => Promise<any>;
-    constructor(props: ILanDeviceConstrucotr) {
+    constructor(props: ILanDeviceConstructor) {
         super(props);
         const { deviceId } = props;
         this.entityId = `switch.${deviceId}`;

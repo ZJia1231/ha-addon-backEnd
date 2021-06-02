@@ -3,7 +3,7 @@ import { setSwitch, updateLanLight } from '../apis/lanDeviceApi';
 import { updateStates } from '../apis/restApi';
 import { doubleColorBulbEffectList, doubleColorBulbLtypeMap } from '../config/light';
 import { IDoubleColorLightParams } from '../ts/interface/ICloudDeviceParams';
-import ILanDeviceConstrucotr from '../ts/interface/ILanDeviceConstrucotr';
+import ILanDeviceConstructor from '../ts/interface/ILanDeviceConstructor';
 import { TypeHaDoubleColorBulbParams } from '../ts/type/TypeHaLightParams';
 import LanDeviceController from './LanDeviceController';
 class LanDoubleColorLightController extends LanDeviceController {
@@ -14,7 +14,7 @@ class LanDoubleColorLightController extends LanDeviceController {
 
     updateLight!: (params: Partial<IDoubleColorLightParams>) => Promise<0 | -1>;
     updateState!: (params: Partial<IDoubleColorLightParams>) => Promise<void>;
-    constructor(props: ILanDeviceConstrucotr) {
+    constructor(props: ILanDeviceConstructor) {
         super(props);
         const { deviceId } = props;
         this.entityId = `light.${deviceId}`;

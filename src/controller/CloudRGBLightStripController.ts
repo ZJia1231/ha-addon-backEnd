@@ -1,6 +1,6 @@
 import CloudDeviceController from './CloudDeviceController';
 import { ICloudRGBLightStripParams } from '../ts/interface/ICloudDeviceParams';
-import ICloudDeviceConstrucotr from '../ts/interface/ICloudDeviceConstrucotr';
+import ICloudDeviceConstructor from '../ts/interface/ICloudDeviceConstructor';
 import { updateStates } from '../apis/restApi';
 import coolKitWs from 'coolkit-ws';
 import { parseHS2RGB, parseRGB2HS } from '../utils/colorUitl';
@@ -23,7 +23,7 @@ class CloudRGBLightStripController extends CloudDeviceController {
     parseCkData2Ha!: (params: Partial<ICloudRGBLightStripParams>) => TypeHaRgbLightParams;
     parseHaData2Ck!: (params: TypeHaRgbLightParams) => Partial<ICloudRGBLightStripParams>;
 
-    constructor(params: ICloudDeviceConstrucotr<ICloudRGBLightStripParams>) {
+    constructor(params: ICloudDeviceConstructor<ICloudRGBLightStripParams>) {
         super(params);
         this.entityId = `light.${params.deviceId}`;
         this.params = params.params;

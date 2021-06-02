@@ -1,6 +1,6 @@
-import ICloudDeviceConstrucotr from '../ts/interface/ICloudDeviceConstrucotr';
+import ICloudDeviceConstructor from '../ts/interface/ICloudDeviceConstructor';
 import { ICloudDeviceParams } from '../ts/interface/ICloudDeviceParams';
-import ILanDeviceConstrucotr from '../ts/interface/ILanDeviceConstrucotr';
+import ILanDeviceConstructor from '../ts/interface/ILanDeviceConstructor';
 import AuthUtils from '../utils/lanControlAuthenticationUtils';
 
 abstract class LanDeviceController {
@@ -17,13 +17,13 @@ abstract class LanDeviceController {
     devicekey?: string;
     selfApikey?: string;
     deviceName?: string;
-    extra?: ICloudDeviceConstrucotr['extra'];
+    extra?: ICloudDeviceConstructor['extra'];
     params?: ICloudDeviceParams;
     online: boolean;
     index?: number;
     parseEncryptedData!: () => any;
 
-    constructor(props: ILanDeviceConstrucotr) {
+    constructor(props: ILanDeviceConstructor) {
         const { deviceId, ip, port = 8081, disabled, encryptedData, iv, target, index } = props;
         this.ip = ip;
         this.target = target;

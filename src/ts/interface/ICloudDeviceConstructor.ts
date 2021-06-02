@@ -1,6 +1,6 @@
 import { ICloudDeviceParams } from './ICloudDeviceParams';
 
-interface ICloudDeviceConstrucotr<T = ICloudDeviceParams> {
+interface ICloudDeviceConstructor<T = ICloudDeviceParams> {
     deviceId: string;
     devicekey: string;
     deviceName: string;
@@ -29,4 +29,4 @@ interface ICloudDeviceConstrucotr<T = ICloudDeviceParams> {
     };
 }
 
-export default ICloudDeviceConstrucotr;
+export default ICloudDeviceConstructor;

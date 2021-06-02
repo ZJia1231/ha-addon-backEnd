@@ -1,4 +1,4 @@
-export default interface ILanDeviceConstrucotr {
+export default interface ILanDeviceConstructor {
     deviceId: string;
     ip: string;
     target: string;

@@ -1,4 +1,4 @@
-import ICloudDeviceConstrucotr from '../ts/interface/ICloudDeviceConstrucotr';
+import ICloudDeviceConstructor from '../ts/interface/ICloudDeviceConstructor';
 
 abstract class CloudDeviceController {
     type: number = 4;
@@ -9,12 +9,12 @@ abstract class CloudDeviceController {
     deviceId: string;
     index: number;
     online: boolean;
-    extra: ICloudDeviceConstrucotr['extra'];
-    abstract params: ICloudDeviceConstrucotr['params'];
+    extra: ICloudDeviceConstructor['extra'];
+    abstract params: ICloudDeviceConstructor['params'];
     abstract uiid: number;
     abstract disabled: boolean;
     abstract entityId: string;
-    constructor(data: ICloudDeviceConstrucotr) {
+    constructor(data: ICloudDeviceConstructor) {
         this.rssi = data.params.rssi;
         this.apikey = data.apikey;
         this.deviceId = data.deviceId;

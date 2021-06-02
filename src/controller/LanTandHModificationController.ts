@@ -1,10 +1,10 @@
 import CloudDeviceController from './CloudDeviceController';
 import { ITemperatureAndHumidityModificationParams } from '../ts/interface/ICloudDeviceParams';
-import ICloudDeviceConstrucotr from '../ts/interface/ICloudDeviceConstrucotr';
+import ICloudDeviceConstructor from '../ts/interface/ICloudDeviceConstructor';
 import { updateStates } from '../apis/restApi';
 import coolKitWs from 'coolkit-ws';
 import { getDataSync } from '../utils/dataUtil';
-import ILanDeviceConstrucotr from '../ts/interface/ILanDeviceConstrucotr';
+import ILanDeviceConstructor from '../ts/interface/ILanDeviceConstructor';
 import LanDeviceController from './LanDeviceController';
 import { setSwitch } from '../apis/lanDeviceApi';
 import _ from 'lodash';
@@ -16,7 +16,7 @@ class LanTandHModificationController extends LanDeviceController {
     setSwitch!: (status: string) => Promise<0 | -1>;
     updateState!: (status: string) => Promise<void>;
     updateTandH!: (currentTemperature: string, currentHumidity: string) => Promise<void>;
-    constructor(props: ILanDeviceConstrucotr) {
+    constructor(props: ILanDeviceConstructor) {
         super(props);
         const { deviceId } = props;
         this.entityId = `switch.${deviceId}`;

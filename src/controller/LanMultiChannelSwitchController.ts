@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { setSwitches } from '../apis/lanDeviceApi';
 import { updateStates } from '../apis/restApi';
 import { ICloudMultiChannelSwitchParams } from '../ts/interface/ICloudDeviceParams';
-import ILanDeviceConstrucotr from '../ts/interface/ILanDeviceConstrucotr';
+import ILanDeviceConstructor from '../ts/interface/ILanDeviceConstructor';
 import mergeDeviceParams from '../utils/mergeDeviceParams';
 import LanDeviceController from './LanDeviceController';
 
@@ -19,7 +19,7 @@ class LanMultiChannelSwitchController extends LanDeviceController {
     channelName?: { [key: string]: string };
     setSwitch!: (switches: TypeSwitch[]) => Promise<0 | -1>;
     updateState!: (switches: TypeSwitches) => Promise<any>;
-    constructor(props: ILanDeviceConstrucotr) {
+    constructor(props: ILanDeviceConstructor) {
         const { deviceId } = props;
         super(props);
         this.entityId = `switch.${deviceId}`;

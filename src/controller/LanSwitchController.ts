@@ -2,14 +2,14 @@ import axios from 'axios';
 import { setSwitch } from '../apis/lanDeviceApi';
 import { updateStates } from '../apis/restApi';
 import { ICloudSwitchParams } from '../ts/interface/ICloudDeviceParams';
-import ILanDeviceConstrucotr from '../ts/interface/ILanDeviceConstrucotr';
+import ILanDeviceConstructor from '../ts/interface/ILanDeviceConstructor';
 import LanDeviceController from './LanDeviceController';
 class LanSwitchController extends LanDeviceController {
     entityId: string;
     params?: ICloudSwitchParams;
     setSwitch!: (status: string) => Promise<0 | -1>;
     updateState!: (status: string) => Promise<any>;
-    constructor(props: ILanDeviceConstrucotr) {
+    constructor(props: ILanDeviceConstructor) {
         super(props);
         const { deviceId } = props;
         this.entityId = `switch.${deviceId}`;

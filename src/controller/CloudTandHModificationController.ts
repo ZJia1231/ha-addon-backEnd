@@ -1,6 +1,6 @@
 import CloudDeviceController from './CloudDeviceController';
 import { ITemperatureAndHumidityModificationParams } from '../ts/interface/ICloudDeviceParams';
-import ICloudDeviceConstrucotr from '../ts/interface/ICloudDeviceConstrucotr';
+import ICloudDeviceConstructor from '../ts/interface/ICloudDeviceConstructor';
 import { updateStates } from '../apis/restApi';
 import coolKitWs from 'coolkit-ws';
 import { getDataSync } from '../utils/dataUtil';
@@ -14,7 +14,7 @@ class CloudTandHModificationController extends CloudDeviceController {
     updateSwitch!: (status: string) => Promise<void>;
     updateState!: (status: string) => Promise<void>;
     updateTandH!: (currentTemperature: string, currentHumidity: string) => Promise<void>;
-    constructor(params: ICloudDeviceConstrucotr<ITemperatureAndHumidityModificationParams>) {
+    constructor(params: ICloudDeviceConstructor<ITemperatureAndHumidityModificationParams>) {
         super(params);
         this.params = params.params;
         this.entityId = `switch.${params.deviceId}`;

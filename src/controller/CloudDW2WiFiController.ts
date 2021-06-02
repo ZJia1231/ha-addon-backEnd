@@ -1,5 +1,5 @@
 import CloudDeviceController from './CloudDeviceController';
-import ICloudDeviceConstrucotr from '../ts/interface/ICloudDeviceConstrucotr';
+import ICloudDeviceConstructor from '../ts/interface/ICloudDeviceConstructor';
 import { updateStates } from '../apis/restApi';
 import { ICloudDW2Params } from '../ts/interface/ICloudDeviceParams';
 class CloudDW2WiFiController extends CloudDeviceController {
@@ -10,7 +10,7 @@ class CloudDW2WiFiController extends CloudDeviceController {
     online: boolean;
     lowVolAlarm: number;
     updateState!: (params: Partial<ICloudDW2Params>) => Promise<void>;
-    constructor(params: ICloudDeviceConstrucotr<ICloudDW2Params> & { devConfig: { lowVolAlarm: number } }) {
+    constructor(params: ICloudDeviceConstructor<ICloudDW2Params> & { devConfig: { lowVolAlarm: number } }) {
         super(params);
         this.entityId = `binary_sensor.${params.deviceId}`;
         this.params = params.params;

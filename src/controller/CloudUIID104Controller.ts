@@ -1,6 +1,6 @@
 import CloudDeviceController from './CloudDeviceController';
 import { IUIID104Params } from '../ts/interface/ICloudDeviceParams';
-import ICloudDeviceConstrucotr from '../ts/interface/ICloudDeviceConstrucotr';
+import ICloudDeviceConstructor from '../ts/interface/ICloudDeviceConstructor';
 import { updateStates } from '../apis/restApi';
 import coolKitWs from 'coolkit-ws';
 import _ from 'lodash';
@@ -15,7 +15,7 @@ class CloudUIID104Controller extends CloudDeviceController {
     parseHaData2Ck!: (params: TypeHaRgbLightParams) => Partial<IUIID104Params>;
     updateLight!: (params: Partial<IUIID104Params>) => Promise<void>;
     updateState!: (params: Partial<IUIID104Params>) => Promise<void>;
-    constructor(params: ICloudDeviceConstrucotr<IUIID104Params>) {
+    constructor(params: ICloudDeviceConstructor<IUIID104Params>) {
         super(params);
         this.entityId = `light.${params.deviceId}`;
         this.disabled = params.disabled!;
