@@ -13,3 +13,10 @@ export interface IZigbeeUIID3026Params extends IZigbeeDeviceParams {
      */
     lock: number;
 }
+export interface IZigbeeUIID2026Params extends IZigbeeDeviceParams {
+    /**
+     * 1--> 有人
+     * 0--> ⽆⼈
+     */
+    motion: number;
+}

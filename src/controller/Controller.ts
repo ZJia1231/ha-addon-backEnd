@@ -40,10 +40,11 @@ import LanPowerDetectionSwitchController from './LanPowerDetectionSwitchControll
 import CloudDW2WiFiController from './CloudDW2WiFiController';
 import LanDoubleColorLightController from './LanDoubleColorLightController';
 import CloudUIID104Controller from './CloudUIID104Controller';
-import { IZigbeeUIID3026Params } from '../ts/interface/IZigbeeDeviceParams';
+import { IZigbeeUIID2026Params, IZigbeeUIID3026Params } from '../ts/interface/IZigbeeDeviceParams';
 import { IZigbeeDeviceExtra } from '../ts/interface/IZigbeeDeviceConstructor';
 import ZigbeeUIID3026Controller from './ZigbeeUIID3026Controller';
 import ZigbeeDeviceController from './ZigbeeDeviceController';
+import ZigbeeUIID2026Controller from './ZigbeeUIID2026Controller';
 
 class Controller {
     static deviceMap: Map<string, DiyDeviceController | CloudDeviceController | LanDeviceController | ZigbeeDeviceController> = new Map();
@@ -367,6 +368,22 @@ class Controller {
                     extra: tmp.extra,
                     params: tmp.params,
                     devicekey: tmp.devicekey,
+                    disabled,
+                    online: tmp.online,
+                    index: _index,
+                });
+                Controller.deviceMap.set(id, device);
+                return device;
+            }
+            // Zigbee 移动传感器
+            if (data.extra.uiid === 2026) {
+                const tmp = data as ICloudDevice<IZigbeeUIID2026Params, IZigbeeDeviceExtra>;
+                const device = new ZigbeeUIID2026Controller({
+                    deviceId: tmp.deviceid,
+                    deviceName: tmp.name,
+                    apikey: tmp.apikey,
+                    extra: tmp.extra,
+                    params: tmp.params,
                     disabled,
                     online: tmp.online,
                     index: _index,
