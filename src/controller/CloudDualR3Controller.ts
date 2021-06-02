@@ -8,10 +8,8 @@ import mergeDeviceParams from '../utils/mergeDeviceParams';
 
 class CloudDualR3Controller extends CloudDeviceController {
     params: ICloudDualR3Params;
-    online: boolean;
-    disabled: boolean;
     entityId: string;
-    uiid: number;
+    uiid: number = 126;
     maxChannel: number = 2;
     rate?: number;
     channelName?: { [key: string]: string };
@@ -21,10 +19,7 @@ class CloudDualR3Controller extends CloudDeviceController {
         super(params);
         this.entityId = `switch.${params.deviceId}`;
         this.params = params.params;
-        this.disabled = params.disabled!;
-        this.uiid = params.extra.uiid;
         this.channelName = params.tags?.ck_channel_name;
-        this.online = params.online;
         this.rate = +getDataSync('rate.json', [this.deviceId]) || 0;
     }
 }

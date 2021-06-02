@@ -6,8 +6,6 @@ import coolKitWs from 'coolkit-ws';
 import { getMaxChannelByUiid } from '../config/channelMap';
 import mergeDeviceParams from '../utils/mergeDeviceParams';
 class CloudMultiChannelSwitchController extends CloudDeviceController {
-    online: boolean;
-    disabled: boolean;
     entityId: string;
     uiid: number;
     maxChannel!: number;
@@ -18,11 +16,9 @@ class CloudMultiChannelSwitchController extends CloudDeviceController {
     constructor(params: ICloudDeviceConstructor<ICloudMultiChannelSwitchParams>) {
         super(params);
         this.entityId = `switch.${params.deviceId}`;
-        this.disabled = params.disabled!;
         this.uiid = params.extra.uiid;
         this.channelName = params.tags?.ck_channel_name;
         this.maxChannel = getMaxChannelByUiid(params.extra.uiid);
-        this.online = params.online;
         this.params = params.params;
     }
 }

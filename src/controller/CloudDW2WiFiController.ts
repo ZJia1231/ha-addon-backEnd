@@ -3,7 +3,6 @@ import ICloudDeviceConstructor from '../ts/interface/ICloudDeviceConstructor';
 import { updateStates } from '../apis/restApi';
 import { ICloudDW2Params } from '../ts/interface/ICloudDeviceParams';
 class CloudDW2WiFiController extends CloudDeviceController {
-    disabled: boolean;
     entityId: string;
     uiid: number = 102;
     params: ICloudDW2Params;
@@ -14,7 +13,6 @@ class CloudDW2WiFiController extends CloudDeviceController {
         super(params);
         this.entityId = `binary_sensor.${params.deviceId}`;
         this.params = params.params;
-        this.disabled = params.disabled!;
         this.online = true;
         this.lowVolAlarm = params.devConfig.lowVolAlarm;
     }

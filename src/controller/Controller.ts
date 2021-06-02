@@ -40,11 +40,12 @@ import LanPowerDetectionSwitchController from './LanPowerDetectionSwitchControll
 import CloudDW2WiFiController from './CloudDW2WiFiController';
 import LanDoubleColorLightController from './LanDoubleColorLightController';
 import CloudUIID104Controller from './CloudUIID104Controller';
-import { IZigbeeUIID2026Params, IZigbeeUIID3026Params } from '../ts/interface/IZigbeeDeviceParams';
+import { IZigbeeUIID1770Params, IZigbeeUIID2026Params, IZigbeeUIID3026Params } from '../ts/interface/IZigbeeDeviceParams';
 import { IZigbeeDeviceExtra } from '../ts/interface/IZigbeeDeviceConstructor';
 import ZigbeeUIID3026Controller from './ZigbeeUIID3026Controller';
 import ZigbeeDeviceController from './ZigbeeDeviceController';
 import ZigbeeUIID2026Controller from './ZigbeeUIID2026Controller';
+import ZigbeeUIID1770Controller from './ZigbeeUIID1770Controller';
 
 class Controller {
     static deviceMap: Map<string, DiyDeviceController | CloudDeviceController | LanDeviceController | ZigbeeDeviceController> = new Map();
@@ -368,6 +369,22 @@ class Controller {
                     extra: tmp.extra,
                     params: tmp.params,
                     devicekey: tmp.devicekey,
+                    disabled,
+                    online: tmp.online,
+                    index: _index,
+                });
+                Controller.deviceMap.set(id, device);
+                return device;
+            }
+            // Zigbee 温湿度传感器
+            if (data.extra.uiid === 1770) {
+                const tmp = data as ICloudDevice<IZigbeeUIID1770Params, IZigbeeDeviceExtra>;
+                const device = new ZigbeeUIID1770Controller({
+                    deviceId: tmp.deviceid,
+                    deviceName: tmp.name,
+                    apikey: tmp.apikey,
+                    extra: tmp.extra,
+                    params: tmp.params,
                     disabled,
                     online: tmp.online,
                     index: _index,

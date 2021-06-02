@@ -10,9 +10,9 @@ abstract class CloudDeviceController {
     index: number;
     online: boolean;
     extra: ICloudDeviceConstructor['extra'];
-    abstract params: ICloudDeviceConstructor['params'];
+    disabled: boolean;
     abstract uiid: number;
-    abstract disabled: boolean;
+    abstract params: ICloudDeviceConstructor['params'];
     abstract entityId: string;
     constructor(data: ICloudDeviceConstructor) {
         this.rssi = data.params.rssi;
@@ -23,6 +23,7 @@ abstract class CloudDeviceController {
         this.index = data.index;
         this.online = data.online;
         this.devicekey = data.devicekey;
+        this.disabled = data.disabled || false;
     }
 }
 

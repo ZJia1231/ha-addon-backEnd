@@ -19,8 +19,9 @@ import CloudDW2WiFiController from '../controller/CloudDW2WiFiController';
 import { ICloudDW2Params } from '../ts/interface/ICloudDeviceParams';
 import CloudUIID104Controller from '../controller/CloudUIID104Controller';
 import ZigbeeUIID3026Controller from '../controller/ZigbeeUIID3026Controller';
-import { IZigbeeUIID2026Params, IZigbeeUIID3026Params } from '../ts/interface/IZigbeeDeviceParams';
+import { IZigbeeUIID1770Params, IZigbeeUIID2026Params, IZigbeeUIID3026Params } from '../ts/interface/IZigbeeDeviceParams';
 import ZigbeeUIID2026Controller from '../controller/ZigbeeUIID2026Controller';
+import ZigbeeUIID1770Controller from '../controller/ZigbeeUIID1770Controller';
 
 const apikey = getDataSync('user.json', ['user', 'apikey']);
 
@@ -111,6 +112,12 @@ export default async () => {
                         console.log('接收到DW2的信息：', tmp.params);
                         if (tmp.params) {
                             device.updateState(tmp.params as ICloudDW2Params);
+                        }
+                    }
+                    if (device instanceof ZigbeeUIID1770Controller) {
+                        console.log('接收到Zigbee温湿度传感器的信息：', tmp.params);
+                        if (tmp.params) {
+                            device.updateState(tmp.params as IZigbeeUIID1770Params);
                         }
                     }
                     if (device instanceof ZigbeeUIID2026Controller) {

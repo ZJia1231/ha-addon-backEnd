@@ -10,8 +10,6 @@ import { effectList, fakeTempList } from '../config/light';
 import { TypeHaRgbLightParams } from '../ts/type/TypeHaLightParams';
 
 class CloudRGBLightStripController extends CloudDeviceController {
-    online: boolean;
-    disabled: boolean;
     entityId: string;
     uiid: number = 59;
     params: ICloudRGBLightStripParams;
@@ -27,8 +25,6 @@ class CloudRGBLightStripController extends CloudDeviceController {
         super(params);
         this.entityId = `light.${params.deviceId}`;
         this.params = params.params;
-        this.disabled = params.disabled!;
-        this.online = params.online;
         this.mode = this.params.mode;
     }
 }

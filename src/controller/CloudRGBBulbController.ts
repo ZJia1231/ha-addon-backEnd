@@ -8,7 +8,6 @@ import { TypeHaRgbBulbParams } from '../ts/type/TypeHaLightParams';
 import { presetEffectMap, rgbBulbEffectList } from '../config/light';
 
 class CloudRGBBulbController extends CloudDeviceController {
-    disabled: boolean;
     entityId: string;
     uiid: number = 22;
     params: ICloudRGBBulbParams;
@@ -23,7 +22,6 @@ class CloudRGBBulbController extends CloudDeviceController {
         super(params);
         this.entityId = `light.${params.deviceId}`;
         this.params = params.params;
-        this.disabled = params.disabled!;
     }
 }
 

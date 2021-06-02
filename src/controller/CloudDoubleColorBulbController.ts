@@ -8,7 +8,6 @@ import { TypeLtype } from '../ts/type/TypeLtype';
 import { TypeHaDoubleColorBulbParams } from '../ts/type/TypeHaLightParams';
 import { doubleColorBulbEffectList, doubleColorBulbLtypeMap } from '../config/light';
 class CloudDoubleColorBulbController extends CloudDeviceController {
-    disabled: boolean;
     entityId: string;
     uiid: number = 103;
     effectList = doubleColorBulbEffectList;
@@ -19,7 +18,6 @@ class CloudDoubleColorBulbController extends CloudDeviceController {
     constructor(params: ICloudDeviceConstructor<IDoubleColorLightParams>) {
         super(params);
         this.entityId = `light.${params.deviceId}`;
-        this.disabled = params.disabled!;
         this.params = params.params;
     }
 }

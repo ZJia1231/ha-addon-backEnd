@@ -6,22 +6,17 @@ import CloudDeviceController from './CloudDeviceController';
 import ICloudDeviceConstructor from '../ts/interface/ICloudDeviceConstructor';
 import { ICloudPowerDetectionSwitchParams } from '../ts/interface/ICloudDeviceParams';
 class CloudPowerDetectionSwitchController extends CloudDeviceController {
-    online: boolean;
-    disabled: boolean;
     entityId: string;
     uiid: number;
     params: ICloudPowerDetectionSwitchParams;
+    rate?: number;
     updateSwitch!: (status: string) => Promise<void>;
     updateState!: (params: { status: string; power?: string; current?: string; voltage?: string }) => Promise<void>;
-    rate?: number;
     constructor(params: ICloudDeviceConstructor<ICloudPowerDetectionSwitchParams>) {
         super(params);
         this.entityId = `switch.${params.deviceId}`;
         this.params = params.params;
-        this.disabled = params.disabled!;
-
         this.uiid = params.extra.uiid;
-        this.online = params.online;
         this.rate = +getDataSync('rate.json', [this.deviceId]) || 0;
         // // 如果电流电压功率有更新就通知我
         // setInterval(() => {

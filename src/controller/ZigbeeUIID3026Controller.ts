@@ -18,40 +18,45 @@ class ZigbeeUIID3026Controller extends ZigbeeDeviceController {
 /**
  * @description 更新状态到HA
  */
-ZigbeeUIID3026Controller.prototype.updateState = async function ({ lock: status, battery }) {
+ZigbeeUIID3026Controller.prototype.updateState = async function ({ lock, battery }) {
     if (this.disabled) {
         return;
     }
 
-    let state = status === 1 ? 'on' : 'off';
+    let state = lock === 1 ? 'on' : 'off';
 
     if (!this.online) {
         state = 'unavailable';
     }
 
-    // 更新开关
-    updateStates(`${this.entityId}_lock`, {
-        entity_id: `${this.entityId}_lock`,
-        state,
-        attributes: {
-            restored: false,
-            friendly_name: `${this.deviceName}-Lock`,
-            device_class: 'lock',
+    if (lock !== undefined) {
+        // 更新开关
+        updateStates(`${this.entityId}_lock`, {
+            entity_id: `${this.entityId}_lock`,
             state,
-        },
-    });
-    // 更新电量
-    updateStates(`sensor.${this.deviceId}_battery`, {
-        entity_id: `sensor.${this.deviceId}_battery`,
-        state: battery,
-        attributes: {
-            restored: false,
-            friendly_name: `${this.deviceName}-Battery`,
-            device_class: 'battery',
-            unit_of_measurement: '%',
+            attributes: {
+                restored: false,
+                friendly_name: `${this.deviceName}-Lock`,
+                device_class: 'lock',
+                state,
+            },
+        });
+    }
+
+    if (battery !== undefined) {
+        // 更新电量
+        updateStates(`sensor.${this.deviceId}_battery`, {
+            entity_id: `sensor.${this.deviceId}_battery`,
             state: battery,
-        },
-    });
+            attributes: {
+                restored: false,
+                friendly_name: `${this.deviceName}-Battery`,
+                device_class: 'battery',
+                unit_of_measurement: '%',
+                state: battery,
+            },
+        });
+    }
 };
 
 export default ZigbeeUIID3026Controller;

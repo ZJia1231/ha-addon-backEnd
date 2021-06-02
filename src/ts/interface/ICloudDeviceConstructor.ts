@@ -1,3 +1,4 @@
+import { ICloudDeviceExtra } from './ICloudDevice';
 import { ICloudDeviceParams } from './ICloudDeviceParams';
 
 interface ICloudDeviceConstructor<T = ICloudDeviceParams> {
@@ -7,19 +8,7 @@ interface ICloudDeviceConstructor<T = ICloudDeviceParams> {
     apikey: string;
     online: boolean;
     index: number;
-    extra: {
-        model: string;
-        ui: string;
-        uiid: number;
-        description: string;
-        manufacturer: string;
-        mac: string;
-        apmac: string;
-        modelInfo: string;
-        brandId?: string;
-        chipid?: string;
-        staMac: string;
-    };
+    extra: ICloudDeviceExtra;
     params: T;
     disabled?: boolean;
     tags?: {

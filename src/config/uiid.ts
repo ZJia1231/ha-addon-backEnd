@@ -2,6 +2,8 @@ const switchUiidSet = new Set<number>([
     1, // 单通道插座
     6, // 单通道开关
     14, // 开关改装模块
+    1009, // Zigbee单通道插座
+    1256, // Zigbee单通道开关
 ]);
 
 const multiChannelSwitchUiidSet = new Set<number>([

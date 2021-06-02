@@ -4,9 +4,8 @@ import ICloudDeviceConstructor from '../ts/interface/ICloudDeviceConstructor';
 import { updateStates } from '../apis/restApi';
 import coolKitWs from 'coolkit-ws';
 class CloudSwitchController extends CloudDeviceController {
-    disabled: boolean;
     entityId: string;
-    uiid: number = 1;
+    uiid: number;
     params: ICloudSwitchParams;
     updateSwitch!: (status: string) => Promise<void>;
     updateState!: (status: string) => Promise<void>;
@@ -14,7 +13,6 @@ class CloudSwitchController extends CloudDeviceController {
         super(params);
         this.entityId = `switch.${params.deviceId}`;
         this.params = params.params;
-        this.disabled = params.disabled!;
         this.uiid = params.extra.uiid;
     }
 }
