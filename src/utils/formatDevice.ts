@@ -14,6 +14,8 @@ import LanDualR3Controller from '../controller/LanDualR3Controller';
 import LanPowerDetectionSwitchController from '../controller/LanPowerDetectionSwitchController';
 import CloudDW2WiFiController from '../controller/CloudDW2WiFiController';
 import UnsupportDeviceController from '../controller/UnsupportDeviceController';
+import ZigbeeDeviceController from '../controller/ZigbeeDeviceController';
+import ZigbeeUIID3026Controller from '../controller/ZigbeeUIID3026Controller';
 
 const ghostManufacturer = (manufacturer: string = 'eWeLink') => {
     if (~manufacturer.indexOf('松诺') || ~manufacturer.toLocaleUpperCase().indexOf('SONOFF')) {
@@ -22,7 +24,7 @@ const ghostManufacturer = (manufacturer: string = 'eWeLink') => {
     return 'eWeLink';
 };
 
-const formatDevice = (data: DiyController | CloudDeviceController | LanDeviceController) => {
+const formatDevice = (data: DiyController | CloudDeviceController | LanDeviceController | ZigbeeDeviceController) => {
     if (data instanceof DiyController) {
         return {
             key: data.deviceId,
@@ -104,6 +106,25 @@ const formatDevice = (data: DiyController | CloudDeviceController | LanDeviceCon
             rate,
             lowVolAlarm,
         };
+    }
+
+    if (data instanceof ZigbeeDeviceController) {
+        if (data instanceof ZigbeeUIID3026Controller) {
+            return {
+                key: data.deviceId,
+                deviceId: data.deviceId,
+                disabled: data.disabled,
+                uiid: data.uiid,
+                type: data.type,
+                manufacturer: ghostManufacturer(data.extra.manufacturer),
+                deviceName: data.deviceName,
+                model: data.extra.model,
+                apikey: data.apikey,
+                params: data.params,
+                online: data.online,
+                index: data.index,
+            };
+        }
     }
 };
 

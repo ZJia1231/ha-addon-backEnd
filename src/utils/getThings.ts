@@ -22,6 +22,8 @@ import CloudDW2WiFiController from '../controller/CloudDW2WiFiController';
 import { ICloudDW2Params } from '../ts/interface/ICloudDeviceParams';
 import LanDoubleColorLightController from '../controller/LanDoubleColorLightController';
 import CloudUIID104Controller from '../controller/CloudUIID104Controller';
+import ZigbeeDeviceController from '../controller/ZigbeeDeviceController';
+import { IZigbeeUIID3026Params } from '../ts/interface/IZigbeeDeviceParams';
 
 // 获取设备并同步到HA
 export default async () => {
@@ -89,7 +91,7 @@ export default async () => {
                 // 添加为Cloud设备
                 const device = Controller.setDevice({
                     id: deviceid!,
-                    type: 4,
+                    type: 12,
                     data: item.itemData,
                     index: deviceIndex,
                 });
@@ -138,6 +140,9 @@ export default async () => {
                 }
                 if (device instanceof CloudDW2WiFiController) {
                     !device.disabled && device.updateState(params as ICloudDW2Params);
+                }
+                if (device instanceof ZigbeeDeviceController) {
+                    !device.disabled && device.updateState(params as IZigbeeUIID3026Params);
                 }
             }
         }

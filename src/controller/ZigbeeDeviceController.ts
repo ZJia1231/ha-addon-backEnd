@@ -1,15 +1,26 @@
-import ICloudDeviceConstructor from '../ts/interface/ICloudDeviceConstructor';
-import CloudDeviceController from './CloudDeviceController';
+import IZigbeeDeviceConstructor from '../ts/interface/IZigbeeDeviceConstructor';
 
-abstract class ZigbeeDeviceController extends CloudDeviceController {
+abstract class ZigbeeDeviceController {
     type: number = 8;
-    extra: ICloudDeviceConstructor['extra'];
-    abstract uiid: number;
-    abstract disabled: boolean;
+    deviceId: string;
+    deviceName: string;
+    apikey: string;
+    online: boolean;
+    index: number;
+    extra: IZigbeeDeviceConstructor['extra'];
+    uiid: number;
+    disabled: boolean;
     abstract entityId: string;
-    constructor(data: ICloudDeviceConstructor) {
-        super(data);
-        this.extra = data.extra.extra;
+    abstract params: IZigbeeDeviceConstructor['params'];
+    constructor(data: IZigbeeDeviceConstructor) {
+        this.extra = data.extra;
+        this.uiid = this.extra.uiid;
+        this.disabled = data.disabled || false;
+        this.deviceId = data.deviceId;
+        this.deviceName = data.deviceName;
+        this.apikey = data.apikey;
+        this.online = data.online;
+        this.index = data.index;
     }
 }
 

@@ -40,9 +40,13 @@ import LanPowerDetectionSwitchController from './LanPowerDetectionSwitchControll
 import CloudDW2WiFiController from './CloudDW2WiFiController';
 import LanDoubleColorLightController from './LanDoubleColorLightController';
 import CloudUIID104Controller from './CloudUIID104Controller';
+import { IZigbeeUIID3026Params } from '../ts/interface/IZigbeeDeviceParams';
+import { IZigbeeDeviceExtra } from '../ts/interface/IZigbeeDeviceConstructor';
+import ZigbeeUIID3026Controller from './ZigbeeUIID3026Controller';
+import ZigbeeDeviceController from './ZigbeeDeviceController';
 
 class Controller {
-    static deviceMap: Map<string, DiyDeviceController | CloudDeviceController | LanDeviceController> = new Map();
+    static deviceMap: Map<string, DiyDeviceController | CloudDeviceController | LanDeviceController | ZigbeeDeviceController> = new Map();
     static unsupportDeviceMap: Map<string, UnsupportDeviceController> = new Map();
     static count: number = 999;
     static getDevice(id: string) {
@@ -182,8 +186,8 @@ class Controller {
                 return lanDevice;
             }
         }
-        // CLOUD
-        if (type === 4) {
+        // CLOUD & Zigbee
+        if (type >= 4) {
             if (switchUiidSet.has(data.extra.uiid)) {
                 const tmp = data as ICloudDevice<ICloudSwitchParams>;
                 const switchDevice = new CloudSwitchController({
@@ -301,6 +305,24 @@ class Controller {
                 Controller.deviceMap.set(id, device);
                 return device;
             }
+            // DW2-WiFi 门磁
+            if (data.extra.uiid === 102) {
+                const tmp = data as ICloudDevice<ICloudDW2Params>;
+                const device = new CloudDW2WiFiController({
+                    deviceId: tmp.deviceid,
+                    deviceName: tmp.name,
+                    apikey: tmp.apikey,
+                    extra: tmp.extra,
+                    params: tmp.params,
+                    devicekey: tmp.devicekey,
+                    disabled,
+                    online: tmp.online,
+                    index: _index,
+                    devConfig: tmp.devConfig as any,
+                });
+                Controller.deviceMap.set(id, device);
+                return device;
+            }
             // 双色冷暖灯
             if (data.extra.uiid === 103) {
                 const tmp = data as ICloudDevice<IDoubleColorLightParams>;
@@ -352,24 +374,23 @@ class Controller {
                 Controller.deviceMap.set(id, device);
                 return device;
             }
-            // DW2-WiFi 门磁
-            if (data.extra.uiid === 102) {
-                const tmp = data as ICloudDevice<ICloudDW2Params>;
-                const device = new CloudDW2WiFiController({
+            // Zigbee 门磁
+            if (data.extra.uiid === 3026) {
+                const tmp = data as ICloudDevice<IZigbeeUIID3026Params, IZigbeeDeviceExtra>;
+                const device = new ZigbeeUIID3026Controller({
                     deviceId: tmp.deviceid,
                     deviceName: tmp.name,
                     apikey: tmp.apikey,
                     extra: tmp.extra,
                     params: tmp.params,
-                    devicekey: tmp.devicekey,
                     disabled,
                     online: tmp.online,
                     index: _index,
-                    devConfig: tmp.devConfig as any,
                 });
                 Controller.deviceMap.set(id, device);
                 return device;
             }
+
             // 暂不支持的设备
             if (!Controller.deviceMap.has(id)) {
                 const unsupportDevice = new UnsupportDeviceController({

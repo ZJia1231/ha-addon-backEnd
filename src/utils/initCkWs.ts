@@ -18,6 +18,8 @@ import LanDualR3Controller from '../controller/LanDualR3Controller';
 import CloudDW2WiFiController from '../controller/CloudDW2WiFiController';
 import { ICloudDW2Params } from '../ts/interface/ICloudDeviceParams';
 import CloudUIID104Controller from '../controller/CloudUIID104Controller';
+import ZigbeeUIID3026Controller from '../controller/ZigbeeUIID3026Controller';
+import { IZigbeeUIID3026Params } from '../ts/interface/IZigbeeDeviceParams';
 
 const apikey = getDataSync('user.json', ['user', 'apikey']);
 
@@ -108,6 +110,12 @@ export default async () => {
                         console.log('接收到DW2的信息：', tmp.params);
                         if (tmp.params) {
                             device.updateState(tmp.params as ICloudDW2Params);
+                        }
+                    }
+                    if (device instanceof ZigbeeUIID3026Controller) {
+                        console.log('接收到Zigbee门磁的信息：', tmp.params);
+                        if (tmp.params) {
+                            device.updateState(tmp.params as IZigbeeUIID3026Params);
                         }
                     }
 
