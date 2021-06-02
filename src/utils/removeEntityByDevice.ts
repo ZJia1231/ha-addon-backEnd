@@ -8,9 +8,8 @@ import LanDeviceController from '../controller/LanDeviceController';
 import LanDualR3Controller from '../controller/LanDualR3Controller';
 import LanMultiChannelSwitchController from '../controller/LanMultiChannelSwitchController';
 import LanTandHModificationController from '../controller/LanTandHModificationController';
-import ZigbeeDeviceController from '../controller/ZigbeeDeviceController';
 
-export default (device: LanDeviceController | DiyController | CloudDeviceController | ZigbeeDeviceController) => {
+export default (device: LanDeviceController | DiyController | CloudDeviceController) => {
     if (device instanceof DiyController) {
         return;
     }

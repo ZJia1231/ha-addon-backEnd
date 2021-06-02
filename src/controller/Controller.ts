@@ -41,14 +41,12 @@ import CloudDW2WiFiController from './CloudDW2WiFiController';
 import LanDoubleColorLightController from './LanDoubleColorLightController';
 import CloudUIID104Controller from './CloudUIID104Controller';
 import { IZigbeeUIID1770Params, IZigbeeUIID2026Params, IZigbeeUIID3026Params } from '../ts/interface/IZigbeeDeviceParams';
-import { IZigbeeDeviceExtra } from '../ts/interface/IZigbeeDeviceConstructor';
 import ZigbeeUIID3026Controller from './ZigbeeUIID3026Controller';
-import ZigbeeDeviceController from './ZigbeeDeviceController';
 import ZigbeeUIID2026Controller from './ZigbeeUIID2026Controller';
 import ZigbeeUIID1770Controller from './ZigbeeUIID1770Controller';
 
 class Controller {
-    static deviceMap: Map<string, DiyDeviceController | CloudDeviceController | LanDeviceController | ZigbeeDeviceController> = new Map();
+    static deviceMap: Map<string, DiyDeviceController | CloudDeviceController | LanDeviceController> = new Map();
     static unsupportDeviceMap: Map<string, UnsupportDeviceController> = new Map();
     static count: number = 999;
     static getDevice(id: string) {
@@ -378,48 +376,51 @@ class Controller {
             }
             // Zigbee 温湿度传感器
             if (data.extra.uiid === 1770) {
-                const tmp = data as ICloudDevice<IZigbeeUIID1770Params, IZigbeeDeviceExtra>;
+                const tmp = data as ICloudDevice<IZigbeeUIID1770Params>;
                 const device = new ZigbeeUIID1770Controller({
+                    devicekey: tmp.devicekey,
                     deviceId: tmp.deviceid,
                     deviceName: tmp.name,
                     apikey: tmp.apikey,
-                    extra: tmp.extra,
                     params: tmp.params,
-                    disabled,
                     online: tmp.online,
+                    extra: tmp.extra,
                     index: _index,
+                    disabled,
                 });
                 Controller.deviceMap.set(id, device);
                 return device;
             }
             // Zigbee 移动传感器
             if (data.extra.uiid === 2026) {
-                const tmp = data as ICloudDevice<IZigbeeUIID2026Params, IZigbeeDeviceExtra>;
+                const tmp = data as ICloudDevice<IZigbeeUIID2026Params>;
                 const device = new ZigbeeUIID2026Controller({
+                    devicekey: tmp.devicekey,
                     deviceId: tmp.deviceid,
                     deviceName: tmp.name,
                     apikey: tmp.apikey,
-                    extra: tmp.extra,
                     params: tmp.params,
-                    disabled,
                     online: tmp.online,
+                    extra: tmp.extra,
                     index: _index,
+                    disabled,
                 });
                 Controller.deviceMap.set(id, device);
                 return device;
             }
             // Zigbee 门磁
             if (data.extra.uiid === 3026) {
-                const tmp = data as ICloudDevice<IZigbeeUIID3026Params, IZigbeeDeviceExtra>;
+                const tmp = data as ICloudDevice<IZigbeeUIID3026Params>;
                 const device = new ZigbeeUIID3026Controller({
+                    devicekey: tmp.devicekey,
                     deviceId: tmp.deviceid,
                     deviceName: tmp.name,
-                    apikey: tmp.apikey,
-                    extra: tmp.extra,
                     params: tmp.params,
-                    disabled,
+                    apikey: tmp.apikey,
                     online: tmp.online,
+                    extra: tmp.extra,
                     index: _index,
+                    disabled,
                 });
                 Controller.deviceMap.set(id, device);
                 return device;

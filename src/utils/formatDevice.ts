@@ -14,7 +14,6 @@ import LanDualR3Controller from '../controller/LanDualR3Controller';
 import LanPowerDetectionSwitchController from '../controller/LanPowerDetectionSwitchController';
 import CloudDW2WiFiController from '../controller/CloudDW2WiFiController';
 import UnsupportDeviceController from '../controller/UnsupportDeviceController';
-import ZigbeeDeviceController from '../controller/ZigbeeDeviceController';
 
 const ghostManufacturer = (manufacturer: string = 'eWeLink') => {
     if (~manufacturer.indexOf('松诺') || ~manufacturer.toLocaleUpperCase().indexOf('SONOFF')) {
@@ -23,7 +22,7 @@ const ghostManufacturer = (manufacturer: string = 'eWeLink') => {
     return 'eWeLink';
 };
 
-const formatDevice = (data: DiyController | CloudDeviceController | LanDeviceController | ZigbeeDeviceController) => {
+const formatDevice = (data: DiyController | CloudDeviceController | LanDeviceController) => {
     if (data instanceof DiyController) {
         return {
             key: data.deviceId,
@@ -95,7 +94,6 @@ const formatDevice = (data: DiyController | CloudDeviceController | LanDeviceCon
             manufacturer: ghostManufacturer(data.extra.manufacturer),
             deviceName: data.deviceName,
             model: data.extra.model,
-            rssi: data.rssi,
             apikey: data.apikey,
             params: data.params,
             online: data.online,
@@ -104,23 +102,6 @@ const formatDevice = (data: DiyController | CloudDeviceController | LanDeviceCon
             unit,
             rate,
             lowVolAlarm,
-        };
-    }
-
-    if (data instanceof ZigbeeDeviceController) {
-        return {
-            key: data.deviceId,
-            deviceId: data.deviceId,
-            disabled: data.disabled,
-            uiid: data.uiid,
-            type: data.type,
-            manufacturer: ghostManufacturer(data.extra.manufacturer),
-            deviceName: data.deviceName,
-            model: data.extra.model,
-            apikey: data.apikey,
-            params: data.params,
-            online: data.online,
-            index: data.index,
         };
     }
 };

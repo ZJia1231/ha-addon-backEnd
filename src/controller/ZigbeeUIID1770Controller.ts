@@ -1,15 +1,17 @@
 import _ from 'lodash';
 import { updateStates } from '../apis/restApi';
-import IZigbeeDeviceConstructor, { IZigbeeDeviceExtra } from '../ts/interface/IZigbeeDeviceConstructor';
+import ICloudDeviceConstructor from '../ts/interface/ICloudDeviceConstructor';
 import { IZigbeeUIID1770Params } from '../ts/interface/IZigbeeDeviceParams';
-import ZigbeeDeviceController from './ZigbeeDeviceController';
+import CloudDeviceController from './CloudDeviceController';
 
-class ZigbeeUIID1770Controller extends ZigbeeDeviceController {
+class ZigbeeUIID1770Controller extends CloudDeviceController {
+    uiid: number;
     entityId: string;
     params: IZigbeeUIID1770Params;
     updateState!: (params: { humidity: string; temperature: string; battery: number }) => Promise<void>;
-    constructor(props: IZigbeeDeviceConstructor<IZigbeeUIID1770Params, IZigbeeDeviceExtra>) {
+    constructor(props: ICloudDeviceConstructor<IZigbeeUIID1770Params>) {
         super(props);
+        this.uiid = props.extra.uiid;
         this.entityId = `sensor.${this.deviceId}`;
         this.params = props.params;
     }

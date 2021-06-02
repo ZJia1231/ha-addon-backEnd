@@ -1,7 +1,8 @@
 import { ICloudDeviceExtra } from './ICloudDevice';
 import { ICloudDeviceParams } from './ICloudDeviceParams';
+import { IZigbeeDeviceParams } from './IZigbeeDeviceParams';
 
-interface ICloudDeviceConstructor<T = ICloudDeviceParams> {
+interface ICloudDeviceConstructor<T = ICloudDeviceParams | IZigbeeDeviceParams> {
     deviceId: string;
     devicekey: string;
     deviceName: string;

@@ -22,7 +22,6 @@ import CloudDW2WiFiController from '../controller/CloudDW2WiFiController';
 import { ICloudDW2Params } from '../ts/interface/ICloudDeviceParams';
 import LanDoubleColorLightController from '../controller/LanDoubleColorLightController';
 import CloudUIID104Controller from '../controller/CloudUIID104Controller';
-import ZigbeeDeviceController from '../controller/ZigbeeDeviceController';
 import { IZigbeeUIID1770Params, IZigbeeUIID2026Params, IZigbeeUIID3026Params } from '../ts/interface/IZigbeeDeviceParams';
 import ZigbeeUIID3026Controller from '../controller/ZigbeeUIID3026Controller';
 import ZigbeeUIID2026Controller from '../controller/ZigbeeUIID2026Controller';

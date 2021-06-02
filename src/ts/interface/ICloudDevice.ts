@@ -1,17 +1,17 @@
 import { ICloudDeviceParams } from './ICloudDeviceParams';
 
 export interface ICloudDeviceExtra {
+    apmac: string;
+    brandId?: string;
+    description: string;
+    mac: string;
+    manufacturer: string;
     model: string;
+    modelInfo: string;
     ui: string;
     uiid: number;
-    description: string;
-    manufacturer: string;
-    mac: string;
-    apmac: string;
-    modelInfo: string;
-    brandId?: string;
     chipid?: string;
-    staMac: string;
+    staMac?: string;
 }
 interface ICloudDevice<P = ICloudDeviceParams, E = ICloudDeviceExtra> {
     name: string;
