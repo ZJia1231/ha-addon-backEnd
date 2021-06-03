@@ -4,7 +4,7 @@ import ICloudDeviceConstructor from '../ts/interface/ICloudDeviceConstructor';
 import { IZigbeeUIID2026Params } from '../ts/interface/IZigbeeDeviceParams';
 import CloudDeviceController from './CloudDeviceController';
 
-class ZigbeeUIID2026Controller extends CloudDeviceController {
+class CloudZigbeeUIID3026Controller extends CloudDeviceController {
     uiid: number;
     entityId: string;
     params: IZigbeeUIID2026Params;
@@ -20,7 +20,7 @@ class ZigbeeUIID2026Controller extends CloudDeviceController {
 /**
  * @description 更新状态到HA
  */
-ZigbeeUIID2026Controller.prototype.updateState = async function ({ motion, battery }) {
+CloudZigbeeUIID3026Controller.prototype.updateState = async function ({ motion, battery }) {
     if (this.disabled) {
         return;
     }
@@ -61,4 +61,4 @@ ZigbeeUIID2026Controller.prototype.updateState = async function ({ motion, batte
     }
 };
 
-export default ZigbeeUIID2026Controller;
+export default CloudZigbeeUIID3026Controller;

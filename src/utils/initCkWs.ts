@@ -18,10 +18,10 @@ import LanDualR3Controller from '../controller/LanDualR3Controller';
 import CloudDW2WiFiController from '../controller/CloudDW2WiFiController';
 import { ICloudDW2Params } from '../ts/interface/ICloudDeviceParams';
 import CloudUIID104Controller from '../controller/CloudUIID104Controller';
-import ZigbeeUIID3026Controller from '../controller/ZigbeeUIID3026Controller';
 import { IZigbeeUIID1770Params, IZigbeeUIID2026Params, IZigbeeUIID3026Params } from '../ts/interface/IZigbeeDeviceParams';
-import ZigbeeUIID2026Controller from '../controller/ZigbeeUIID2026Controller';
-import ZigbeeUIID1770Controller from '../controller/ZigbeeUIID1770Controller';
+import CloudZigbeeUIID1770Controller from '../controller/CloudZigbeeUIID1770Controller';
+import CloudZigbeeUIID2026Controller from '../controller/CloudZigbeeUIID2026Controller';
+import CloudZigbeeUIID3026Controller from '../controller/CloudZigbeeUIID3026Controller';
 
 const apikey = getDataSync('user.json', ['user', 'apikey']);
 
@@ -114,19 +114,19 @@ export default async () => {
                             device.updateState(tmp.params as ICloudDW2Params);
                         }
                     }
-                    if (device instanceof ZigbeeUIID1770Controller) {
+                    if (device instanceof CloudZigbeeUIID1770Controller) {
                         console.log('接收到Zigbee温湿度传感器的信息：', tmp.params);
                         if (tmp.params) {
                             device.updateState(tmp.params as IZigbeeUIID1770Params);
                         }
                     }
-                    if (device instanceof ZigbeeUIID2026Controller) {
+                    if (device instanceof CloudZigbeeUIID2026Controller) {
                         console.log('接收到Zigbee移动传感器的信息：', tmp.params);
                         if (tmp.params) {
                             device.updateState(tmp.params as IZigbeeUIID2026Params);
                         }
                     }
-                    if (device instanceof ZigbeeUIID3026Controller) {
+                    if (device instanceof CloudZigbeeUIID3026Controller) {
                         console.log('接收到Zigbee门磁的信息：', tmp.params);
                         if (tmp.params) {
                             device.updateState(tmp.params as IZigbeeUIID3026Params);

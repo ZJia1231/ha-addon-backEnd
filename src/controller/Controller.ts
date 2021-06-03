@@ -41,9 +41,10 @@ import CloudDW2WiFiController from './CloudDW2WiFiController';
 import LanDoubleColorLightController from './LanDoubleColorLightController';
 import CloudUIID104Controller from './CloudUIID104Controller';
 import { IZigbeeUIID1770Params, IZigbeeUIID2026Params, IZigbeeUIID3026Params } from '../ts/interface/IZigbeeDeviceParams';
-import ZigbeeUIID3026Controller from './ZigbeeUIID3026Controller';
-import ZigbeeUIID2026Controller from './ZigbeeUIID2026Controller';
-import ZigbeeUIID1770Controller from './ZigbeeUIID1770Controller';
+import ZigbeeUIID3026Controller from './CloudZigbeeUIID3026Controller';
+import CloudZigbeeUIID1770Controller from './CloudZigbeeUIID1770Controller';
+import CloudZigbeeUIID2026Controller from './CloudZigbeeUIID2026Controller';
+import CloudZigbeeUIID3026Controller from './CloudZigbeeUIID3026Controller';
 
 class Controller {
     static deviceMap: Map<string, DiyDeviceController | CloudDeviceController | LanDeviceController> = new Map();
@@ -377,7 +378,7 @@ class Controller {
             // Zigbee 温湿度传感器
             if (data.extra.uiid === 1770) {
                 const tmp = data as ICloudDevice<IZigbeeUIID1770Params>;
-                const device = new ZigbeeUIID1770Controller({
+                const device = new CloudZigbeeUIID1770Controller({
                     devicekey: tmp.devicekey,
                     deviceId: tmp.deviceid,
                     deviceName: tmp.name,
@@ -394,7 +395,7 @@ class Controller {
             // Zigbee 移动传感器
             if (data.extra.uiid === 2026) {
                 const tmp = data as ICloudDevice<IZigbeeUIID2026Params>;
-                const device = new ZigbeeUIID2026Controller({
+                const device = new CloudZigbeeUIID2026Controller({
                     devicekey: tmp.devicekey,
                     deviceId: tmp.deviceid,
                     deviceName: tmp.name,
