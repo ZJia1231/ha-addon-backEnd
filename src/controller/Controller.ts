@@ -40,11 +40,12 @@ import LanPowerDetectionSwitchController from './LanPowerDetectionSwitchControll
 import CloudDW2WiFiController from './CloudDW2WiFiController';
 import LanDoubleColorLightController from './LanDoubleColorLightController';
 import CloudUIID104Controller from './CloudUIID104Controller';
-import { IZigbeeUIID1770Params, IZigbeeUIID2026Params, IZigbeeUIID3026Params } from '../ts/interface/IZigbeeDeviceParams';
+import { IZigbeeUIID1000Params, IZigbeeUIID1770Params, IZigbeeUIID2026Params, IZigbeeUIID3026Params } from '../ts/interface/IZigbeeDeviceParams';
 import ZigbeeUIID3026Controller from './CloudZigbeeUIID3026Controller';
 import CloudZigbeeUIID1770Controller from './CloudZigbeeUIID1770Controller';
 import CloudZigbeeUIID2026Controller from './CloudZigbeeUIID2026Controller';
 import CloudZigbeeUIID3026Controller from './CloudZigbeeUIID3026Controller';
+import CloudZigbeeUIID1000Controller from './CloudZigbeeUIID1000Controller';
 
 class Controller {
     static deviceMap: Map<string, DiyDeviceController | CloudDeviceController | LanDeviceController> = new Map();
@@ -371,6 +372,23 @@ class Controller {
                     disabled,
                     online: tmp.online,
                     index: _index,
+                });
+                Controller.deviceMap.set(id, device);
+                return device;
+            }
+            // Zigbee 无线按键
+            if (data.extra.uiid === 1000) {
+                const tmp = data as ICloudDevice<IZigbeeUIID1000Params>;
+                const device = new CloudZigbeeUIID1000Controller({
+                    devicekey: tmp.devicekey,
+                    deviceId: tmp.deviceid,
+                    deviceName: tmp.name,
+                    apikey: tmp.apikey,
+                    params: tmp.params,
+                    online: tmp.online,
+                    extra: tmp.extra,
+                    index: _index,
+                    disabled,
                 });
                 Controller.deviceMap.set(id, device);
                 return device;

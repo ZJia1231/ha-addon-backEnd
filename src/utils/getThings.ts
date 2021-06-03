@@ -22,10 +22,11 @@ import CloudDW2WiFiController from '../controller/CloudDW2WiFiController';
 import { ICloudDW2Params } from '../ts/interface/ICloudDeviceParams';
 import LanDoubleColorLightController from '../controller/LanDoubleColorLightController';
 import CloudUIID104Controller from '../controller/CloudUIID104Controller';
-import { IZigbeeUIID1770Params, IZigbeeUIID2026Params, IZigbeeUIID3026Params } from '../ts/interface/IZigbeeDeviceParams';
+import { IZigbeeUIID1000Params, IZigbeeUIID1770Params, IZigbeeUIID2026Params, IZigbeeUIID3026Params } from '../ts/interface/IZigbeeDeviceParams';
 import CloudZigbeeUIID2026Controller from '../controller/CloudZigbeeUIID2026Controller';
 import CloudZigbeeUIID3026Controller from '../controller/CloudZigbeeUIID3026Controller';
 import CloudZigbeeUIID1770Controller from '../controller/CloudZigbeeUIID1770Controller';
+import CloudZigbeeUIID1000Controller from '../controller/CloudZigbeeUIID1000Controller';
 
 // 获取设备并同步到HA
 export default async () => {
@@ -142,6 +143,9 @@ export default async () => {
                 }
                 if (device instanceof CloudDW2WiFiController) {
                     !device.disabled && device.updateState(params as ICloudDW2Params);
+                }
+                if (device instanceof CloudZigbeeUIID1000Controller) {
+                    !device.disabled && device.updateState(params as IZigbeeUIID1000Params);
                 }
                 if (device instanceof CloudZigbeeUIID1770Controller) {
                     !device.disabled && device.updateState(params as IZigbeeUIID1770Params);

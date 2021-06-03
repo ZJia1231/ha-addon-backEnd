@@ -8,7 +8,7 @@ class CloudZigbeeUIID3026Controller extends CloudDeviceController {
     uiid: number;
     entityId: string;
     params: IZigbeeUIID2026Params;
-    updateState!: (params: { motion: number; battery: number }) => Promise<void>;
+    updateState!: (params: Partial<IZigbeeUIID2026Params>) => Promise<void>;
     constructor(props: ICloudDeviceConstructor<IZigbeeUIID2026Params>) {
         super(props);
         this.uiid = props.extra.uiid;

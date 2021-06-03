@@ -5,6 +5,14 @@ export interface IZigbeeDeviceParams {
     trigTime: string;
     battery: number;
 }
+export interface IZigbeeUIID1000Params extends IZigbeeDeviceParams {
+    /**
+     * 0--> 单击
+     * 1--> 双击
+     * 2--> 长按
+     */
+    key: number;
+}
 export interface IZigbeeUIID1770Params extends IZigbeeDeviceParams {
     humidity: string;
     temperature: string;

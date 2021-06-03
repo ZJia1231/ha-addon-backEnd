@@ -8,7 +8,7 @@ class ZigbeeUIID1770Controller extends CloudDeviceController {
     uiid: number;
     entityId: string;
     params: IZigbeeUIID1770Params;
-    updateState!: (params: { humidity: string; temperature: string; battery: number }) => Promise<void>;
+    updateState!: (params: Partial<IZigbeeUIID1770Params>) => Promise<void>;
     constructor(props: ICloudDeviceConstructor<IZigbeeUIID1770Params>) {
         super(props);
         this.uiid = props.extra.uiid;
@@ -24,8 +24,8 @@ ZigbeeUIID1770Controller.prototype.updateState = async function ({ temperature, 
     if (this.disabled) {
         return;
     }
-    let t = `${+temperature / 100}`,
-        h = `${+humidity / 100}`;
+    let t = `${+(temperature || 0) / 100}`,
+        h = `${+(humidity || 0) / 100}`;
     if (!this.online) {
         t = 'unavailable';
         h = 'unavailable';
