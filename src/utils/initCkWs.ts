@@ -87,7 +87,7 @@ export default async () => {
                     if (device instanceof CloudMultiChannelSwitchController) {
                         const { switches } = tmp.params;
                         if (Array.isArray(switches)) {
-                            device.updateState(switches.slice(0, device.maxChannel));
+                            device.updateState(switches);
                         }
                     }
                     if (device instanceof CloudRGBLightStripController) {

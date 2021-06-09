@@ -1,4 +1,4 @@
-import CkApi from 'coolkit-open-api';
+import CkApi from 'coolkit-api';
 import { getDataSync, saveData } from './dataUtil';
 import generateLovelace from './generateLovelace';
 import getThings from './getThings';

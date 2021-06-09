@@ -1,6 +1,6 @@
 import { TypeLtypeParams, TypeLtype, TypeRGBBulbLtypeParams, TypeRGBBulbLtype } from '../type/TypeLtype';
 
-interface ICloudDeviceParams {
+export interface ICloudDeviceParams {
     bindInfos: any;
     version: number;
     fwVersion: string;
@@ -8,7 +8,7 @@ interface ICloudDeviceParams {
     staMac: string;
 }
 
-interface ICloudSwitchParams extends ICloudDeviceParams {
+export interface ICloudSwitchParams extends ICloudDeviceParams {
     sledOnline: string;
     ssid: string;
     bssid: string;
@@ -18,7 +18,7 @@ interface ICloudSwitchParams extends ICloudDeviceParams {
     pulse: string;
     pulseWidth: number;
 }
-interface ICloudPowerDetectionSwitchParams extends ICloudSwitchParams {
+export interface ICloudPowerDetectionSwitchParams extends ICloudSwitchParams {
     alarmType: string;
     alarmVValue: [number, number];
     alarmCValue: [number, number];
@@ -31,7 +31,7 @@ interface ICloudPowerDetectionSwitchParams extends ICloudSwitchParams {
     hundredDaysKwh: string;
 }
 
-interface ITemperatureAndHumidityModificationParams extends ICloudDeviceParams {
+export interface ITemperatureAndHumidityModificationParams extends ICloudDeviceParams {
     sledOnline: string;
     ssid: string;
     bssid: string;
@@ -47,7 +47,7 @@ interface ITemperatureAndHumidityModificationParams extends ICloudDeviceParams {
     currentTemperature: string;
 }
 
-interface ICloudRGBBulbParams extends ICloudDeviceParams {
+export interface ICloudRGBBulbParams extends ICloudDeviceParams {
     /**
      * 冷光
      */
@@ -90,24 +90,24 @@ interface ICloudRGBBulbParams extends ICloudDeviceParams {
     zyx_mode: number;
 }
 
-type IDoubleColorLightParams = ICloudDeviceParams &
+export type IDoubleColorLightParams = ICloudDeviceParams &
     TypeLtypeParams & {
         switch: string;
         ltype: TypeLtype;
     };
 
-type IUIID104Params = ICloudDeviceParams &
+export type IUIID104Params = ICloudDeviceParams &
     TypeRGBBulbLtypeParams & {
         switch: string;
         ltype: TypeRGBBulbLtype;
     };
 
-interface ICloudDimmingParams extends ICloudDeviceParams {
+export interface ICloudDimmingParams extends ICloudDeviceParams {
     switch: string;
     bright: number;
 }
 
-interface ICloudMultiChannelSwitchParams extends ICloudDeviceParams {
+export interface ICloudMultiChannelSwitchParams extends ICloudDeviceParams {
     lock: number;
     configure: {
         startup: string;
@@ -125,7 +125,7 @@ interface ICloudMultiChannelSwitchParams extends ICloudDeviceParams {
     sledOnline: string;
     zyx_clear_timers: boolean;
 }
-interface ICloudDualR3Params extends ICloudDeviceParams {
+export interface ICloudDualR3Params extends ICloudDeviceParams {
     configure: {
         startup: string;
         outlet: number;
@@ -238,7 +238,7 @@ interface ICloudDualR3Params extends ICloudDeviceParams {
     uiActive: Object;
 }
 
-interface ICloudRGBLightStripParams extends ICloudDeviceParams {
+export interface ICloudRGBLightStripParams extends ICloudDeviceParams {
     sledOnline: string;
     ssid: string;
     bssid: string;
@@ -291,7 +291,8 @@ interface ICloudRGBLightStripParams extends ICloudDeviceParams {
      */
     sensitive: number;
 }
-interface ICloudDW2Params extends ICloudDeviceParams {
+
+export interface ICloudDW2Params extends ICloudDeviceParams {
     actionTime: string;
     battery: number;
     chipID: string;
@@ -300,18 +301,26 @@ interface ICloudDW2Params extends ICloudDeviceParams {
     switch: string;
     type: number;
 }
-
-export {
-    ICloudDeviceParams,
-    ICloudSwitchParams,
-    ITemperatureAndHumidityModificationParams,
-    ICloudRGBBulbParams,
-    ICloudDimmingParams,
-    ICloudPowerDetectionSwitchParams,
-    ICloudMultiChannelSwitchParams,
-    ICloudRGBLightStripParams,
-    IDoubleColorLightParams,
-    ICloudDualR3Params,
-    ICloudDW2Params,
-    IUIID104Params,
-};
+export interface ICloudRFBridgeParams extends ICloudDeviceParams {
+    only_device: any;
+    sledOnline: string;
+    ssid: string;
+    bssid: string;
+    init: number;
+    setState: string;
+    chipID: string;
+    /**
+     * 指令或者模式
+     * capture 进入学习模式
+     * captureCancel 退出学习模式
+     * edit 更新通道列表
+     * transmit 主动触发
+     * trigger 收到触发通知
+     */
+    cmd: string;
+    rfList: {
+        rfChl: number;
+        rfVal: string;
+    }[];
+    [rfTrig: string]: any;
+}

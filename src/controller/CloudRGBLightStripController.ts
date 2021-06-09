@@ -32,10 +32,13 @@ class CloudRGBLightStripController extends CloudDeviceController {
 CloudRGBLightStripController.prototype.parseHaData2Ck = function (params) {
     const { state, effect, brightness_pct, rgb_color, color_temp } = params;
     const res = {
-        switch: state,
         mode: 1,
     } as Partial<ICloudRGBLightStripParams>;
     brightness_pct && (res.bright = brightness_pct);
+
+    if (state) {
+        res.switch = state;
+    }
 
     if (rgb_color) {
         res.colorR = rgb_color[0];

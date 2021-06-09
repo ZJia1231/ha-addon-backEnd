@@ -1,4 +1,4 @@
-import CkApi from 'coolkit-open-api';
+import CkApi from 'coolkit-api';
 import Controller from '../controller/Controller';
 import DiyController from '../controller/DiyDeviceController';
 import LanController from '../controller/LanDeviceController';
@@ -40,7 +40,7 @@ export default async () => {
         for (let i = 0; i < thingList.length; i++) {
             const item = thingList[i];
             const deviceIndex = item.index;
-            if (item.itemType < 3) {
+            if (item.itemType === 1 || item.itemType === 2) {
                 const { extra, deviceid, name, params, devicekey, apikey, tags } = item.itemData;
                 const old = Controller.getDevice(deviceid!);
                 if (old instanceof DiyController) {
@@ -127,7 +127,7 @@ export default async () => {
                         });
                 }
                 if (device instanceof CloudMultiChannelSwitchController) {
-                    !device.disabled && device.updateState(params.switches.slice(0, device.maxChannel));
+                    !device.disabled && device.updateState(params.switches);
                 }
                 if (device instanceof CloudRGBLightStripController) {
                     !device.disabled && device.updateState(device.parseCkData2Ha(params));

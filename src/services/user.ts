@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import CkApi from 'coolkit-open-api';
+import CkApi from 'coolkit-api';
 import { saveData, clearData, getDataSync } from '../utils/dataUtil';
 import getThings from '../utils/getThings';
 import Controller from '../controller/Controller';

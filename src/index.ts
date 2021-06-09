@@ -1,6 +1,6 @@
 import express from 'express';
 import * as path from 'path';
-import CkApi from 'coolkit-open-api';
+import CkApi from 'coolkit-api';
 import { Request, Response } from 'express';
 import cors from 'cors';
 import userRouter from './route/user';
@@ -54,7 +54,7 @@ app.use(`${apiPrefix}/user`, userRouter);
 
 app.use('/', express.static(path.join(__dirname, '/pages')));
 // app.use('/loading/', express.static(path.join(__dirname, '/pages')));
-app.use(redirectToAuth);
+// app.use(redirectToAuth);
 
 app.use(`${apiPrefix}/devices`, devicesRouter);
 app.use(`${apiPrefix}/language`, languageRouter);

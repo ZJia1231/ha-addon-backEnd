@@ -44,9 +44,10 @@ CloudMultiChannelSwitchController.prototype.updateState = async function (switch
     if (this.disabled) {
         return;
     }
-    switches.forEach(({ outlet, switch: status }) => {
+    for (let i = 0; i < this.maxChannel; i++) {
+        const { outlet, switch: status } = switches[i];
         const name = this.channelName ? this.channelName[outlet] : outlet + 1;
-        
+
         let state = status;
         if (!this.online) {
             state = 'unavailable';
@@ -62,7 +63,7 @@ CloudMultiChannelSwitchController.prototype.updateState = async function (switch
                 state,
             },
         });
-    });
+    }
 };
 
 export default CloudMultiChannelSwitchController;

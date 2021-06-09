@@ -1,4 +1,4 @@
-import CkApi from 'coolkit-open-api';
+import CkApi from 'coolkit-api';
 
 /**
  * @param {string} deviceid

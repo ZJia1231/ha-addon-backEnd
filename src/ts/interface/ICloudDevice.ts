@@ -1,3 +1,4 @@
+import TypeZxyInfoItem from '../type/TypeZxyInfoItem';
 import { ICloudDeviceParams } from './ICloudDeviceParams';
 
 export interface ICloudDeviceExtra {
@@ -36,6 +37,7 @@ interface ICloudDevice<P = ICloudDeviceParams, E = ICloudDeviceExtra> {
         ck_channel_name: {
             [key: string]: string;
         };
+        zyx_info: TypeZxyInfoItem[];
     };
     devConfig: {
         // 目前只有DW2-WiFi门磁用到

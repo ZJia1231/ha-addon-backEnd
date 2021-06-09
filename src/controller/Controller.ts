@@ -33,7 +33,6 @@ import { multiChannelSwitchUiidSet, switchUiidSet } from '../config/uiid';
 import CloudDoubleColorBulbController from './CloudDoubleColorBulbController';
 import UnsupportDeviceController from './UnsupportDeviceController';
 import CloudDualR3Controller from './CloudDualR3Controller';
-import { device } from 'coolkit-open-api/dist/api';
 import LanDualR3Controller from './LanDualR3Controller';
 import LanTandHModificationController from './LanTandHModificationController';
 import LanPowerDetectionSwitchController from './LanPowerDetectionSwitchController';
