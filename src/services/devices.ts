@@ -110,6 +110,7 @@ const disableDevice = async (req: Request, res: Response) => {
                 error: 0,
                 data: null,
             });
+            eventBus.emit('sse');
         } else {
             res.json({
                 error: 500,
@@ -323,17 +324,13 @@ const updateDiyDevice = async (req: Request, res: Response) => {
             console.log('Jia ~ file: devices.ts ~ line 366 ~ updateDiyDevice ~ reqParams', reqParams);
             if (type === 'switch') {
                 result = await updateDiySwitchAPI(reqParams);
-            }
-            if (type === 'startup') {
+            } else if (type === 'startup') {
                 result = await updateDiyStartupAPI(reqParams);
-            }
-            if (type === 'pulse') {
+            } else if (type === 'pulse') {
                 result = await updateDiyPulseAPI(reqParams);
-            }
-            if (type === 'sledOnline') {
+            } else if (type === 'sledOnline') {
                 result = await updateDiySledOnlineAPI(reqParams);
-            }
-            if (type === 'deviceName') {
+            } else if (type === 'deviceName') {
                 result = await updateDiyDeviceName(id, params);
             }
             console.log('Jia ~ file: devices.ts ~ line 381 ~ updateDiyDevice ~ result', result);
@@ -355,7 +352,7 @@ const updateDiyDevice = async (req: Request, res: Response) => {
             data: null,
         });
         // Controller.deviceMap.delete(id);
-        eventBus.emit('sse');
+        // eventBus.emit('sse');
     }
 };
 
@@ -406,8 +403,8 @@ const updateLanDevice = async (req: Request, res: Response) => {
             error: 500,
             data: null,
         });
-        Controller.deviceMap.delete(id);
-        eventBus.emit('sse');
+        // Controller.deviceMap.delete(id);
+        // eventBus.emit('sse');
     }
 };
 

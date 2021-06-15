@@ -13,6 +13,7 @@ import { getAuth } from '../apis/restApi';
 import AuthClass from '../class/AuthClass';
 import generateLovelace from '../utils/generateLovelace';
 import removeEntityByDevice from '../utils/removeEntityByDevice';
+import { isSupervisor } from '../config/config';
 
 /**
  * @param {string} lang
@@ -112,6 +113,17 @@ const isLogin = async (req: Request, res: Response) => {
     }
 };
 const auth = async (req: Request, res: Response) => {
+    const { ip, headers } = req;
+    if (_.get(headers, 'cookie') && isSupervisor) {
+        res.json({
+            error: 0,
+            data: {
+                isAuth: true,
+            },
+        });
+        return;
+    }
+    
     try {
         if (AuthClass.isValid(req.ip)) {
             res.json({
@@ -145,8 +157,18 @@ const auth = async (req: Request, res: Response) => {
 };
 
 const isAuth = async (req: Request, res: Response) => {
+    const { ip, headers } = req;
+    if (_.get(headers, 'cookie') && isSupervisor) {
+        res.json({
+            error: 0,
+            data: {
+                isAuth: true,
+            },
+        });
+        return;
+    }
     try {
-        const status = AuthClass.isValid(req.ip);
+        const status = AuthClass.isValid(ip);
         res.json({
             error: 0,
             data: {
@@ -154,7 +176,7 @@ const isAuth = async (req: Request, res: Response) => {
             },
         });
     } catch (err) {
-        console.log(err);
+        console.log('Jia ~ file: user.ts ~ line 170 ~ isAuth ~ err', err);
         res.json({
             error: 500,
             data: err,

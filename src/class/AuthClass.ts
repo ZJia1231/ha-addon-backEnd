@@ -1,4 +1,6 @@
 import { refreshAuth } from '../apis/restApi';
+import { HaToken } from '../config/auth';
+import { debugMode, isSupervisor } from '../config/config';
 import { TypeHaToken, TypeToken } from '../ts/type/TypeToken';
 import { appendData, getDataSync } from '../utils/dataUtil';
 
@@ -18,8 +20,12 @@ class AuthClass {
     }
 
     async init() {
+        if (debugMode) {
+            this.curAuth = HaToken;
+            return;
+        }
         // 通过Addon方式安装自带TOKEN
-        if (process.env.SUPERVISOR_TOKEN) {
+        if (isSupervisor) {
             this.curAuth = process.env.SUPERVISOR_TOKEN;
             return;
         }
@@ -42,9 +48,6 @@ class AuthClass {
     }
 
     isValid(host: string) {
-        if (process.env.SUPERVISOR_TOKEN) {
-            return true;
-        }
         const auth = AuthClass.AuthMap.get(host);
         if (auth && auth.expires_time > Date.now()) {
             this.curAuth = auth.access_token;
@@ -72,6 +75,13 @@ class AuthClass {
         const auth = AuthClass.AuthMap.get(origin);
         if (auth) {
             const { cliend_id, refresh_token } = auth;
+
+            // supervisor形式不需要刷新token,token到期了直接删除
+            if (isSupervisor) {
+                AuthClass.AuthMap.delete(origin);
+                return;
+            }
+
             console.log('refreshing...');
             const res = await refreshAuth(cliend_id, refresh_token);
             console.log('refresh token success!');

@@ -56,7 +56,7 @@ app.use(`${apiPrefix}/user`, userRouter);
 app.use('/', express.static(path.join(__dirname, '/pages')));
 // app.use('/loading/', express.static(path.join(__dirname, '/pages')));
 // todo
-// app.use(redirectToAuth);
+app.use(redirectToAuth);
 
 app.use(`${apiPrefix}/devices`, devicesRouter);
 app.use(`${apiPrefix}/language`, languageRouter);

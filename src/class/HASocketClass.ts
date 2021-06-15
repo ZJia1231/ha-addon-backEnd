@@ -4,10 +4,6 @@ import TypeHaSocketMsg from '../ts/type/TypeHaSocketMsg';
 import AuthClass from './AuthClass';
 import initHaSocket from '../utils/initHaSocket';
 import syncDevice2Ha from '../utils/syncDevice2Ha';
-import { debugMode } from '../config/config';
-import { HaToken } from '../config/auth';
-
-const token = debugMode ? HaToken : AuthClass.curAuth;
 
 class HaSocket {
     static instance: HaSocket;
@@ -50,7 +46,7 @@ class HaSocket {
                 this.client.send(
                     JSON.stringify({
                         type: 'auth',
-                        access_token: token,
+                        access_token: AuthClass.curAuth,
                     })
                 );
             });
