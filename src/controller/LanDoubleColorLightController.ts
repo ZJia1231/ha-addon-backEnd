@@ -5,6 +5,7 @@ import { doubleColorBulbEffectList, doubleColorBulbLtypeMap } from '../config/li
 import { IDoubleColorLightParams } from '../ts/interface/ICloudDeviceParams';
 import ILanDeviceConstructor from '../ts/interface/ILanDeviceConstructor';
 import { TypeHaDoubleColorBulbParams } from '../ts/type/TypeHaLightParams';
+import mergeDeviceParams from '../utils/mergeDeviceParams';
 import LanDeviceController from './LanDeviceController';
 class LanDoubleColorLightController extends LanDeviceController {
     entityId: string;
@@ -85,7 +86,8 @@ LanDoubleColorLightController.prototype.updateLight = async function (params) {
             });
         }
         if (_.get(res, ['data', 'error']) === 0) {
-            // todo
+            this.params = mergeDeviceParams(this.params, params);
+            this.updateState(params);
         }
     }
     return -1;

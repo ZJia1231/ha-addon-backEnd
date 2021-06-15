@@ -5,6 +5,7 @@ import { IZigbeeUIID2026Params } from '../ts/interface/IZigbeeDeviceParams';
 import CloudDeviceController from './CloudDeviceController';
 
 class CloudZigbeeUIID3026Controller extends CloudDeviceController {
+    type: number = 8;
     uiid: number;
     entityId: string;
     params: IZigbeeUIID2026Params;

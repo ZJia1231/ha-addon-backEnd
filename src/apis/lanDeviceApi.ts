@@ -110,7 +110,7 @@ const updateLanLight = async (params: { ip: string; port: number; deviceid: stri
     let res = axios.post(`http://${ip}:${port}/zeroconf/dimmable`, reqData);
 
     res.catch(async (e) => {
-        console.log('控制局域网单通道设备出错', reqData);
+        console.log('控制局域网灯设备出错', reqData);
         return await coolKitWs.updateThing({
             deviceid,
             ownerApikey: selfApikey,

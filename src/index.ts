@@ -30,8 +30,9 @@ CkApi.init({
     const res = await AuthClass.init();
     if (AuthClass.curAuth) {
         eventBus.emit('init-ha-socket');
+    } else {
+        await initHaSocket(); // 跟HA建立socket连接
     }
-    // await initHaSocket(); // 跟HA建立socket连接
     await initCkApi(); // 初始化v2接口并保持登录
     await initCkWs(); // 跟易微联Socket建立连接
     // await sleep(3000);
@@ -54,6 +55,7 @@ app.use(`${apiPrefix}/user`, userRouter);
 
 app.use('/', express.static(path.join(__dirname, '/pages')));
 // app.use('/loading/', express.static(path.join(__dirname, '/pages')));
+// todo
 // app.use(redirectToAuth);
 
 app.use(`${apiPrefix}/devices`, devicesRouter);

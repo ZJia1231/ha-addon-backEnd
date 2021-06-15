@@ -6,6 +6,7 @@ import coolKitWs from 'coolkit-ws';
 import _ from 'lodash';
 import { TypeHaRgbLightParams } from '../ts/type/TypeHaLightParams';
 import { rbgLEDBulbEffectList, rbgLEDBulbLtypeMap } from '../config/light';
+import mergeDeviceParams from '../utils/mergeDeviceParams';
 class CloudUIID104Controller extends CloudDeviceController {
     disabled: boolean;
     entityId: string;
@@ -91,11 +92,7 @@ CloudUIID104Controller.prototype.updateLight = async function (params) {
         params,
     });
     if (res.error === 0) {
-        // todo
-        this.params = {
-            ...this.params,
-            ...params,
-        };
+        this.params = mergeDeviceParams(this.params, params);
         this.updateState(params);
     }
 };

@@ -4,6 +4,10 @@ import TypeHaSocketMsg from '../ts/type/TypeHaSocketMsg';
 import AuthClass from './AuthClass';
 import initHaSocket from '../utils/initHaSocket';
 import syncDevice2Ha from '../utils/syncDevice2Ha';
+import { debugMode } from '../config/config';
+import { HaToken } from '../config/auth';
+
+const token = debugMode ? HaToken : AuthClass.curAuth;
 
 class HaSocket {
     static instance: HaSocket;
@@ -46,7 +50,7 @@ class HaSocket {
                 this.client.send(
                     JSON.stringify({
                         type: 'auth',
-                        access_token: AuthClass.curAuth,
+                        access_token: token,
                     })
                 );
             });
@@ -55,7 +59,6 @@ class HaSocket {
                 (handler = (res: string) => {
                     try {
                         const data = JSON.parse(res);
-                        console.log('Jia ~ file: HASocketClass.ts ~ line 37 ~ HaSocket ~ init ~ data', data);
                         if (data.type === 'auth_ok') {
                             resolve(0);
 
@@ -182,7 +185,6 @@ class HaSocket {
         const res = await this.query({
             type: 'lovelace/config',
         });
-        console.log('Jia ~ file: HASocketClass.ts ~ line 125 ~ HaSocket ~ getLovelace ~ res', res);
         return res;
     }
     /**

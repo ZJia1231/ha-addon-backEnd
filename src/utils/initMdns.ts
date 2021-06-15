@@ -40,7 +40,7 @@ export default () => {
                 const decryptData = device.parseEncryptedData();
                 if (decryptData) {
                     device.updateState(decryptData.switch);
-                    device.params = decryptData;
+                    device.params = mergeDeviceParams(device.params, decryptData);
                 }
             }
             if (device instanceof LanMultiChannelSwitchController || device instanceof LanDualR3Controller) {

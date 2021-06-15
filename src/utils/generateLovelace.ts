@@ -69,9 +69,6 @@ const generateLovelace = async () => {
                 device instanceof CloudDualR3Controller ||
                 device instanceof LanDualR3Controller
             ) {
-                if (device instanceof LanDualR3Controller) {
-                    console.log('Jia ~ file: generateLovelace.ts ~ line 71 ~ generateLovelace ~ device', device);
-                }
                 if (device.maxChannel === 1 && device.deviceName) {
                     singalSwitchCard.entities.push(`${device.entityId}_1`);
                     continue;
@@ -126,7 +123,6 @@ const generateLovelace = async () => {
         if (views) {
             views[0] = lovelace;
         }
-        console.log('Jia ~ file: generateLovelace.ts ~ line 53 ~ generateLovelace ~ lovelace', lovelace);
         return await HASocket.query({
             type: 'lovelace/config/save',
             config: {

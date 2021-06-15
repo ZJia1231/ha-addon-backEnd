@@ -45,6 +45,7 @@ import CloudZigbeeUIID1770Controller from './CloudZigbeeUIID1770Controller';
 import CloudZigbeeUIID2026Controller from './CloudZigbeeUIID2026Controller';
 import CloudZigbeeUIID3026Controller from './CloudZigbeeUIID3026Controller';
 import CloudZigbeeUIID1000Controller from './CloudZigbeeUIID1000Controller';
+import mergeDeviceParams from '../utils/mergeDeviceParams';
 
 class Controller {
     static deviceMap: Map<string, DiyDeviceController | CloudDeviceController | LanDeviceController> = new Map();
@@ -111,7 +112,8 @@ class Controller {
                 old.encryptedData = params?.encryptedData;
 
                 if (old.iv && old.devicekey && old.encryptedData) {
-                    old.params = old.parseEncryptedData();
+                    const tmpParams = old.parseEncryptedData();
+                    tmpParams && (old.params = mergeDeviceParams(old.params, tmpParams));
                 }
                 return old;
             }

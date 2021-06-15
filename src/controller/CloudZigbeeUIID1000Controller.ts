@@ -5,6 +5,7 @@ import { IZigbeeUIID1000Params } from '../ts/interface/IZigbeeDeviceParams';
 import CloudDeviceController from './CloudDeviceController';
 
 class CloudZigbeeUIID1000Controller extends CloudDeviceController {
+    type: number = 8;
     uiid: number;
     entityId: string;
     params: IZigbeeUIID1000Params;
@@ -32,6 +33,7 @@ CloudZigbeeUIID1000Controller.prototype.updateState = async function ({ key, bat
         ['0', 'Click'],
         ['1', 'Double Click'],
         ['2', 'Long Press'],
+        ['unavailable', 'unavailable'],
     ]);
 
     if (key !== undefined) {

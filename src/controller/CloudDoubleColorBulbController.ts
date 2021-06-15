@@ -7,6 +7,7 @@ import _ from 'lodash';
 import { TypeLtype } from '../ts/type/TypeLtype';
 import { TypeHaDoubleColorBulbParams } from '../ts/type/TypeHaLightParams';
 import { doubleColorBulbEffectList, doubleColorBulbLtypeMap } from '../config/light';
+import mergeDeviceParams from '../utils/mergeDeviceParams';
 class CloudDoubleColorBulbController extends CloudDeviceController {
     entityId: string;
     uiid: number = 103;
@@ -69,11 +70,7 @@ CloudDoubleColorBulbController.prototype.updateLight = async function (params) {
         params,
     });
     if (res.error === 0) {
-        // todo
-        this.params = {
-            ...this.params,
-            ...params,
-        };
+        this.params = mergeDeviceParams(this.params, params);
         this.updateState(params);
     }
 };

@@ -8,5 +8,6 @@ export default (source: any, params: any) => {
             }
             return objVal;
         }
+        return srcVal;
     });
 };

@@ -1,7 +1,10 @@
 import axios from 'axios';
 import AuthClass from '../class/AuthClass';
-// import { HaToken } from '../config/auth';
+import { HaToken } from '../config/auth';
+import { debugMode } from '../config/config';
 import { HaRestURL } from '../config/url';
+
+const token = debugMode ? HaToken : AuthClass.curAuth;
 
 const restRequest = axios.create({
     baseURL: HaRestURL,
@@ -10,7 +13,7 @@ const restRequest = axios.create({
 
 restRequest.interceptors.request.use((val) => {
     val.headers = {
-        Authorization: `Bearer ${AuthClass.curAuth}`,
+        Authorization: `Bearer ${token}`,
     };
     return val;
 });

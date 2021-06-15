@@ -46,33 +46,6 @@ const getDevices = async (req: Request, res: Response) => {
                 sleepTime: 2000,
             });
         }
-
-        // const [cloud, lan, diy] = (+type!).toString(2).padStart(3, '0').split('');
-        // const data: any[] = [];
-        // for (let item of Controller.deviceMap.values()) {
-        //     if (item.type === 1 && +diy) {
-        //         data.push(formatDevice(item));
-        //     }
-        //     if (item.type === 2 && +lan) {
-        //         data.push(formatDevice(item));
-        //     }
-        //     if (item.type === 4 && +cloud) {
-        //         data.push(formatDevice(item));
-        //     }
-        // }
-        // for (let item of Controller.unsupportDeviceMap.values()) {
-        //     data.push(item);
-        // }
-        // const oldDiyDevices = getDataSync('diy.json', []) as { [key: string]: boolean };
-        // for (let key in oldDiyDevices) {
-        //     if (!Controller.getDevice(key)) {
-        //         data.push({
-        //             online: false,
-        //             type: 1,
-        //             deviceId: key,
-        //         });
-        //     }
-        // }
         const data = getFormattedDeviceList();
 
         res.json({

@@ -9,7 +9,7 @@ import { ICloudPowerDetectionSwitchParams } from '../ts/interface/ICloudDevicePa
 
 class LanPowerDetectionSwitchController extends LanDeviceController {
     entityId: string;
-    uiid: number = 32;
+    uiid?: number;
     params?: ICloudPowerDetectionSwitchParams;
     setSwitch!: (status: string) => Promise<0 | -1>;
     updateState!: (params: { status: string; power?: string; current?: string; voltage?: string }) => Promise<void>;
