@@ -79,30 +79,34 @@ LanTandHModificationController.prototype.updateState = async function (status) {
 };
 
 LanTandHModificationController.prototype.updateTandH = async function (currentTemperature, currentHumidity) {
-    updateStates(`sensor.${this.deviceId}_t`, {
-        entity_id: `sensor.${this.deviceId}_t`,
-        state: currentTemperature,
-        attributes: {
-            restored: false,
-            supported_features: 0,
-            friendly_name: `${this.deviceName}-Temperature`,
-            device_class: 'temperature',
+    if (currentTemperature && currentTemperature !== 'unavailable') {
+        updateStates(`sensor.${this.deviceId}_t`, {
+            entity_id: `sensor.${this.deviceId}_t`,
             state: currentTemperature,
-            unit_of_measurement: '°C',
-        },
-    });
-    updateStates(`sensor.${this.deviceId}_h`, {
-        entity_id: `sensor.${this.deviceId}_h`,
-        state: currentHumidity,
-        attributes: {
-            restored: false,
-            supported_features: 0,
-            friendly_name: `${this.deviceName}-Humidity`,
-            device_class: 'humidity',
+            attributes: {
+                restored: false,
+                supported_features: 0,
+                friendly_name: `${this.deviceName}-Temperature`,
+                device_class: 'temperature',
+                state: currentTemperature,
+                unit_of_measurement: '°C',
+            },
+        });
+    }
+    if (currentHumidity && currentHumidity !== 'unavailable') {
+        updateStates(`sensor.${this.deviceId}_h`, {
+            entity_id: `sensor.${this.deviceId}_h`,
             state: currentHumidity,
-            unit_of_measurement: '%',
-        },
-    });
+            attributes: {
+                restored: false,
+                supported_features: 0,
+                friendly_name: `${this.deviceName}-Humidity`,
+                device_class: 'humidity',
+                state: currentHumidity,
+                unit_of_measurement: '%',
+            },
+        });
+    }
 };
 
 export default LanTandHModificationController;

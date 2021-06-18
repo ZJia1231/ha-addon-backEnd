@@ -7,7 +7,7 @@ import Controller from '../controller/Controller';
 import syncDevice2Ha from '../utils/syncDevice2Ha';
 import { getDataSync, saveData } from '../utils/dataUtil';
 import mergeDeviceParams from '../utils/mergeDeviceParams';
-import DiyController from '../controller/DiyDeviceController';
+import DiyDeviceController from '../controller/DiyDeviceController';
 import updateDiyDeviceName from '../utils/updateDiyDeviceName';
 import removeEntityByDevice from '../utils/removeEntityByDevice';
 import LanSwitchController from '../controller/LanSwitchController';
@@ -223,24 +223,34 @@ const proxy2ws = async (req: Request, res: Response) => {
             });
 
             const device = Controller.getDevice(id);
-            if (device instanceof CloudDeviceController) {
+            if (device instanceof CloudDeviceController || device instanceof LanDeviceController) {
                 device.params = mergeDeviceParams(device.params, params);
                 device.online = true;
                 eventBus.emit('sse');
             }
-            if (device instanceof CloudSwitchController || device instanceof CloudTandHModificationController) {
+            if (
+                device instanceof CloudSwitchController ||
+                device instanceof LanSwitchController ||
+                device instanceof CloudTandHModificationController ||
+                device instanceof LanTandHModificationController
+            ) {
                 // 同步到HA
-                device.updateState(device.params.switch);
+                device.updateState(device.params!.switch);
             }
-            if (device instanceof CloudPowerDetectionSwitchController) {
+            if (device instanceof CloudPowerDetectionSwitchController || device instanceof LanPowerDetectionSwitchController) {
                 // 同步到HA
                 device.updateState({
-                    status: device.params.switch,
+                    status: device.params!.switch,
                 });
             }
-            if (device instanceof CloudMultiChannelSwitchController || device instanceof CloudDualR3Controller) {
+            if (
+                device instanceof CloudMultiChannelSwitchController ||
+                device instanceof LanMultiChannelSwitchController ||
+                device instanceof CloudDualR3Controller ||
+                device instanceof LanDualR3Controller
+            ) {
                 // 同步到HA
-                device.updateState(device.params.switches);
+                device.updateState(device.params!.switches);
             }
         } else {
             res.json({
@@ -313,7 +323,7 @@ const updateDiyDevice = async (req: Request, res: Response) => {
     const { type, id, params } = req.body;
     try {
         const device = Controller.getDevice(id);
-        if (device instanceof DiyController) {
+        if (device instanceof DiyDeviceController) {
             let result;
             const reqParams = {
                 deviceid: id,

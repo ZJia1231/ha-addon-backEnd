@@ -20,6 +20,8 @@ import LanTandHModificationController from '../controller/LanTandHModificationCo
 import LanPowerDetectionSwitchController from '../controller/LanPowerDetectionSwitchController';
 import LanDoubleColorLightController from '../controller/LanDoubleColorLightController';
 import CloudUIID104Controller from '../controller/CloudUIID104Controller';
+import haServiceMap from '../config/haServiceMap';
+import CloudCoverController from '../controller/CloudCoverController';
 
 /**
  * @param {string} entity_id 实体id
@@ -138,6 +140,9 @@ const handleDeviceByEntityId = async (entity_id: string, state: string, res: any
             })
         );
     }
+    if (device instanceof CloudCoverController) {
+        await device.setCover({ switch: state, setclose: _.get(res, 'service_data.position') });
+    }
 };
 
 export default async (reconnect = false) => {
@@ -152,7 +157,7 @@ export default async (reconnect = false) => {
                     service_data: { entity_id },
                     service,
                 } = res;
-                const state = service === 'turn_off' ? 'off' : 'on';
+                const state = haServiceMap.get(service)!;
 
                 if (Array.isArray(entity_id)) {
                     // 暂存多通道设备

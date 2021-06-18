@@ -32,45 +32,14 @@ class CloudRFBridgeController extends CloudDeviceController {
 }
 
 CloudRFBridgeController.prototype.updateSwitch = async function (status) {
-    const res = await coolKitWs.updateThing({
-        ownerApikey: this.apikey,
-        deviceid: this.deviceId,
-        params: {
-            switch: status,
-        },
-    });
-    if (res.error === 0) {
-        this.updateState(status);
-        this.params.switch = status;
-    }
+    // todo
 };
 
 /**
  * @description 更新状态到HA
  */
 CloudRFBridgeController.prototype.updateState = async function (status) {
-    if (this.disabled || !this.zxyInfo) {
-        return;
-    }
-
-    let state = status;
-    if (!this.online) {
-        state = 'unavailable';
-    }
-    for (let key of this.zxyInfo.keys()) {
-        const tmp = this.zxyInfo.get(key)!;
-        const attributes = {};
-        updateStates(key, {
-            entity_id: key,
-            state,
-            attributes: {
-                restored: false,
-                supported_features: 4,
-                friendly_name: tmp.name,
-                state,
-            },
-        });
-    }
+    // todo
 };
 
 export default CloudRFBridgeController;

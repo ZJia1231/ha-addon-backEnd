@@ -3,14 +3,14 @@ import CloudDeviceController from '../controller/CloudDeviceController';
 import CloudDualR3Controller from '../controller/CloudDualR3Controller';
 import CloudMultiChannelSwitchController from '../controller/CloudMultiChannelSwitchController';
 import CloudTandHModificationController from '../controller/CloudTandHModificationController';
-import DiyController from '../controller/DiyDeviceController';
+import DiyDeviceController from '../controller/DiyDeviceController';
 import LanDeviceController from '../controller/LanDeviceController';
 import LanDualR3Controller from '../controller/LanDualR3Controller';
 import LanMultiChannelSwitchController from '../controller/LanMultiChannelSwitchController';
 import LanTandHModificationController from '../controller/LanTandHModificationController';
 
-export default (device: LanDeviceController | DiyController | CloudDeviceController) => {
-    if (device instanceof DiyController) {
+export default (device: LanDeviceController | DiyDeviceController | CloudDeviceController) => {
+    if (device instanceof DiyDeviceController) {
         return;
     }
     if (device instanceof CloudTandHModificationController || device instanceof LanTandHModificationController) {

@@ -43,6 +43,7 @@ const updateDiyPulseAPI = async (params: TypeParams & { width: number }) => {
     });
     return data;
 };
+
 const updateDiySledOnlineAPI = async (params: TypeParams) => {
     const { ip, port, state, deviceid } = params;
     const { data } = await axios.post(`http://${ip}:${port}/zero conf/sledonline`, {

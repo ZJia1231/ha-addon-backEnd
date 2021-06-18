@@ -10,7 +10,7 @@ type TypeConstrucotr = {
     txt: TypeDiyDevice['txt'];
 };
 
-class DiyController {
+class DiyDeviceController {
     deviceId: string;
     deviceName: string;
     entityId: string;
@@ -34,7 +34,7 @@ class DiyController {
     }
 }
 
-DiyController.prototype.setSwitch = async function (status) {
+DiyDeviceController.prototype.setSwitch = async function (status) {
     axios
         .post(`http://${this.ip}:${this.port}/zeroconf/switch`, {
             sequence: Date.now(),
@@ -47,7 +47,7 @@ DiyController.prototype.setSwitch = async function (status) {
             console.log('控制DIY设备出错，设备id：', this.deviceId);
         });
 };
-DiyController.prototype.updateState = async function (status) {
+DiyDeviceController.prototype.updateState = async function (status) {
     if (this.disabled) {
         return;
     }
@@ -65,4 +65,4 @@ DiyController.prototype.updateState = async function (status) {
     });
 };
 
-export default DiyController;
+export default DiyDeviceController;

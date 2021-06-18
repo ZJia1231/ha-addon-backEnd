@@ -1,5 +1,5 @@
 import CloudDeviceController from '../controller/CloudDeviceController';
-import DiyController from '../controller/DiyDeviceController';
+import DiyDeviceController from '../controller/DiyDeviceController';
 import _ from 'lodash';
 import LanDeviceController from '../controller/LanDeviceController';
 import CloudMultiChannelSwitchController from '../controller/CloudMultiChannelSwitchController';
@@ -22,8 +22,8 @@ const ghostManufacturer = (manufacturer: string = 'eWeLink') => {
     return 'eWeLink';
 };
 
-const formatDevice = (data: DiyController | CloudDeviceController | LanDeviceController) => {
-    if (data instanceof DiyController) {
+const formatDevice = (data: DiyDeviceController | CloudDeviceController | LanDeviceController) => {
+    if (data instanceof DiyDeviceController) {
         return {
             key: data.deviceId,
             uiid: data.uiid,
@@ -36,6 +36,7 @@ const formatDevice = (data: DiyController | CloudDeviceController | LanDeviceCon
             rssi: data.txt.data1?.rssi,
             params: data.txt,
             online: true,
+            index: 19,
         };
     }
 
@@ -50,6 +51,12 @@ const formatDevice = (data: DiyController | CloudDeviceController | LanDeviceCon
         if (data instanceof LanDualR3Controller || data instanceof LanPowerDetectionSwitchController) {
             rate = data.rate;
         }
+
+        let index = 5;
+        if (data.online) {
+            index += 16;
+        }
+
         return {
             key: data.deviceId,
             deviceId: data.deviceId,
@@ -64,7 +71,7 @@ const formatDevice = (data: DiyController | CloudDeviceController | LanDeviceCon
             apikey: data.selfApikey,
             params: data.params,
             online: data.online,
-            index: data.index,
+            index,
             tags,
             unit,
             rate,
@@ -85,6 +92,12 @@ const formatDevice = (data: DiyController | CloudDeviceController | LanDeviceCon
         if (data instanceof CloudDW2WiFiController) {
             lowVolAlarm = data.lowVolAlarm;
         }
+
+        let index = 9;
+        if (data.online) {
+            index += 16;
+        }
+
         return {
             key: data.deviceId,
             deviceId: data.deviceId,
@@ -134,6 +147,7 @@ const getFormattedDeviceList = () => {
                     type: 1,
                     deviceId: key,
                     deviceName: _.get(oldDiyDevices, [key, 'deviceName']),
+                    index: 3,
                 });
             }
         } catch (error) {
@@ -142,6 +156,7 @@ const getFormattedDeviceList = () => {
                     online: false,
                     type: 1,
                     deviceId: key,
+                    index: 3,
                 });
             }
         }
@@ -153,7 +168,7 @@ const getFormattedDeviceList = () => {
         if (!b.index) {
             return -1;
         }
-        return a.index - b.index;
+        return b.index - a.index;
     });
     return result;
 };

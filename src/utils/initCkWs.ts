@@ -16,13 +16,14 @@ import eventBus from './eventBus';
 import CloudDualR3Controller from '../controller/CloudDualR3Controller';
 import LanDualR3Controller from '../controller/LanDualR3Controller';
 import CloudDW2WiFiController from '../controller/CloudDW2WiFiController';
-import { ICloudDW2Params } from '../ts/interface/ICloudDeviceParams';
+import { ICloudCoverParams, ICloudDW2Params } from '../ts/interface/ICloudDeviceParams';
 import CloudUIID104Controller from '../controller/CloudUIID104Controller';
 import { IZigbeeUIID1000Params, IZigbeeUIID1770Params, IZigbeeUIID2026Params, IZigbeeUIID3026Params } from '../ts/interface/IZigbeeDeviceParams';
 import CloudZigbeeUIID1770Controller from '../controller/CloudZigbeeUIID1770Controller';
 import CloudZigbeeUIID2026Controller from '../controller/CloudZigbeeUIID2026Controller';
 import CloudZigbeeUIID3026Controller from '../controller/CloudZigbeeUIID3026Controller';
 import CloudZigbeeUIID1000Controller from '../controller/CloudZigbeeUIID1000Controller';
+import CloudCoverController from '../controller/CloudCoverController';
 
 const apikey = getDataSync('user.json', ['user', 'apikey']);
 
@@ -137,6 +138,12 @@ export default async () => {
                         console.log('接收到Zigbee门磁的信息：', tmp.params);
                         if (tmp.params) {
                             device.updateState(tmp.params as IZigbeeUIID3026Params);
+                        }
+                    }
+                    if (device instanceof CloudCoverController) {
+                        console.log('接收到电动窗帘的信息：', tmp.params);
+                        if (tmp.params) {
+                            device.updateState(tmp.params as ICloudCoverParams);
                         }
                     }
 

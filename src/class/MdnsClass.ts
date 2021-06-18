@@ -5,7 +5,6 @@ import TypeDevice from '../ts/type/TypeMdnsDevice';
 import TypeDiyDevice from '../ts/type/TypeMdnsDiyDevice';
 import TypeLanDevice from '../ts/type/TypeMdnsLanDevice';
 import Controller from '../controller/Controller';
-import DiyDeviceController from '../controller/DiyDeviceController';
 type TypeQueryParams = {
     questions: {
         name: string;

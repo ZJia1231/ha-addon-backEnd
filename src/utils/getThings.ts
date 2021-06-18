@@ -1,7 +1,7 @@
 import CkApi from 'coolkit-api';
 import Controller from '../controller/Controller';
-import DiyController from '../controller/DiyDeviceController';
-import LanController from '../controller/LanDeviceController';
+import DiyDeviceController from '../controller/DiyDeviceController';
+import LanDeviceController from '../controller/LanDeviceController';
 import CloudSwitchController from '../controller/CloudSwitchController';
 import CloudTandHModificationController from '../controller/CloudTandHModificationController';
 import CloudRGBBulbController from '../controller/CloudRGBBulbController';
@@ -19,7 +19,7 @@ import LanDualR3Controller from '../controller/LanDualR3Controller';
 import LanTandHModificationController from '../controller/LanTandHModificationController';
 import LanPowerDetectionSwitchController from '../controller/LanPowerDetectionSwitchController';
 import CloudDW2WiFiController from '../controller/CloudDW2WiFiController';
-import { ICloudDW2Params } from '../ts/interface/ICloudDeviceParams';
+import { ICloudCoverParams, ICloudDW2Params } from '../ts/interface/ICloudDeviceParams';
 import LanDoubleColorLightController from '../controller/LanDoubleColorLightController';
 import CloudUIID104Controller from '../controller/CloudUIID104Controller';
 import { IZigbeeUIID1000Params, IZigbeeUIID1770Params, IZigbeeUIID2026Params, IZigbeeUIID3026Params } from '../ts/interface/IZigbeeDeviceParams';
@@ -27,6 +27,7 @@ import CloudZigbeeUIID2026Controller from '../controller/CloudZigbeeUIID2026Cont
 import CloudZigbeeUIID3026Controller from '../controller/CloudZigbeeUIID3026Controller';
 import CloudZigbeeUIID1770Controller from '../controller/CloudZigbeeUIID1770Controller';
 import CloudZigbeeUIID1000Controller from '../controller/CloudZigbeeUIID1000Controller';
+import CloudCoverController from '../controller/CloudCoverController';
 
 // 获取设备并同步到HA
 export default async () => {
@@ -43,12 +44,12 @@ export default async () => {
             if (item.itemType === 1 || item.itemType === 2) {
                 const { extra, deviceid, name, params, devicekey, apikey, tags } = item.itemData;
                 const old = Controller.getDevice(deviceid!);
-                if (old instanceof DiyController) {
+                if (old instanceof DiyDeviceController) {
                     // 如果设备已经存在并且是DIY设备就不做任何操作
                     continue;
                 }
                 // 如果设备已经存在并且是Lan设备就添加该设备的deviceKey
-                if (old instanceof LanController) {
+                if (old instanceof LanDeviceController) {
                     old.devicekey = devicekey;
                     old.selfApikey = apikey;
                     old.deviceName = name;
@@ -155,6 +156,9 @@ export default async () => {
                 }
                 if (device instanceof CloudZigbeeUIID3026Controller) {
                     !device.disabled && device.updateState(params as IZigbeeUIID3026Params);
+                }
+                if (device instanceof CloudCoverController) {
+                    !device.disabled && device.updateState(params as ICloudCoverParams);
                 }
             }
         }

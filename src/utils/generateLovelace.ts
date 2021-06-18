@@ -6,7 +6,7 @@ import CloudPowerDetectionSwitchController from '../controller/CloudPowerDetecti
 import CloudSwitchController from '../controller/CloudSwitchController';
 import CloudTandHModificationController from '../controller/CloudTandHModificationController';
 import Controller from '../controller/Controller';
-import DiyController from '../controller/DiyDeviceController';
+import DiyDeviceController from '../controller/DiyDeviceController';
 import LanDualR3Controller from '../controller/LanDualR3Controller';
 import LanMultiChannelSwitchController from '../controller/LanMultiChannelSwitchController';
 import LanPowerDetectionSwitchController from '../controller/LanPowerDetectionSwitchController';
@@ -53,7 +53,7 @@ const generateLovelace = async () => {
             if (isDeviceExist(device.entityId)) {
                 continue;
             }
-            if (device instanceof DiyController || device instanceof CloudSwitchController || device instanceof CloudPowerDetectionSwitchController) {
+            if (device instanceof DiyDeviceController || device instanceof CloudSwitchController || device instanceof CloudPowerDetectionSwitchController) {
                 singalSwitchCard.entities.push(device.entityId);
                 continue;
             }

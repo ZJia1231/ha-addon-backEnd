@@ -1,7 +1,7 @@
-import CkApi from 'coolkit-open-api';
+import CkApi from 'coolkit-api';
 import { updateStates } from '../src/apis/restApi';
 import Controller from '../src/controller/Controller';
-import DiyController from '../src/controller/DiyDeviceController';
+import DiyDeviceController from '../src/controller/DiyDeviceController';
 
 export default async () => {
     await CkApi.user.login({
@@ -21,7 +21,7 @@ export default async () => {
             if (item.itemType < 3) {
                 const { extra, deviceid, name, params } = item.itemData;
                 const old = Controller.getDevice(deviceid!);
-                if (old instanceof DiyController) {
+                if (old instanceof DiyDeviceController) {
                     continue;
                 }
                 Controller.setDevice({
