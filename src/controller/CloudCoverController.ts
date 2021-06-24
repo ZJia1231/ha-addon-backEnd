@@ -22,7 +22,7 @@ CloudCoverController.prototype.setCover = async function (params) {
     let reqParams: any = params;
     if (_.isNumber(params.setclose)) {
         reqParams = {
-            setclose: 100 - params.setclose,
+            setclose: 100 - params.setclose,   
         };
     }
     console.log('Jia ~ file: CloudCoverController.ts ~ line 21 ~ params', params);
@@ -32,7 +32,7 @@ CloudCoverController.prototype.setCover = async function (params) {
         params: reqParams,
     });
     if (res.error === 0) {
-        // this.updateState(params);
+        this.updateState(params);
         this.params = mergeDeviceParams(this.params, params);
     }
 };
@@ -52,7 +52,7 @@ CloudCoverController.prototype.updateState = async function ({ switch: status = 
 
     updateStates(this.entityId, {
         entity_id: this.entityId,
-        state,
+        state: state,
         attributes: {
             restored: false,
             supported_features: 15,

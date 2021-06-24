@@ -37,7 +37,7 @@ CloudZigbeeUIID1000Controller.prototype.updateState = async function ({ key, bat
     ]);
 
     if (key !== undefined) {
-        updateStates(`${this.entityId}`, {
+        await updateStates(`${this.entityId}`, {
             entity_id: `${this.entityId}`,
             state: keyMap.get(state),
             attributes: {
@@ -47,6 +47,18 @@ CloudZigbeeUIID1000Controller.prototype.updateState = async function ({ key, bat
                 state,
             },
         });
+        setTimeout(() => {
+            updateStates(`${this.entityId}`, {
+                entity_id: `${this.entityId}`,
+                state: 'None',
+                attributes: {
+                    restored: false,
+                    friendly_name: `${this.deviceName}`,
+                    icon: 'mdi:remote',
+                    state: 'None',
+                },
+            });
+        }, 1000);
     }
 
     if (battery !== undefined) {

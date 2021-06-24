@@ -14,6 +14,8 @@ import LanDualR3Controller from '../controller/LanDualR3Controller';
 import LanPowerDetectionSwitchController from '../controller/LanPowerDetectionSwitchController';
 import CloudDW2WiFiController from '../controller/CloudDW2WiFiController';
 import UnsupportDeviceController from '../controller/UnsupportDeviceController';
+import CloudRFBridgeController from '../controller/CloudRFBridgeController';
+import LanRFBridgeController from '../controller/LanRFBridgeController';
 
 const ghostManufacturer = (manufacturer: string = 'eWeLink') => {
     if (~manufacturer.indexOf('松诺') || ~manufacturer.toLocaleUpperCase().indexOf('SONOFF')) {
@@ -44,6 +46,9 @@ const formatDevice = (data: DiyDeviceController | CloudDeviceController | LanDev
         let tags, unit, rate;
         if (data instanceof LanMultiChannelSwitchController) {
             tags = data.channelName;
+        }
+        if (data instanceof LanRFBridgeController) {
+            tags = data.tags;
         }
         if (data instanceof LanTandHModificationController) {
             unit = data.unit;
@@ -82,6 +87,9 @@ const formatDevice = (data: DiyDeviceController | CloudDeviceController | LanDev
         let tags, unit, rate, lowVolAlarm;
         if (data instanceof CloudMultiChannelSwitchController) {
             tags = data.channelName;
+        }
+        if (data instanceof CloudRFBridgeController) {
+            tags = data.tags;
         }
         if (data instanceof CloudTandHModificationController) {
             unit = data.unit;

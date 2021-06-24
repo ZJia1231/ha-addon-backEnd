@@ -30,6 +30,8 @@ export default (device: LanDeviceController | DiyDeviceController | CloudDeviceC
             }
         }
     }
-
+    // todo
+    // zigbee设备
+    // rfBridge设备
     removeStates(device.entityId);
 };

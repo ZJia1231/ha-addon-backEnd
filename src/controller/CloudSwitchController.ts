@@ -6,6 +6,7 @@ import coolKitWs from 'coolkit-ws';
 class CloudSwitchController extends CloudDeviceController {
     entityId: string;
     uiid: number;
+    type!: number;
     params: ICloudSwitchParams;
     updateSwitch!: (status: string) => Promise<void>;
     updateState!: (status: string) => Promise<void>;
@@ -14,6 +15,10 @@ class CloudSwitchController extends CloudDeviceController {
         this.entityId = `switch.${params.deviceId}`;
         this.params = params.params;
         this.uiid = params.extra.uiid;
+        // Zigbee插座
+        if (this.uiid === 1009 || this.uiid === 1256) {
+            this.type = 8;
+        }
     }
 }
 

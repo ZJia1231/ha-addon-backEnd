@@ -14,6 +14,8 @@ import LanDualR3Controller from '../controller/LanDualR3Controller';
 import LanPowerDetectionSwitchController from '../controller/LanPowerDetectionSwitchController';
 import LanTandHModificationController from '../controller/LanTandHModificationController';
 import LanDoubleColorLightController from '../controller/LanDoubleColorLightController';
+import { ITemperatureAndHumidityModificationParams } from '../ts/interface/ICloudDeviceParams';
+import LanRFBridgeController from '../controller/LanRFBridgeController';
 
 export default () => {
     return Mdns.createInstance({
@@ -50,12 +52,25 @@ export default () => {
                     device.params = mergeDeviceParams(device.params, decryptData);
                 }
             }
+            if (device instanceof LanTandHModificationController) {
+                const decryptData = device.parseEncryptedData() as ITemperatureAndHumidityModificationParams;
+                if (decryptData) {
+                    device.updateState(decryptData.switch);
+                    device.updateTandH(decryptData.currentTemperature, decryptData.currentHumidity);
+                    device.params = mergeDeviceParams(device.params, decryptData);
+                }
+            }
             if (device instanceof LanDoubleColorLightController) {
                 const decryptData = device.parseEncryptedData();
                 if (decryptData) {
-                    console.log("Jia ~ file: initMdns.ts ~ line 56 ~ onResponseCb ~ decryptData", decryptData);
                     device.updateState(decryptData);
                     device.params = mergeDeviceParams(device.params, decryptData);
+                }
+            }
+            if (device instanceof LanRFBridgeController) {
+                const decryptData = device.parseEncryptedData();
+                if (decryptData) {
+                    device.updateState(device.parseMdnsData2Ha(decryptData));
                 }
             }
             // 触发sse

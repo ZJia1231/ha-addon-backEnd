@@ -14,12 +14,14 @@
 
 ### LAN 设备
 
-1. 新建一个`LanController`
-2. 在`Controller.ts`中添加`setDevice`的相关逻辑
-3. 在`initMdns.ts`中添加接收到设备相关信息后的操作逻辑
-4. 在`updateLanDevice`接口添加设备接收到 WebUI 参数后的操作逻辑
-5. 在`initHaSocket.ts`中添加接收到 Ha 参数后的操作逻辑
-6. 在`formatDevice.ts`中添加格式化设备参数的相关逻辑
+1. 在`MdnsClass.ts`中扫描本地的相关设备
+2. 新建一个`LanController`
+3. 在`Controller.ts`中添加`setDevice`的相关逻辑
+4. 在`getThings.ts`中添加`Controller`的`devicekey`和`selfApikey`
+5. 在`initMdns.ts`中添加接收到设备相关信息后的操作逻辑
+6. 在`updateLanDevice`接口添加设备接收到 WebUI 参数后的操作逻辑
+7. 在`initHaSocket.ts`中添加接收到 Ha 参数后的操作逻辑
+8. 在`formatDevice.ts`中添加格式化设备参数的相关逻辑
 
 ---
 

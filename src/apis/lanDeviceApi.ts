@@ -62,6 +62,39 @@ const setSwitches = async (params: { ip: string; port: number; deviceid: string;
 
 /**
  *
+ * @description RF-Bridge 发送通道值
+ */
+const transmitRfChlAPI = async (params: { ip: string; port: number; deviceid: string; devicekey: string; data: string; selfApikey: string }) => {
+    const { ip, port, deviceid, devicekey, data, selfApikey } = params;
+    const iv = `abcdef${Date.now()}abcdef`.slice(0, 16);
+    const reqData = {
+        iv: AuthUtil.encryptionBase64(iv),
+        deviceid,
+        selfApikey,
+        encrypt: true,
+        sequence: `${Date.now()}`,
+        data: AuthUtil.encryptionData({
+            iv,
+            data,
+            key: devicekey,
+        }),
+    };
+    const res = axios.post(`http://${ip}:${port}/zeroconf/transmit`, reqData);
+
+    res.catch(async (e) => {
+        console.log('控制局域网RF-Bridge出错', reqData);
+        return await coolKitWs.updateThing({
+            deviceid,
+            ownerApikey: selfApikey,
+            params: JSON.parse(data),
+        });
+    });
+
+    return await res;
+};
+
+/**
+ *
  * @deprecated 局域网设备好像不支持该接口
  */
 const getLanDeviceParams = async (params: { ip: string; port: number; deviceid: string; devicekey: string; selfApikey: string }) => {
@@ -96,7 +129,7 @@ const updateLanLight = async (params: { ip: string; port: number; deviceid: stri
     const { ip, port, deviceid, devicekey, data, selfApikey } = params;
     const iv = `abcdef${Date.now()}abcdef`.slice(0, 16);
     const reqData = {
-        iv: AuthUtil.encryptionBase64(iv) ,
+        iv: AuthUtil.encryptionBase64(iv),
         deviceid,
         selfApikey,
         encrypt: true,
@@ -121,4 +154,4 @@ const updateLanLight = async (params: { ip: string; port: number; deviceid: stri
     return await res;
 };
 
-export { setSwitch, setSwitches, getLanDeviceParams, updateLanLight };
+export { setSwitch, setSwitches, getLanDeviceParams, updateLanLight, transmitRfChlAPI };

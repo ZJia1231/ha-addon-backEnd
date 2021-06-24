@@ -24,6 +24,9 @@ import CloudZigbeeUIID2026Controller from '../controller/CloudZigbeeUIID2026Cont
 import CloudZigbeeUIID3026Controller from '../controller/CloudZigbeeUIID3026Controller';
 import CloudZigbeeUIID1000Controller from '../controller/CloudZigbeeUIID1000Controller';
 import CloudCoverController from '../controller/CloudCoverController';
+import LanTandHModificationController from '../controller/LanTandHModificationController';
+import CloudRFBridgeController from '../controller/CloudRFBridgeController';
+import TypeCkRFBridgeParams from '../ts/type/TypeCkRFBridgeParams';
 
 const apikey = getDataSync('user.json', ['user', 'apikey']);
 
@@ -57,10 +60,10 @@ export default async () => {
                     if (device instanceof CloudSwitchController) {
                         device.updateState(tmp.params.switch);
                     }
-                    if (device instanceof CloudTandHModificationController) {
+                    if (device instanceof CloudTandHModificationController || device instanceof LanTandHModificationController) {
                         const { currentTemperature, currentHumidity, switch: state } = tmp.params as ITandHModificationSocketParams;
-                        if (currentHumidity && currentTemperature) {
-                            device.updateTandH(currentTemperature, currentHumidity);
+                        if (currentHumidity || currentTemperature) {
+                            device.updateTandH(currentTemperature!, currentHumidity!);
                         } else if (state) {
                             device.updateState(state);
                         }
@@ -145,6 +148,12 @@ export default async () => {
                         if (tmp.params) {
                             device.updateState(tmp.params as ICloudCoverParams);
                         }
+                    }
+                    if (device instanceof CloudRFBridgeController) {
+                        console.log('接收到RFBridge的信息：', tmp.params);
+                        // todo
+                        const ids = device.parseCkData2Ha(tmp.params as TypeCkRFBridgeParams);
+                        device.updateState(ids);
                     }
 
                     eventBus.emit('update-controller', data);

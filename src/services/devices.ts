@@ -26,6 +26,7 @@ import { modifyDeviceStatus, changeDeviceUnit, setDeviceRate } from '../utils/mo
 import CloudPowerDetectionSwitchController from '../controller/CloudPowerDetectionSwitchController';
 import { updateDiyPulseAPI, updateDiySledOnlineAPI, updateDiyStartupAPI, updateDiySwitchAPI } from '../apis/diyDeviceApi';
 import LanPowerDetectionSwitchController from '../controller/LanPowerDetectionSwitchController';
+import LanRFBridgeController from '../controller/LanRFBridgeController';
 
 const mdns = initMdns();
 
@@ -389,6 +390,10 @@ const updateLanDevice = async (req: Request, res: Response) => {
             if (device instanceof LanPowerDetectionSwitchController) {
                 result = await device.setSwitch(params.switch);
             }
+            if (device instanceof LanRFBridgeController) {
+                console.log("Jia ~ file: devices.ts ~ line 395 ~ updateLanDevice ~ params", params);
+                result = await device.transmitRfChl(params);
+            }
 
             if (result === 0) {
                 res.json({
@@ -422,7 +427,7 @@ const removeDiyDevice = async (req: Request, res: Response) => {
     try {
         const { id } = req.body;
         const diyDevices = getDataSync('diy.json', []);
-        const code = saveData('diy.json', JSON.stringify(_.omit(diyDevices, [id])));
+        const code = await saveData('diy.json', JSON.stringify(_.omit(diyDevices, [id])));
         if (code) {
             res.json({
                 error: 0,

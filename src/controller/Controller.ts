@@ -7,6 +7,7 @@ import {
     ICloudDW2Params,
     ICloudMultiChannelSwitchParams,
     ICloudPowerDetectionSwitchParams,
+    ICloudRFBridgeParams,
     ICloudRGBBulbParams,
     ICloudRGBLightStripParams,
     ICloudSwitchParams,
@@ -47,6 +48,8 @@ import CloudZigbeeUIID3026Controller from './CloudZigbeeUIID3026Controller';
 import CloudZigbeeUIID1000Controller from './CloudZigbeeUIID1000Controller';
 import mergeDeviceParams from '../utils/mergeDeviceParams';
 import CloudCoverController from './CloudCoverController';
+import CloudRFBridgeController from './CloudRFBridgeController';
+import LanRFBridgeController from './LanRFBridgeController';
 
 class Controller {
     static deviceMap: Map<string, DiyDeviceController | CloudDeviceController | LanDeviceController> = new Map();
@@ -120,7 +123,6 @@ class Controller {
             }
 
             // 如果设备之前是Cloud设备,需要保持设备的位置不变,防止前端页面跳动
-            let tmpIndex;
             let oldDeviceParams = {};
             if (old instanceof CloudDeviceController) {
                 oldDeviceParams = {
@@ -136,8 +138,8 @@ class Controller {
             if (lanType === 'plug') {
                 const lanDevice = new LanSwitchController({
                     ...params,
+                    ...oldDeviceParams,
                     disabled,
-                    index: tmpIndex,
                 });
                 Controller.deviceMap.set(id, lanDevice);
                 return lanDevice;
@@ -146,8 +148,8 @@ class Controller {
             if (lanType === 'strip') {
                 const lanDevice = new LanMultiChannelSwitchController({
                     ...params,
+                    ...oldDeviceParams,
                     disabled,
-                    index: tmpIndex,
                 });
                 Controller.deviceMap.set(id, lanDevice);
                 return lanDevice;
@@ -156,8 +158,8 @@ class Controller {
             if (lanType === 'multifun_switch') {
                 const lanDevice = new LanDualR3Controller({
                     ...params,
+                    ...oldDeviceParams,
                     disabled,
-                    index: tmpIndex,
                 });
                 Controller.deviceMap.set(id, lanDevice);
                 return lanDevice;
@@ -165,8 +167,8 @@ class Controller {
             if (lanType === 'th_plug') {
                 const lanDevice = new LanTandHModificationController({
                     ...params,
+                    ...oldDeviceParams,
                     disabled,
-                    index: tmpIndex,
                 });
                 Controller.deviceMap.set(id, lanDevice);
                 return lanDevice;
@@ -174,17 +176,26 @@ class Controller {
             if (lanType === 'enhanced_plug') {
                 const lanDevice = new LanPowerDetectionSwitchController({
                     ...params,
+                    ...oldDeviceParams,
                     disabled,
-                    index: tmpIndex,
+                });
+                Controller.deviceMap.set(id, lanDevice);
+                return lanDevice;
+            }
+            if (lanType === 'rf') {
+                const lanDevice = new LanRFBridgeController({
+                    ...params,
+                    ...oldDeviceParams,
+                    disabled,
                 });
                 Controller.deviceMap.set(id, lanDevice);
                 return lanDevice;
             }
             // if (lanType === 'light') {
             //     const lanDevice = new LanDoubleColorLightController({
-            //         ...params,
+            //          ...params,
+            //          ...oldDeviceParams,
             //         disabled,
-            //         index: tmpIndex,
             //     });
             //     Controller.deviceMap.set(id, lanDevice);
             //     return lanDevice;
@@ -275,6 +286,24 @@ class Controller {
                 });
                 Controller.deviceMap.set(id, rgbLight);
                 return rgbLight;
+            }
+            // RFBridge
+            if (data.extra.uiid === 28) {
+                const tmp = data as ICloudDevice<ICloudRFBridgeParams>;
+                const rfBirdge = new CloudRFBridgeController({
+                    deviceId: tmp.deviceid,
+                    devicekey: tmp.devicekey,
+                    deviceName: tmp.name,
+                    apikey: tmp.apikey,
+                    extra: tmp.extra,
+                    params: tmp.params,
+                    online: tmp.online,
+                    disabled,
+                    index: _index,
+                    tags: tmp.tags,
+                });
+                Controller.deviceMap.set(id, rfBirdge);
+                return rfBirdge;
             }
             // 功率检测告警开关
             if (data.extra.uiid === 32 || data.extra.uiid === 5) {

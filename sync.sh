@@ -36,9 +36,11 @@ mkdir -p $GITHUB_PATH/dist/pages
 # cp -r $NODE_PATH/src/pages/index.html $GITEE_PATH/dist/pages
 # cp -r $NODE_PATH/src/pages/index.html $GITHUB_PATH/dist/pages
 
+cd $WEB_PATH/dist
+
 echo "copying web code..."
 # 拷贝前端代码
-cp -r $WEB_PATH/dist $BASE_PATH/Home-Assistant-AddOn/eWeLink_Smart_Home/dist/pages
-cp -r $WEB_PATH/dist $BASE_PATH/ha-addon/eWeLink_Smart_Home/dist/pages
+cp -r $(ls) $BASE_PATH/Home-Assistant-AddOn/eWeLink_Smart_Home/dist/pages
+cp -r $(ls) $BASE_PATH/ha-addon/eWeLink_Smart_Home/dist/pages
 
 echo "success!!!"

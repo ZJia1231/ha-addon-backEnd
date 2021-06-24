@@ -28,6 +28,8 @@ import CloudZigbeeUIID3026Controller from '../controller/CloudZigbeeUIID3026Cont
 import CloudZigbeeUIID1770Controller from '../controller/CloudZigbeeUIID1770Controller';
 import CloudZigbeeUIID1000Controller from '../controller/CloudZigbeeUIID1000Controller';
 import CloudCoverController from '../controller/CloudCoverController';
+import CloudRFBridgeController from '../controller/CloudRFBridgeController';
+import LanRFBridgeController from '../controller/LanRFBridgeController';
 
 // 获取设备并同步到HA
 export default async () => {
@@ -87,6 +89,41 @@ export default async () => {
                         const decryptData = old.parseEncryptedData() as any;
                         if (decryptData) {
                             old.updateState(decryptData);
+                        }
+                    }
+                    if (old instanceof LanTandHModificationController) {
+                        const decryptData = old.parseEncryptedData() as any;
+                        if (decryptData) {
+                            old.updateState(decryptData.switch);
+                        }
+                    }
+                    if (old instanceof LanRFBridgeController) {
+                        old.tags = tags;
+                        if (Array.isArray(params.rfList)) {
+                            params.rfList.forEach(({ rfChl, rfVal }: any) => {
+                                old.rfValMap.set(rfChl, rfVal);
+                            });
+                        }
+                        if (tags?.zyx_info && old.rfValMap.size) {
+                            tags.zyx_info.forEach(({ name, buttonName, remote_type }: any) => {
+                                buttonName.forEach((item: any) => {
+                                    const [key, childName] = Object.entries(item)[0];
+                                    const entityName = `${name}-${childName}`;
+                                    const suffix = old.rfValMap.get(+key);
+                                    const entityId = `${old.entityId}_${suffix}`;
+                                    if (suffix) {
+                                        old.entityMap.set(+key, {
+                                            entityId,
+                                            name: entityName,
+                                            icon: +remote_type < 6 ? 'mdi:remote' : 'mdi:alert',
+                                        });
+                                    }
+                                });
+                            });
+                        }
+                        const decryptData = old.parseEncryptedData() as any;
+                        if (decryptData) {
+                            old.updateState(old.parseMdnsData2Ha(decryptData));
                         }
                     }
                     continue;
@@ -159,6 +196,9 @@ export default async () => {
                 }
                 if (device instanceof CloudCoverController) {
                     !device.disabled && device.updateState(params as ICloudCoverParams);
+                }
+                if (device instanceof CloudRFBridgeController) {
+                    !device.disabled && device.updateState();
                 }
             }
         }

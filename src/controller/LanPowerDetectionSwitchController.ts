@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { updateStates } from '../apis/restApi';
 import { getDataSync } from '../utils/dataUtil';
-import { getLanDeviceParams, setSwitch } from '../apis/lanDeviceApi';
+import { setSwitch } from '../apis/lanDeviceApi';
 import LanDeviceController from './LanDeviceController';
 import mergeDeviceParams from '../utils/mergeDeviceParams';
 import ILanDeviceConstructor from '../ts/interface/ILanDeviceConstructor';
@@ -49,11 +49,11 @@ LanPowerDetectionSwitchController.prototype.setSwitch = async function (status) 
 /**
  * @description 更新状态到HA
  */
-LanPowerDetectionSwitchController.prototype.updateState = async function ({ power, current, voltage, status }) {
-    if (this.disabled) {
+LanPowerDetectionSwitchController.prototype.updateState = async function (params) {
+    if (this.disabled || _.isEmpty(params)) {
         return;
     }
-
+    const { power, current, voltage, status } = params;
     let state = status;
     if (!this.online) {
         state = 'unavailable';

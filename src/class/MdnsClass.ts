@@ -152,6 +152,16 @@ export default class Mdns {
                     });
                     callback && callback(device);
                 }
+                if (tmp.txt?.type === 'rf') {
+                    console.log('Found Lan RF-Bridge');
+                    const device = Controller.setDevice({
+                        id: key,
+                        data: tmp as TypeLanDevice,
+                        type: 2,
+                        lanType: 'rf',
+                    });
+                    callback && callback(device);
+                }
                 if (tmp.txt?.type === 'light') {
                     console.log('Found Lan 双色灯球 or RBG五色灯');
                     // todo 如何区分双色灯跟五色灯
