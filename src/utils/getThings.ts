@@ -121,10 +121,7 @@ export default async () => {
                                 });
                             });
                         }
-                        const decryptData = old.parseEncryptedData() as any;
-                        if (decryptData) {
-                            old.updateState(old.parseMdnsData2Ha(decryptData));
-                        }
+                        old.updateState();
                     }
                     continue;
                 }

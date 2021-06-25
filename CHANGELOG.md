@@ -1,8 +1,24 @@
 # Change Log
 
-## v2.2.1-beta
--   修复了温湿度传感器同步到HA失败的问题
--   修复了ZigBee无线按键无法连续触发同一指令的问题
+## v2.3.0-beta
+
+-   修复了温湿度传感器同步到 HomeAssistant 失败的问题
+-   修复了 ZigBee 无线按键无法连续触发同一指令的问题
+-   修复了部分设备禁用实体失败的问题
+-   RF-Bridge 已支持同步到 HomeAssistant
+-   **WebUI 已支持显示以下设备**
+    -   RF-Bridge
+    -   ZigBee 温湿度传感器
+    -   ZigBee 门磁传感器
+    -   ZigBee 移动传感器
+    -   ZigBee 灯控制器
+    -   ZigBee 无线按键
+    -   ZigBee 插座
+    -   WiFi 门磁
+    -   电动窗帘
+    -   律动灯带
+    -   五色灯
+    -   双色灯
 
 ## v2.2.0-beta
 
