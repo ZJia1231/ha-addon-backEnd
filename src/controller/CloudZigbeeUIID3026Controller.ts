@@ -34,12 +34,12 @@ CloudZigbeeUIID3026Controller.prototype.updateState = async function ({ lock, ba
 
     if (lock !== undefined) {
         // 更新开关
-        updateStates(`${this.entityId}_lock`, {
-            entity_id: `${this.entityId}_lock`,
+        updateStates(`${this.entityId}`, {
+            entity_id: `${this.entityId}`,
             state,
             attributes: {
                 restored: false,
-                friendly_name: `${this.deviceName}-Lock`,
+                friendly_name: `${this.deviceName}`,
                 device_class: 'lock',
                 state,
             },

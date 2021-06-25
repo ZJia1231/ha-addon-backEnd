@@ -18,7 +18,7 @@ const getDataSync = (fileName: string, namePath: string[] = []) => {
         const data = fs.readFileSync(path.join(basePath, `/${fileName}`), { encoding: 'utf-8' });
         return namePath.reduce((cur, path: string) => cur[path], JSON.parse(data));
     } catch (err) {
-        console.log('getDataSync-> no data');
+        console.log(`getDataSync: ${fileName} -> ${namePath} no data`);
         return null;
     }
 };

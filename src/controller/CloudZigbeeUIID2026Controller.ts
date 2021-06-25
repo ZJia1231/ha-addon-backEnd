@@ -34,12 +34,12 @@ CloudZigbeeUIID2026Controller.prototype.updateState = async function ({ motion, 
 
     if (motion !== undefined) {
         // 更新开关
-        updateStates(`${this.entityId}_motion`, {
-            entity_id: `${this.entityId}_motion`,
+        updateStates(`${this.entityId}`, {
+            entity_id: `${this.entityId}`,
             state,
             attributes: {
                 restored: false,
-                friendly_name: `${this.deviceName}-Motion`,
+                friendly_name: `${this.deviceName}`,
                 device_class: 'motion',
                 state,
             },

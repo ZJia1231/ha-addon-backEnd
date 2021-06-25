@@ -27,6 +27,7 @@ import CloudPowerDetectionSwitchController from '../controller/CloudPowerDetecti
 import { updateDiyPulseAPI, updateDiySledOnlineAPI, updateDiyStartupAPI, updateDiySwitchAPI } from '../apis/diyDeviceApi';
 import LanPowerDetectionSwitchController from '../controller/LanPowerDetectionSwitchController';
 import LanRFBridgeController from '../controller/LanRFBridgeController';
+import CloudRFBridgeController from '../controller/CloudRFBridgeController';
 
 const mdns = initMdns();
 
@@ -154,7 +155,7 @@ const updateDeviceName = async (req: Request, res: Response) => {
             });
         }
     } catch (err) {
-        console.log('Jia ~ file: devices.ts ~ line 71 ~ disableDevice ~ err', err);
+        console.log("Jia ~ file: devices.ts ~ line 159 ~ updateDeviceName ~ err", err);
         res.json({
             error: 500,
             data: null,
@@ -167,7 +168,13 @@ const updateChannelName = async (req: Request, res: Response) => {
         const { tags, id } = req.body;
         let ck_channel_name = tags;
         const device = Controller.getDevice(id);
-        if (device instanceof LanMultiChannelSwitchController || device instanceof CloudMultiChannelSwitchController || device instanceof CloudDualR3Controller) {
+        // 修改多通道设备时后端做处理
+        if (
+            device instanceof LanMultiChannelSwitchController ||
+            device instanceof CloudMultiChannelSwitchController ||
+            device instanceof CloudDualR3Controller ||
+            device instanceof LanDualR3Controller
+        ) {
             ck_channel_name = {
                 ...device.channelName,
                 ...ck_channel_name,
@@ -190,12 +197,31 @@ const updateChannelName = async (req: Request, res: Response) => {
                 });
             }
         }
+        // 修改RF-Bridge直接透传参数
+        if (device instanceof LanRFBridgeController || device instanceof CloudRFBridgeController) {
+            const { error } = await updateChannelNameAPI(id, tags);
+            if (error === 0) {
+                res.json({
+                    error: 0,
+                    data: null,
+                });
+                device.tags = tags;
+                eventBus.emit('sse');
+                return;
+            } else {
+                res.json({
+                    error,
+                    data: null,
+                });
+            }
+        }
+
         res.json({
             error: 500,
             data: null,
         });
     } catch (err) {
-        console.log('Jia ~ file: devices.ts ~ line 71 ~ disableDevice ~ err', err);
+        console.log("Jia ~ file: devices.ts ~ line 225 ~ updateChannelName ~ err", err);
         res.json({
             error: 500,
             data: null,
@@ -391,7 +417,7 @@ const updateLanDevice = async (req: Request, res: Response) => {
                 result = await device.setSwitch(params.switch);
             }
             if (device instanceof LanRFBridgeController) {
-                console.log("Jia ~ file: devices.ts ~ line 395 ~ updateLanDevice ~ params", params);
+                console.log('Jia ~ file: devices.ts ~ line 395 ~ updateLanDevice ~ params', params);
                 result = await device.transmitRfChl(params);
             }
 

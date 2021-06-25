@@ -4,7 +4,7 @@ import ICloudDeviceConstructor from '../ts/interface/ICloudDeviceConstructor';
 import { IZigbeeUIID1770Params } from '../ts/interface/IZigbeeDeviceParams';
 import CloudDeviceController from './CloudDeviceController';
 
-class ZigbeeUIID1770Controller extends CloudDeviceController {
+class CloudZigbeeUIID1770Controller extends CloudDeviceController {
     type: number = 8;
     uiid: number;
     entityId: string;
@@ -21,7 +21,7 @@ class ZigbeeUIID1770Controller extends CloudDeviceController {
 /**
  * @description 更新状态到HA
  */
-ZigbeeUIID1770Controller.prototype.updateState = async function ({ temperature, humidity, battery }) {
+CloudZigbeeUIID1770Controller.prototype.updateState = async function ({ temperature, humidity, battery }) {
     if (this.disabled) {
         return;
     }
@@ -78,4 +78,4 @@ ZigbeeUIID1770Controller.prototype.updateState = async function ({ temperature, 
     }
 };
 
-export default ZigbeeUIID1770Controller;
+export default CloudZigbeeUIID1770Controller;

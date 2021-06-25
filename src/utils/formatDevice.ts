@@ -25,6 +25,7 @@ const ghostManufacturer = (manufacturer: string = 'eWeLink') => {
 };
 
 const formatDevice = (data: DiyDeviceController | CloudDeviceController | LanDeviceController) => {
+    // index 16->support 8->online 4->cloud 2->lan 1->diy
     if (data instanceof DiyDeviceController) {
         return {
             key: data.deviceId,
@@ -38,28 +39,29 @@ const formatDevice = (data: DiyDeviceController | CloudDeviceController | LanDev
             rssi: data.txt.data1?.rssi,
             params: data.txt,
             online: true,
-            index: 19,
+            index: 25,
         };
     }
 
     if (data instanceof LanDeviceController) {
         let tags, unit, rate;
+        let index = 18;
         if (data instanceof LanMultiChannelSwitchController) {
             tags = data.channelName;
-        }
-        if (data instanceof LanRFBridgeController) {
+        } else if (data instanceof LanRFBridgeController) {
             tags = data.tags;
-        }
-        if (data instanceof LanTandHModificationController) {
+        } else if (data instanceof LanTandHModificationController) {
             unit = data.unit;
-        }
-        if (data instanceof LanDualR3Controller || data instanceof LanPowerDetectionSwitchController) {
+        } else if (data instanceof LanDualR3Controller || data instanceof LanPowerDetectionSwitchController) {
             rate = data.rate;
         }
 
-        let index = 5;
         if (data.online) {
-            index += 16;
+            index += 8;
+        }
+
+        if (!data.selfApikey || !data.devicekey) {
+            index -= 16;
         }
 
         return {
@@ -85,25 +87,21 @@ const formatDevice = (data: DiyDeviceController | CloudDeviceController | LanDev
 
     if (data instanceof CloudDeviceController) {
         let tags, unit, rate, lowVolAlarm;
+        let index = 20;
         if (data instanceof CloudMultiChannelSwitchController) {
             tags = data.channelName;
-        }
-        if (data instanceof CloudRFBridgeController) {
+        } else if (data instanceof CloudRFBridgeController) {
             tags = data.tags;
-        }
-        if (data instanceof CloudTandHModificationController) {
+        } else if (data instanceof CloudTandHModificationController) {
             unit = data.unit;
-        }
-        if (data instanceof CloudPowerDetectionSwitchController || data instanceof CloudDualR3Controller) {
+        } else if (data instanceof CloudPowerDetectionSwitchController || data instanceof CloudDualR3Controller) {
             rate = data.rate;
-        }
-        if (data instanceof CloudDW2WiFiController) {
+        } else if (data instanceof CloudDW2WiFiController) {
             lowVolAlarm = data.lowVolAlarm;
         }
 
-        let index = 9;
         if (data.online) {
-            index += 16;
+            index += 8;
         }
 
         return {
@@ -118,7 +116,7 @@ const formatDevice = (data: DiyDeviceController | CloudDeviceController | LanDev
             apikey: data.apikey,
             params: data.params,
             online: data.online,
-            index: data.index,
+            index,
             tags,
             unit,
             rate,

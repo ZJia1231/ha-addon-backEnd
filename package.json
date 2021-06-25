@@ -15,7 +15,7 @@
     "dependencies": {
         "color-convert": "^2.0.1",
         "coolkit-api": "^0.4.9",
-        "coolkit-ws": "^0.7.7",
+        "coolkit-ws": "^0.7.10",
         "cors": "^2.8.5",
         "crypto-js": "^4.0.0",
         "eventemitter3": "^4.0.7",
