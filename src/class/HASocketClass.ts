@@ -88,7 +88,7 @@ class HaSocket {
                 initHaSocket(true);
             }
             this.heartBeat();
-        }, 15000);
+        }, 120000);
     }
 
     subscribeEvents(eventType: string) {

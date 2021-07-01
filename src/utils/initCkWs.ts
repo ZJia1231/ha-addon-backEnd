@@ -42,14 +42,15 @@ export default async () => {
         apikey,
         region,
         userAgent: 'app',
+        reqTimeout: 30000,
     });
     console.log('Jia ~ file: initCkWs.ts ~ line 29 ~ at', at);
 
     coolKitWs.on('message', async (ws) => {
         try {
             const { type, data } = ws;
-            console.log('receive CKWS msg:type-->', data);
-            console.log('receive CKWS msg:\n', data);
+            console.log('receive CK-WS msg:   type-->', type);
+            console.log('receive CK-WS msg:\n', data);
             if (type === 'message' && data !== 'pong') {
                 const tmp = JSON.parse(data);
                 if (!tmp.deviceid) {
