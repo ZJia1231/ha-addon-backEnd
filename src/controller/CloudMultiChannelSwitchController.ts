@@ -8,7 +8,7 @@ import mergeDeviceParams from '../utils/mergeDeviceParams';
 class CloudMultiChannelSwitchController extends CloudDeviceController {
     entityId: string;
     uiid: number;
-    maxChannel!: number;
+    maxChannel: number;
     channelName?: { [key: string]: string };
     params: ICloudMultiChannelSwitchParams;
     updateSwitch!: (switches: ICloudMultiChannelSwitchParams['switches']) => Promise<void>;

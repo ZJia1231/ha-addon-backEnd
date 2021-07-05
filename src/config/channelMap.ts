@@ -14,7 +14,7 @@ const channelMap = new Map<number, number>([
 ]);
 
 const getMaxChannelByUiid = (uiid: number) => {
-    return channelMap.get(uiid)!;
+    return channelMap.get(uiid) || 0;
 };
 
 export { getMaxChannelByUiid };
