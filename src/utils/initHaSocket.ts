@@ -22,6 +22,7 @@ import LanDoubleColorLightController from '../controller/LanDoubleColorLightCont
 import CloudUIID104Controller from '../controller/CloudUIID104Controller';
 import haServiceMap from '../config/haServiceMap';
 import CloudCoverController from '../controller/CloudCoverController';
+import CloudUIID44Controller from '../controller/CloudUIID44Controller';
 
 /**
  * @param {string} entity_id 实体id
@@ -142,6 +143,10 @@ const handleDeviceByEntityId = async (entity_id: string, state: string, res: any
     }
     if (device instanceof CloudCoverController) {
         await device.setCover({ switch: state, setclose: _.get(res, 'service_data.position') });
+    }
+    if (device instanceof CloudUIID44Controller) {
+        const { brightness_pct } = res.service_data;
+        await device.updateLight({ switch: state, brightness: brightness_pct });
     }
 };
 

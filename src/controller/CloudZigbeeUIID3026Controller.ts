@@ -4,6 +4,12 @@ import ICloudDeviceConstructor from '../ts/interface/ICloudDeviceConstructor';
 import { IZigbeeUIID3026Params } from '../ts/interface/IZigbeeDeviceParams';
 import CloudDeviceController from './CloudDeviceController';
 
+/**
+ *
+ * @class CloudZigbeeUIID3026Controller
+ * @extends {CloudDeviceController}
+ * @description ZigBee门磁
+ */
 class CloudZigbeeUIID3026Controller extends CloudDeviceController {
     type: number = 8;
     uiid: number;

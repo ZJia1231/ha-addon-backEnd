@@ -19,10 +19,11 @@ class LanMultiChannelSwitchController extends LanDeviceController {
     channelName?: { [key: string]: string };
     setSwitch!: (switches: TypeSwitch[]) => Promise<0 | -1>;
     updateState!: (switches: TypeSwitches) => Promise<any>;
-    constructor(props: ILanDeviceConstructor) {
+    constructor(props: ILanDeviceConstructor & { maxChannel?: number }) {
         const { deviceId } = props;
         super(props);
         this.entityId = `switch.${deviceId}`;
+        this.maxChannel = props.maxChannel;
     }
 }
 

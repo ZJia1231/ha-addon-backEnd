@@ -9,7 +9,7 @@ export default (source: any, params: any) => {
         // Muti-Switch
         if (Array.isArray(objVal) && Array.isArray(srcVal)) {
             for (let item of srcVal) {
-                if (item.outlet) {
+                if (item.outlet !== undefined) {
                     objVal[item.outlet] = item;
                 }
             }

@@ -1,3 +1,30 @@
+# DevelopHelper
+
+## 项目目录
+
+```
+├─data 持久化存储的数据
+├─dist 打包文件
+├─docs
+├─node_modules
+│  ├─coolkit-api
+│  └─coolkit-ws
+├─src
+│  ├─apis
+│  ├─class
+│  ├─config
+│  ├─controller 设备种类文件
+│  ├─middleware
+│  ├─pages 前端打包好的文件
+│  ├─route
+│  ├─services
+│  ├─ts 接口声明文件
+│  │  ├─interface
+│  │  └─type
+│  └─utils
+└─test
+```
+
 ## 添加设备流程
 
 ### CLOUD 设备

@@ -16,7 +16,7 @@ import eventBus from './eventBus';
 import CloudDualR3Controller from '../controller/CloudDualR3Controller';
 import LanDualR3Controller from '../controller/LanDualR3Controller';
 import CloudDW2WiFiController from '../controller/CloudDW2WiFiController';
-import { ICloudCoverParams, ICloudDW2Params } from '../ts/interface/ICloudDeviceParams';
+import { ICloudCoverParams, ICloudDW2Params, ICloudUIID44Params } from '../ts/interface/ICloudDeviceParams';
 import CloudUIID104Controller from '../controller/CloudUIID104Controller';
 import { IZigbeeUIID1000Params, IZigbeeUIID1770Params, IZigbeeUIID2026Params, IZigbeeUIID3026Params } from '../ts/interface/IZigbeeDeviceParams';
 import CloudZigbeeUIID1770Controller from '../controller/CloudZigbeeUIID1770Controller';
@@ -27,6 +27,7 @@ import CloudCoverController from '../controller/CloudCoverController';
 import LanTandHModificationController from '../controller/LanTandHModificationController';
 import CloudRFBridgeController from '../controller/CloudRFBridgeController';
 import TypeCkRFBridgeParams from '../ts/type/TypeCkRFBridgeParams';
+import CloudUIID44Controller from '../controller/CloudUIID44Controller';
 
 const apikey = getDataSync('user.json', ['user', 'apikey']);
 
@@ -155,6 +156,10 @@ export default async () => {
                         // todo
                         const ids = device.parseCkData2Ha(tmp.params as TypeCkRFBridgeParams);
                         device.updateState(ids);
+                    }
+                    if (device instanceof CloudUIID44Controller) {
+                        console.log('接收到单路调光器的信息：', tmp.params);
+                        device.updateState(tmp.params);
                     }
 
                     eventBus.emit('update-controller', data);

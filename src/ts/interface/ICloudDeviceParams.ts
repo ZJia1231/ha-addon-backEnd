@@ -106,6 +106,11 @@ export interface ICloudDimmingParams extends ICloudDeviceParams {
     switch: string;
     bright: number;
 }
+export interface ICloudUIID44Params extends ICloudDeviceParams {
+    switch: string;
+    brightness: number;
+    mode: number;
+}
 
 export interface ICloudMultiChannelSwitchParams extends ICloudDeviceParams {
     lock: number;
@@ -325,12 +330,11 @@ export interface ICloudRFBridgeParams extends ICloudDeviceParams {
     [rfTrig: string]: any;
 }
 
-
 export interface ICloudCoverParams extends ICloudDeviceParams {
     sledOnline: string;
     ssid: string;
     bssid: string;
-    
+
     switch: string;
     setclose: number;
 }

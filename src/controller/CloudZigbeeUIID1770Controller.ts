@@ -3,7 +3,12 @@ import { updateStates } from '../apis/restApi';
 import ICloudDeviceConstructor from '../ts/interface/ICloudDeviceConstructor';
 import { IZigbeeUIID1770Params } from '../ts/interface/IZigbeeDeviceParams';
 import CloudDeviceController from './CloudDeviceController';
-
+/**
+ *
+ * @class CloudZigbeeUIID1770Controller
+ * @extends {CloudDeviceController}
+ * @description ZigBee温湿度传感器
+ */
 class CloudZigbeeUIID1770Controller extends CloudDeviceController {
     type: number = 8;
     uiid: number;

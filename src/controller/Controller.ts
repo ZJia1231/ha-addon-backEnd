@@ -11,6 +11,7 @@ import {
     ICloudRGBBulbParams,
     ICloudRGBLightStripParams,
     ICloudSwitchParams,
+    ICloudUIID44Params,
     IDoubleColorLightParams,
     ITemperatureAndHumidityModificationParams,
     IUIID104Params,
@@ -50,6 +51,7 @@ import mergeDeviceParams from '../utils/mergeDeviceParams';
 import CloudCoverController from './CloudCoverController';
 import CloudRFBridgeController from './CloudRFBridgeController';
 import LanRFBridgeController from './LanRFBridgeController';
+import CloudUIID44Controller from './CloudUIID44Controller';
 
 class Controller {
     static deviceMap: Map<string, DiyDeviceController | CloudDeviceController | LanDeviceController> = new Map();
@@ -123,7 +125,7 @@ class Controller {
             }
 
             // 如果设备之前是Cloud设备,需要保持设备的位置不变,防止前端页面跳动
-            let oldDeviceParams = {};
+            let oldDeviceParams: any = {};
             if (old instanceof CloudDeviceController) {
                 oldDeviceParams = {
                     index: old.index,
@@ -132,10 +134,25 @@ class Controller {
                     deviceName: old.deviceName,
                     extra: old.extra,
                     params: old.params,
+                    uiid: old.uiid,
                 };
+            }
+            if (old instanceof CloudMultiChannelSwitchController) {
+                oldDeviceParams.maxChannel = old.maxChannel;
             }
 
             if (lanType === 'plug') {
+                // ! uiid138的设备type为plug，但数据格式为多通道设备 -_-
+                if (oldDeviceParams.uiid === 138) {
+                    // const lanDevice = new LanMultiChannelSwitchController({
+                    //     ...params,
+                    //     ...oldDeviceParams,
+                    //     disabled,
+                    // });
+                    // Controller.deviceMap.set(id, lanDevice);
+                    // return lanDevice;
+                    return null;
+                }
                 const lanDevice = new LanSwitchController({
                     ...params,
                     ...oldDeviceParams,
@@ -146,6 +163,7 @@ class Controller {
             }
 
             if (lanType === 'strip') {
+                let mutiSwitch = {};
                 const lanDevice = new LanMultiChannelSwitchController({
                     ...params,
                     ...oldDeviceParams,
@@ -338,6 +356,23 @@ class Controller {
             //     Controller.deviceMap.set(id, dimming);
             //     return dimming;
             // }
+            // 单路调光开关
+            if (data.extra.uiid === 44) {
+                const tmp = data as ICloudDevice<ICloudUIID44Params>;
+                const dimming = new CloudUIID44Controller({
+                    deviceId: tmp.deviceid,
+                    devicekey: tmp.devicekey,
+                    deviceName: tmp.name,
+                    apikey: tmp.apikey,
+                    extra: tmp.extra,
+                    params: tmp.params,
+                    online: tmp.online,
+                    disabled,
+                    index: _index,
+                });
+                Controller.deviceMap.set(id, dimming);
+                return dimming;
+            }
             // RGB灯带
             if (data.extra.uiid === 59) {
                 const tmp = data as ICloudDevice<ICloudRGBLightStripParams>;

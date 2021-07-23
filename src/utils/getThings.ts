@@ -19,7 +19,7 @@ import LanDualR3Controller from '../controller/LanDualR3Controller';
 import LanTandHModificationController from '../controller/LanTandHModificationController';
 import LanPowerDetectionSwitchController from '../controller/LanPowerDetectionSwitchController';
 import CloudDW2WiFiController from '../controller/CloudDW2WiFiController';
-import { ICloudCoverParams, ICloudDW2Params } from '../ts/interface/ICloudDeviceParams';
+import { ICloudCoverParams, ICloudDW2Params, ICloudUIID44Params } from '../ts/interface/ICloudDeviceParams';
 import LanDoubleColorLightController from '../controller/LanDoubleColorLightController';
 import CloudUIID104Controller from '../controller/CloudUIID104Controller';
 import { IZigbeeUIID1000Params, IZigbeeUIID1770Params, IZigbeeUIID2026Params, IZigbeeUIID3026Params } from '../ts/interface/IZigbeeDeviceParams';
@@ -30,6 +30,8 @@ import CloudZigbeeUIID1000Controller from '../controller/CloudZigbeeUIID1000Cont
 import CloudCoverController from '../controller/CloudCoverController';
 import CloudRFBridgeController from '../controller/CloudRFBridgeController';
 import LanRFBridgeController from '../controller/LanRFBridgeController';
+import { unsupportedLanModeUiidSet } from '../config/uiid';
+import CloudUIID44Controller from '../controller/CloudUIID44Controller';
 
 // 获取设备并同步到HA
 export default async () => {
@@ -51,7 +53,7 @@ export default async () => {
                     continue;
                 }
                 // 如果设备已经存在并且是Lan设备就添加该设备的deviceKey
-                if (old instanceof LanDeviceController) {
+                if (old instanceof LanDeviceController && !unsupportedLanModeUiidSet.has(extra.uiid)) {
                     old.devicekey = devicekey;
                     old.selfApikey = apikey;
                     old.deviceName = name;
@@ -196,6 +198,9 @@ export default async () => {
                 }
                 if (device instanceof CloudRFBridgeController) {
                     !device.disabled && device.updateState();
+                }
+                if (device instanceof CloudUIID44Controller) {
+                    !device.disabled && device.updateState(params as ICloudUIID44Params);
                 }
             }
         }

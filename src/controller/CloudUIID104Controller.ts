@@ -7,6 +7,12 @@ import _ from 'lodash';
 import { TypeHaRgbLightParams } from '../ts/type/TypeHaLightParams';
 import { rbgLEDBulbEffectList, rbgLEDBulbLtypeMap } from '../config/light';
 import mergeDeviceParams from '../utils/mergeDeviceParams';
+/**
+ *
+ * @class CloudUIID104Controller
+ * @extends {CloudDeviceController}
+ * @description RGB五色灯
+ */
 class CloudUIID104Controller extends CloudDeviceController {
     disabled: boolean;
     entityId: string;

@@ -28,6 +28,7 @@ import { updateDiyPulseAPI, updateDiySledOnlineAPI, updateDiyStartupAPI, updateD
 import LanPowerDetectionSwitchController from '../controller/LanPowerDetectionSwitchController';
 import LanRFBridgeController from '../controller/LanRFBridgeController';
 import CloudRFBridgeController from '../controller/CloudRFBridgeController';
+import CloudUIID44Controller from '../controller/CloudUIID44Controller';
 
 const mdns = initMdns();
 
@@ -155,7 +156,7 @@ const updateDeviceName = async (req: Request, res: Response) => {
             });
         }
     } catch (err) {
-        console.log("Jia ~ file: devices.ts ~ line 159 ~ updateDeviceName ~ err", err);
+        console.log('Jia ~ file: devices.ts ~ line 159 ~ updateDeviceName ~ err', err);
         res.json({
             error: 500,
             data: null,
@@ -221,7 +222,7 @@ const updateChannelName = async (req: Request, res: Response) => {
             data: null,
         });
     } catch (err) {
-        console.log("Jia ~ file: devices.ts ~ line 225 ~ updateChannelName ~ err", err);
+        console.log('Jia ~ file: devices.ts ~ line 225 ~ updateChannelName ~ err', err);
         res.json({
             error: 500,
             data: null,
@@ -278,6 +279,9 @@ const proxy2ws = async (req: Request, res: Response) => {
             ) {
                 // 同步到HA
                 device.updateState(device.params!.switches);
+            }
+            if (device instanceof CloudUIID44Controller) {
+                device.updateState(device.params);
             }
         } else {
             res.json({

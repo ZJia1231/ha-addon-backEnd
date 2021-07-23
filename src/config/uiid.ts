@@ -18,6 +18,12 @@ const multiChannelSwitchUiidSet = new Set<number>([
     112, // 单通道开关微波雷达版
     113, // 双通道开关微波雷达版
     114, // 三通道开关微波雷达版
+    138, // MiniR3
 ]);
 
-export { switchUiidSet, multiChannelSwitchUiidSet };
+// 有局域网功能但不支持的设备
+const unsupportedLanModeUiidSet = new Set<number>([
+    138, // MiniR3
+]);
+
+export { switchUiidSet, multiChannelSwitchUiidSet, unsupportedLanModeUiidSet };
