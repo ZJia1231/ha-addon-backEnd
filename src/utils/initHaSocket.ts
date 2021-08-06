@@ -23,6 +23,8 @@ import CloudUIID104Controller from '../controller/CloudUIID104Controller';
 import haServiceMap from '../config/haServiceMap';
 import CloudCoverController from '../controller/CloudCoverController';
 import CloudUIID44Controller from '../controller/CloudUIID44Controller';
+import CloudUIID34Controller from '../controller/CloudUIID34Controller';
+import LanUIID34Controller from '../controller/LanUIID34Controller';
 
 /**
  * @param {string} entity_id 实体id
@@ -39,12 +41,12 @@ const handleDeviceByEntityId = async (entity_id: string, state: string, res: any
     }
 
     // LAN
-    if (device instanceof LanSwitchController) {
+    else if (device instanceof LanSwitchController) {
         await device.setSwitch(state);
     }
 
     // LAN
-    if (device instanceof LanMultiChannelSwitchController || device instanceof LanDualR3Controller) {
+    else if (device instanceof LanMultiChannelSwitchController || device instanceof LanDualR3Controller) {
         if (mutiSwitchState) {
             await device.setSwitch(mutiSwitchState);
         } else {
@@ -58,15 +60,15 @@ const handleDeviceByEntityId = async (entity_id: string, state: string, res: any
         }
     }
     // lan 恒温恒湿
-    if (device instanceof LanTandHModificationController) {
+    else if (device instanceof LanTandHModificationController) {
         device.setSwitch(state);
     }
     // lan 单通道插座增强版（用电统计）
-    if (device instanceof LanPowerDetectionSwitchController) {
+    else if (device instanceof LanPowerDetectionSwitchController) {
         device.setSwitch(state);
     }
     // lan 双色灯球
-    if (device instanceof LanDoubleColorLightController) {
+    else if (device instanceof LanDoubleColorLightController) {
         device.updateLight(
             device.parseHaData2Ck({
                 state,
@@ -74,35 +76,34 @@ const handleDeviceByEntityId = async (entity_id: string, state: string, res: any
             })
         );
     }
+    // lan 风扇灯
+    else if (device instanceof LanUIID34Controller) {
+        const params = device.parseHaData2Lan({ state, ...res.service_data });
+        params.fan && (await device.setFan(params));
+        params.light && (await device.toggleLight(params));
+    }
 
     // Cloud
-    if (device instanceof CloudSwitchController) {
+    else if (device instanceof CloudSwitchController) {
         await device.updateSwitch(state);
-    }
-    if (device instanceof CloudRGBBulbController) {
+    } else if (device instanceof CloudRGBBulbController) {
         await device.updateLight(
             device.parseHaData2Ck({
                 state,
                 ...res.service_data,
             })
         );
-    }
-    if (device instanceof CloudDimmingController) {
+    } else if (device instanceof CloudDimmingController) {
         const { brightness_pct } = res.service_data;
         await device.updateLight({
             switch: state,
             bright: brightness_pct,
         });
-    }
-    if (device instanceof CloudPowerDetectionSwitchController) {
+    } else if (device instanceof CloudPowerDetectionSwitchController) {
         await device.updateSwitch(state);
-    }
-
-    if (device instanceof CloudTandHModificationController) {
+    } else if (device instanceof CloudTandHModificationController) {
         await device.updateSwitch(state);
-    }
-
-    if (device instanceof CloudMultiChannelSwitchController || device instanceof CloudDualR3Controller) {
+    } else if (device instanceof CloudMultiChannelSwitchController || device instanceof CloudDualR3Controller) {
         if (mutiSwitchState) {
             await device.updateSwitch(mutiSwitchState);
         } else {
@@ -114,39 +115,34 @@ const handleDeviceByEntityId = async (entity_id: string, state: string, res: any
                 },
             ]);
         }
-    }
-
-    if (device instanceof CloudRGBLightStripController) {
+    } else if (device instanceof CloudRGBLightStripController) {
         const params = device.parseHaData2Ck({
             state,
             ...res.service_data,
         });
         device.updateLight(params);
-    }
-
-    if (device instanceof CloudDoubleColorBulbController) {
+    } else if (device instanceof CloudDoubleColorBulbController) {
         await device.updateLight(
             device.parseHaData2Ck({
                 state,
                 ...res.service_data,
             })
         );
-    }
-
-    if (device instanceof CloudUIID104Controller) {
+    } else if (device instanceof CloudUIID104Controller) {
         await device.updateLight(
             device.parseHaData2Ck({
                 state,
                 ...res.service_data,
             })
         );
-    }
-    if (device instanceof CloudCoverController) {
+    } else if (device instanceof CloudCoverController) {
         await device.setCover({ switch: state, setclose: _.get(res, 'service_data.position') });
-    }
-    if (device instanceof CloudUIID44Controller) {
+    } else if (device instanceof CloudUIID44Controller) {
         const { brightness_pct } = res.service_data;
         await device.updateLight({ switch: state, brightness: brightness_pct });
+    } else if (device instanceof CloudUIID34Controller) {
+        const switches = device.parseHaData2Ck({ state, ...res.service_data });
+        await device.updateSwitch(switches);
     }
 };
 

@@ -36,6 +36,7 @@
 5. 在`proxy2ws`接口添加设备接收到 WebUI 参数后的操作逻辑
 6. 在`initHaSocket.ts`中添加接收到 Ha 参数后的操作逻辑
 7. 在`formatDevice.ts`中添加格式化设备参数的相关逻辑
+8. 在`removeEntityByDevice.ts`中添加禁用实体的相关逻辑
 
 ---
 
@@ -49,6 +50,7 @@
 6. 在`updateLanDevice`接口添加设备接收到 WebUI 参数后的操作逻辑
 7. 在`initHaSocket.ts`中添加接收到 Ha 参数后的操作逻辑
 8. 在`formatDevice.ts`中添加格式化设备参数的相关逻辑
+9. 在`removeEntityByDevice.ts`中添加禁用实体的相关逻辑
 
 ---
 

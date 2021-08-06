@@ -16,6 +16,7 @@ import LanTandHModificationController from '../controller/LanTandHModificationCo
 import LanDoubleColorLightController from '../controller/LanDoubleColorLightController';
 import { ITemperatureAndHumidityModificationParams } from '../ts/interface/ICloudDeviceParams';
 import LanRFBridgeController from '../controller/LanRFBridgeController';
+import LanUIID34Controller from '../controller/LanUIID34Controller';
 
 export default () => {
     return Mdns.createInstance({
@@ -71,6 +72,14 @@ export default () => {
                 const decryptData = device.parseEncryptedData();
                 if (decryptData) {
                     device.updateState(device.parseMdnsData2Ha(decryptData));
+                }
+            }
+            if (device instanceof LanUIID34Controller) {
+                const decryptData = device.parseEncryptedData();
+                if (decryptData) {
+                    const switches = device.parseMdnsData2Ck(decryptData);
+                    device.updateState(switches);
+                    device.params = mergeDeviceParams(device.params, switches);
                 }
             }
             // 触发sse

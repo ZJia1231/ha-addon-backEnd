@@ -19,7 +19,7 @@ import LanDualR3Controller from '../controller/LanDualR3Controller';
 import LanTandHModificationController from '../controller/LanTandHModificationController';
 import LanPowerDetectionSwitchController from '../controller/LanPowerDetectionSwitchController';
 import CloudDW2WiFiController from '../controller/CloudDW2WiFiController';
-import { ICloudCoverParams, ICloudDW2Params, ICloudUIID44Params } from '../ts/interface/ICloudDeviceParams';
+import { ICloudCoverParams, ICloudDW2Params, ICloudUIID34Params, ICloudUIID44Params } from '../ts/interface/ICloudDeviceParams';
 import LanDoubleColorLightController from '../controller/LanDoubleColorLightController';
 import CloudUIID104Controller from '../controller/CloudUIID104Controller';
 import { IZigbeeUIID1000Params, IZigbeeUIID1770Params, IZigbeeUIID2026Params, IZigbeeUIID3026Params } from '../ts/interface/IZigbeeDeviceParams';
@@ -32,6 +32,8 @@ import CloudRFBridgeController from '../controller/CloudRFBridgeController';
 import LanRFBridgeController from '../controller/LanRFBridgeController';
 import { unsupportedLanModeUiidSet } from '../config/uiid';
 import CloudUIID44Controller from '../controller/CloudUIID44Controller';
+import CloudUIID34Controller from '../controller/CloudUIID34Controller';
+import LanUIID34Controller from '../controller/LanUIID34Controller';
 
 // 获取设备并同步到HA
 export default async () => {
@@ -97,6 +99,13 @@ export default async () => {
                         const decryptData = old.parseEncryptedData() as any;
                         if (decryptData) {
                             old.updateState(decryptData.switch);
+                        }
+                    }
+                    if (old instanceof LanUIID34Controller) {
+                        const decryptData = old.parseEncryptedData() as any;
+                        if (decryptData) {
+                            const switches = old.parseMdnsData2Ck(decryptData);
+                            old.updateState(switches);
                         }
                     }
                     if (old instanceof LanRFBridgeController) {
@@ -201,6 +210,9 @@ export default async () => {
                 }
                 if (device instanceof CloudUIID44Controller) {
                     !device.disabled && device.updateState(params as ICloudUIID44Params);
+                }
+                if (device instanceof CloudUIID34Controller) {
+                    !device.disabled && device.updateState(params.switches);
                 }
             }
         }

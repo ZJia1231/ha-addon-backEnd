@@ -54,7 +54,7 @@ LanMultiChannelSwitchController.prototype.updateState = async function (switches
         return;
     }
     switches.forEach(({ outlet, switch: status }) => {
-        const name = this.channelName ? this.channelName[outlet] : outlet + 1;
+        const name = _.get(this, ['channelName', outlet], outlet + 1);
 
         let state = status;
         if (!this.online) {

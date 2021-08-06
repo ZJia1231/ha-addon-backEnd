@@ -3,6 +3,7 @@ import CloudDeviceController from '../controller/CloudDeviceController';
 import CloudDualR3Controller from '../controller/CloudDualR3Controller';
 import CloudMultiChannelSwitchController from '../controller/CloudMultiChannelSwitchController';
 import CloudTandHModificationController from '../controller/CloudTandHModificationController';
+import CloudUIID34Controller from '../controller/CloudUIID34Controller';
 import CloudZigbeeUIID1000Controller from '../controller/CloudZigbeeUIID1000Controller';
 import CloudZigbeeUIID1770Controller from '../controller/CloudZigbeeUIID1770Controller';
 import CloudZigbeeUIID2026Controller from '../controller/CloudZigbeeUIID2026Controller';
@@ -12,6 +13,7 @@ import LanDeviceController from '../controller/LanDeviceController';
 import LanDualR3Controller from '../controller/LanDualR3Controller';
 import LanMultiChannelSwitchController from '../controller/LanMultiChannelSwitchController';
 import LanTandHModificationController from '../controller/LanTandHModificationController';
+import LanUIID34Controller from '../controller/LanUIID34Controller';
 
 export default (device: LanDeviceController | DiyDeviceController | CloudDeviceController) => {
     console.log('try to remove entity from Ha', device.entityId);
@@ -47,6 +49,10 @@ export default (device: LanDeviceController | DiyDeviceController | CloudDeviceC
     } else if (device instanceof CloudZigbeeUIID2026Controller || device instanceof CloudZigbeeUIID3026Controller) {
         removeStates(device.entityId);
         removeStates(`sensor.${device.deviceId}_battery`);
+        return;
+    } else if (device instanceof CloudUIID34Controller || device instanceof LanUIID34Controller) {
+        removeStates(device.entityId);
+        removeStates(`fan.${device.deviceId}`);
         return;
     }
     // todo

@@ -154,4 +154,70 @@ const updateLanLight = async (params: { ip: string; port: number; deviceid: stri
     return await res;
 };
 
-export { setSwitch, setSwitches, getLanDeviceParams, updateLanLight, transmitRfChlAPI };
+/**
+ * @description 开灯
+ * @description 目前仅针对UIID 34 风扇灯
+ */
+const toggleLanLightAPI = async (params: { ip: string; port: number; deviceid: string; devicekey: string; data: string; selfApikey: string }) => {
+    const { ip, port, deviceid, devicekey, data, selfApikey } = params;
+    const iv = `abcdef${Date.now()}abcdef`.slice(0, 16);
+    const reqData = {
+        iv: AuthUtil.encryptionBase64(iv),
+        deviceid,
+        selfApikey,
+        encrypt: true,
+        sequence: `${Date.now()}`,
+        data: AuthUtil.encryptionData({
+            iv,
+            data,
+            key: devicekey,
+        }),
+    };
+    let res = axios.post(`http://${ip}:${port}/zeroconf/light`, reqData);
+
+    res.catch(async (e) => {
+        console.log('控制局域网灯设备出错', reqData);
+        return await coolKitWs.updateThing({
+            deviceid,
+            ownerApikey: selfApikey,
+            params: JSON.parse(data),
+        });
+    });
+
+    return await res;
+};
+
+/**
+ * @description 调节风扇档位
+ * @description 目前仅针对UIID 34 风扇灯
+ */
+const setFanAPI = async (params: { ip: string; port: number; deviceid: string; devicekey: string; data: string; selfApikey: string }) => {
+    const { ip, port, deviceid, devicekey, data, selfApikey } = params;
+    const iv = `abcdef${Date.now()}abcdef`.slice(0, 16);
+    const reqData = {
+        iv: AuthUtil.encryptionBase64(iv),
+        deviceid,
+        selfApikey,
+        encrypt: true,
+        sequence: `${Date.now()}`,
+        data: AuthUtil.encryptionData({
+            iv,
+            data,
+            key: devicekey,
+        }),
+    };
+    let res = axios.post(`http://${ip}:${port}/zeroconf/fan`, reqData);
+
+    res.catch(async (e) => {
+        console.log('控制局域网灯设备出错', reqData);
+        return await coolKitWs.updateThing({
+            deviceid,
+            ownerApikey: selfApikey,
+            params: JSON.parse(data),
+        });
+    });
+
+    return await res;
+};
+
+export { setSwitch, setSwitches, getLanDeviceParams, updateLanLight, transmitRfChlAPI, toggleLanLightAPI, setFanAPI };

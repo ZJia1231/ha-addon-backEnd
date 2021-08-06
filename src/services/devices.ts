@@ -29,6 +29,8 @@ import LanPowerDetectionSwitchController from '../controller/LanPowerDetectionSw
 import LanRFBridgeController from '../controller/LanRFBridgeController';
 import CloudRFBridgeController from '../controller/CloudRFBridgeController';
 import CloudUIID44Controller from '../controller/CloudUIID44Controller';
+import CloudUIID34Controller from '../controller/CloudUIID34Controller';
+import LanUIID34Controller from '../controller/LanUIID34Controller';
 
 const mdns = initMdns();
 
@@ -264,14 +266,12 @@ const proxy2ws = async (req: Request, res: Response) => {
             ) {
                 // 同步到HA
                 device.updateState(device.params!.switch);
-            }
-            if (device instanceof CloudPowerDetectionSwitchController || device instanceof LanPowerDetectionSwitchController) {
+            } else if (device instanceof CloudPowerDetectionSwitchController || device instanceof LanPowerDetectionSwitchController) {
                 // 同步到HA
                 device.updateState({
                     status: device.params!.switch,
                 });
-            }
-            if (
+            } else if (
                 device instanceof CloudMultiChannelSwitchController ||
                 device instanceof LanMultiChannelSwitchController ||
                 device instanceof CloudDualR3Controller ||
@@ -279,8 +279,9 @@ const proxy2ws = async (req: Request, res: Response) => {
             ) {
                 // 同步到HA
                 device.updateState(device.params!.switches);
-            }
-            if (device instanceof CloudUIID44Controller) {
+            } else if (device instanceof CloudUIID34Controller) {
+                device.updateState(device.params.switches);
+            } else if (device instanceof CloudUIID44Controller) {
                 device.updateState(device.params);
             }
         } else {
@@ -421,8 +422,11 @@ const updateLanDevice = async (req: Request, res: Response) => {
                 result = await device.setSwitch(params.switch);
             }
             if (device instanceof LanRFBridgeController) {
-                console.log('Jia ~ file: devices.ts ~ line 395 ~ updateLanDevice ~ params', params);
                 result = await device.transmitRfChl(params);
+            }
+            if (device instanceof LanUIID34Controller) {
+                params.fan && (result = await device.setFan(params));
+                params.light && (result = await device.toggleLight(params));
             }
 
             if (result === 0) {

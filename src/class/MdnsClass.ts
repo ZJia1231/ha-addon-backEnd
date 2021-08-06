@@ -5,6 +5,7 @@ import TypeDevice from '../ts/type/TypeMdnsDevice';
 import TypeDiyDevice from '../ts/type/TypeMdnsDiyDevice';
 import TypeLanDevice from '../ts/type/TypeMdnsLanDevice';
 import Controller from '../controller/Controller';
+import ELanType from '../ts/enum/ELanType';
 type TypeQueryParams = {
     questions: {
         name: string;
@@ -102,67 +103,67 @@ export default class Mdns {
                     });
                     callback && callback(diyDevice);
                 }
-                if (tmp.txt?.type === 'plug') {
+                if (tmp.txt?.type === ELanType.Plug) {
                     console.log('Found Lan Switch');
                     const lanDevice = Controller.setDevice({
                         id: key,
                         data: tmp as TypeLanDevice,
                         type: 2,
-                        lanType: 'plug',
+                        lanType: ELanType.Plug,
                     });
                     callback && callback(lanDevice);
                 }
-                if (tmp.txt?.type === 'strip') {
+                if (tmp.txt?.type === ELanType.Strip) {
                     console.log('Found Lan Multi-Switch');
                     const lanDevice = Controller.setDevice({
                         id: key,
                         data: tmp as TypeLanDevice,
                         type: 2,
-                        lanType: 'strip',
+                        lanType: ELanType.Strip,
                     });
                     callback && callback(lanDevice);
                 }
-                if (tmp.txt?.type === 'multifun_switch') {
+                if (tmp.txt?.type === ELanType.MultifunSwitch) {
                     console.log('Found Lan DualR3');
                     const dualR3 = Controller.setDevice({
                         id: key,
                         data: tmp as TypeLanDevice,
                         type: 2,
-                        lanType: 'multifun_switch',
+                        lanType: ELanType.MultifunSwitch,
                     });
                     callback && callback(dualR3);
                 }
-                if (tmp.txt?.type === 'enhanced_plug') {
+                if (tmp.txt?.type === ELanType.EnhancedPlug) {
                     console.log('Found Lan 单通道插座增强版（用电统计）');
                     const device = Controller.setDevice({
                         id: key,
                         data: tmp as TypeLanDevice,
                         type: 2,
-                        lanType: 'enhanced_plug',
+                        lanType: ELanType.EnhancedPlug,
                     });
                     callback && callback(device);
                 }
-                if (tmp.txt?.type === 'th_plug') {
+                if (tmp.txt?.type === ELanType.THPlug) {
                     console.log('Found Lan 单通道温湿度控制器');
                     const device = Controller.setDevice({
                         id: key,
                         data: tmp as TypeLanDevice,
                         type: 2,
-                        lanType: 'th_plug',
+                        lanType: ELanType.THPlug,
                     });
                     callback && callback(device);
                 }
-                if (tmp.txt?.type === 'rf') {
+                if (tmp.txt?.type === ELanType.RF) {
                     console.log('Found Lan RF-Bridge');
                     const device = Controller.setDevice({
                         id: key,
                         data: tmp as TypeLanDevice,
                         type: 2,
-                        lanType: 'rf',
+                        lanType: ELanType.RF,
                     });
                     callback && callback(device);
                 }
-                if (tmp.txt?.type === 'light') {
+                if (tmp.txt?.type === ELanType.Light) {
                     console.log('Found Lan 双色灯球 or RBG五色灯');
                     // todo 如何区分双色灯跟五色灯
                     // * 目前发现无法通过局域网进行控制
@@ -170,9 +171,19 @@ export default class Mdns {
                     //     id: key,
                     //     data: tmp as TypeLanDevice,
                     //     type: 2,
-                    //     lanType: 'light',
+                    //     lanType: ELanType.Light,
                     // });
                     // callback && callback(device);
+                }
+                if (tmp.txt?.type === ELanType.FanLight) {
+                    console.log('Found Lan 风扇灯');
+                    const device = Controller.setDevice({
+                        id: key,
+                        data: tmp as TypeLanDevice,
+                        type: 2,
+                        lanType: ELanType.FanLight,
+                    });
+                    callback && callback(device);
                 }
             }
         });

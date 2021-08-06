@@ -6,6 +6,7 @@ const switchUiidSet = new Set<number>([
     1256, // Zigbee单通道开关
 ]);
 
+// not include DualR3
 const multiChannelSwitchUiidSet = new Set<number>([
     2, // 双通道插座
     3, // 三通道插座
@@ -19,11 +20,17 @@ const multiChannelSwitchUiidSet = new Set<number>([
     113, // 双通道开关微波雷达版
     114, // 三通道开关微波雷达版
     138, // MiniR3
+    139, // MiniR3
+    140, // MiniR3
+    141, // MiniR3
 ]);
 
 // 有局域网功能但不支持的设备
 const unsupportedLanModeUiidSet = new Set<number>([
     138, // MiniR3
+    139, // MiniR3
+    140, // MiniR3
+    141, // MiniR3
 ]);
 
 export { switchUiidSet, multiChannelSwitchUiidSet, unsupportedLanModeUiidSet };

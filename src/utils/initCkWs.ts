@@ -28,6 +28,7 @@ import LanTandHModificationController from '../controller/LanTandHModificationCo
 import CloudRFBridgeController from '../controller/CloudRFBridgeController';
 import TypeCkRFBridgeParams from '../ts/type/TypeCkRFBridgeParams';
 import CloudUIID44Controller from '../controller/CloudUIID44Controller';
+import CloudUIID34Controller from '../controller/CloudUIID34Controller';
 
 const apikey = getDataSync('user.json', ['user', 'apikey']);
 
@@ -61,26 +62,22 @@ export default async () => {
                 if (tmp.action === 'update') {
                     if (device instanceof CloudSwitchController) {
                         device.updateState(tmp.params.switch);
-                    }
-                    if (device instanceof CloudTandHModificationController || device instanceof LanTandHModificationController) {
+                    } else if (device instanceof CloudTandHModificationController || device instanceof LanTandHModificationController) {
                         const { currentTemperature, currentHumidity, switch: state } = tmp.params as ITandHModificationSocketParams;
                         if (currentHumidity || currentTemperature) {
                             device.updateTandH(currentTemperature!, currentHumidity!);
                         } else if (state) {
                             device.updateState(state);
                         }
-                    }
-                    if (device instanceof CloudRGBBulbController) {
+                    } else if (device instanceof CloudRGBBulbController) {
                         device.updateState(device.parseCkData2Ha(tmp.params));
-                    }
-                    if (device instanceof CloudDimmingController) {
+                    } else if (device instanceof CloudDimmingController) {
                         const { bright, switch: status } = tmp.params;
                         device.updateState({
                             status,
                             bright,
                         });
-                    }
-                    if (device instanceof CloudPowerDetectionSwitchController) {
+                    } else if (device instanceof CloudPowerDetectionSwitchController) {
                         const { current, voltage, power, switch: status } = tmp.params as IPowerDetectionSwitchSocketParams;
                         console.log('接收到功率检查插座的消息->params:', tmp.params);
                         device.updateState({
@@ -89,75 +86,65 @@ export default async () => {
                             voltage,
                             power,
                         });
-                    }
-                    if (device instanceof CloudMultiChannelSwitchController) {
+                    } else if (device instanceof CloudMultiChannelSwitchController) {
                         const { switches } = tmp.params;
                         if (Array.isArray(switches)) {
                             device.updateState(switches);
                         }
-                    }
-                    if (device instanceof CloudRGBLightStripController) {
+                    } else if (device instanceof CloudRGBLightStripController) {
                         console.log('接收到灯带的消息：', tmp.params);
 
                         device.updateState(device.parseCkData2Ha(tmp.params));
-                    }
-                    if (device instanceof CloudDoubleColorBulbController) {
+                    } else if (device instanceof CloudDoubleColorBulbController) {
                         console.log('接收到双色灯的信息：', tmp.params);
                         device.updateState(tmp.params);
-                    }
-                    if (device instanceof CloudUIID104Controller) {
+                    } else if (device instanceof CloudUIID104Controller) {
                         console.log('接收到随调五色灯的信息：', tmp.params);
                         device.updateState(tmp.params);
-                    }
-                    if (device instanceof CloudDualR3Controller || device instanceof LanDualR3Controller) {
+                    } else if (device instanceof CloudDualR3Controller || device instanceof LanDualR3Controller) {
                         console.log('接收到DualR3的信息：', tmp.params);
                         if (tmp.params && tmp.params.switches) {
                             device.updateState(tmp.params.switches);
                         }
-                    }
-                    if (device instanceof CloudDW2WiFiController) {
+                    } else if (device instanceof CloudDW2WiFiController) {
                         console.log('接收到DW2的信息：', tmp.params);
                         if (tmp.params) {
                             device.updateState(tmp.params as ICloudDW2Params);
                         }
-                    }
-                    if (device instanceof CloudZigbeeUIID1000Controller) {
+                    } else if (device instanceof CloudZigbeeUIID1000Controller) {
                         console.log('接收到Zigbee无线按键的信息：', tmp.params);
                         if (tmp.params) {
                             device.updateState(tmp.params as IZigbeeUIID1000Params);
                         }
-                    }
-                    if (device instanceof CloudZigbeeUIID1770Controller) {
+                    } else if (device instanceof CloudZigbeeUIID1770Controller) {
                         console.log('接收到Zigbee温湿度传感器的信息：', tmp.params);
                         if (tmp.params) {
                             device.updateState(tmp.params as IZigbeeUIID1770Params);
                         }
-                    }
-                    if (device instanceof CloudZigbeeUIID2026Controller) {
+                    } else if (device instanceof CloudZigbeeUIID2026Controller) {
                         console.log('接收到Zigbee移动传感器的信息：', tmp.params);
                         if (tmp.params) {
                             device.updateState(tmp.params as IZigbeeUIID2026Params);
                         }
-                    }
-                    if (device instanceof CloudZigbeeUIID3026Controller) {
+                    } else if (device instanceof CloudZigbeeUIID3026Controller) {
                         console.log('接收到Zigbee门磁的信息：', tmp.params);
                         if (tmp.params) {
                             device.updateState(tmp.params as IZigbeeUIID3026Params);
                         }
-                    }
-                    if (device instanceof CloudCoverController) {
+                    } else if (device instanceof CloudCoverController) {
                         console.log('接收到电动窗帘的信息：', tmp.params);
                         if (tmp.params) {
                             device.updateState(tmp.params as ICloudCoverParams);
                         }
-                    }
-                    if (device instanceof CloudRFBridgeController) {
+                    } else if (device instanceof CloudRFBridgeController) {
                         console.log('接收到RFBridge的信息：', tmp.params);
                         // todo
                         const ids = device.parseCkData2Ha(tmp.params as TypeCkRFBridgeParams);
                         device.updateState(ids);
-                    }
-                    if (device instanceof CloudUIID44Controller) {
+                    } else if (device instanceof CloudUIID34Controller) {
+                        console.log('接收到风扇灯的信息：', tmp.params);
+                        device.updateState(tmp.params.switches);
+                    } else if (device instanceof CloudUIID44Controller) {
                         console.log('接收到单路调光器的信息：', tmp.params);
                         device.updateState(tmp.params);
                     }

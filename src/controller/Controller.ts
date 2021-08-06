@@ -11,6 +11,7 @@ import {
     ICloudRGBBulbParams,
     ICloudRGBLightStripParams,
     ICloudSwitchParams,
+    ICloudUIID34Params,
     ICloudUIID44Params,
     IDoubleColorLightParams,
     ITemperatureAndHumidityModificationParams,
@@ -32,7 +33,7 @@ import CloudRGBLightStripController from './CloudRGBLightStripController';
 import formatLanDevice from '../utils/formatLanDevice';
 import LanSwitchController from './LanSwitchController';
 import LanMultiChannelSwitchController from './LanMultiChannelSwitchController';
-import { multiChannelSwitchUiidSet, switchUiidSet } from '../config/uiid';
+import { multiChannelSwitchUiidSet, switchUiidSet, unsupportedLanModeUiidSet } from '../config/uiid';
 import CloudDoubleColorBulbController from './CloudDoubleColorBulbController';
 import UnsupportDeviceController from './UnsupportDeviceController';
 import CloudDualR3Controller from './CloudDualR3Controller';
@@ -52,6 +53,9 @@ import CloudCoverController from './CloudCoverController';
 import CloudRFBridgeController from './CloudRFBridgeController';
 import LanRFBridgeController from './LanRFBridgeController';
 import CloudUIID44Controller from './CloudUIID44Controller';
+import CloudUIID34Controller from './CloudUIID34Controller';
+import LanUIID34Controller from './LanUIID34Controller';
+import ELanType from '../ts/enum/ELanType';
 
 class Controller {
     static deviceMap: Map<string, DiyDeviceController | CloudDeviceController | LanDeviceController> = new Map();
@@ -141,18 +145,12 @@ class Controller {
                 oldDeviceParams.maxChannel = old.maxChannel;
             }
 
-            if (lanType === 'plug') {
-                // ! uiid138的设备type为plug，但数据格式为多通道设备 -_-
-                if (oldDeviceParams.uiid === 138) {
-                    // const lanDevice = new LanMultiChannelSwitchController({
-                    //     ...params,
-                    //     ...oldDeviceParams,
-                    //     disabled,
-                    // });
-                    // Controller.deviceMap.set(id, lanDevice);
-                    // return lanDevice;
-                    return null;
-                }
+            if (unsupportedLanModeUiidSet.has(oldDeviceParams.uiid)) {
+                // ! UIID 138~141 (MiniR3)的设备type为plug，但数据格式为多通道设备 -_-||
+                return null;
+            }
+
+            if (lanType === ELanType.Plug) {
                 const lanDevice = new LanSwitchController({
                     ...params,
                     ...oldDeviceParams,
@@ -162,7 +160,7 @@ class Controller {
                 return lanDevice;
             }
 
-            if (lanType === 'strip') {
+            if (lanType === ELanType.Strip) {
                 let mutiSwitch = {};
                 const lanDevice = new LanMultiChannelSwitchController({
                     ...params,
@@ -173,7 +171,7 @@ class Controller {
                 return lanDevice;
             }
 
-            if (lanType === 'multifun_switch') {
+            if (lanType === ELanType.MultifunSwitch) {
                 const lanDevice = new LanDualR3Controller({
                     ...params,
                     ...oldDeviceParams,
@@ -182,7 +180,7 @@ class Controller {
                 Controller.deviceMap.set(id, lanDevice);
                 return lanDevice;
             }
-            if (lanType === 'th_plug') {
+            if (lanType === ELanType.THPlug) {
                 const lanDevice = new LanTandHModificationController({
                     ...params,
                     ...oldDeviceParams,
@@ -191,7 +189,7 @@ class Controller {
                 Controller.deviceMap.set(id, lanDevice);
                 return lanDevice;
             }
-            if (lanType === 'enhanced_plug') {
+            if (lanType === ELanType.EnhancedPlug) {
                 const lanDevice = new LanPowerDetectionSwitchController({
                     ...params,
                     ...oldDeviceParams,
@@ -200,8 +198,17 @@ class Controller {
                 Controller.deviceMap.set(id, lanDevice);
                 return lanDevice;
             }
-            if (lanType === 'rf') {
+            if (lanType === ELanType.RF) {
                 const lanDevice = new LanRFBridgeController({
+                    ...params,
+                    ...oldDeviceParams,
+                    disabled,
+                });
+                Controller.deviceMap.set(id, lanDevice);
+                return lanDevice;
+            }
+            if (lanType === ELanType.FanLight) {
+                const lanDevice = new LanUIID34Controller({
                     ...params,
                     ...oldDeviceParams,
                     disabled,
@@ -339,6 +346,23 @@ class Controller {
                 });
                 Controller.deviceMap.set(id, switchDevice);
                 return switchDevice;
+            }
+            // 风扇灯
+            if (data.extra.uiid === 34) {
+                const tmp = data as ICloudDevice<ICloudUIID34Params>;
+                const fanLight = new CloudUIID34Controller({
+                    deviceId: tmp.deviceid,
+                    devicekey: tmp.devicekey,
+                    deviceName: tmp.name,
+                    apikey: tmp.apikey,
+                    extra: tmp.extra,
+                    params: tmp.params,
+                    online: tmp.online,
+                    disabled,
+                    index: _index,
+                });
+                Controller.deviceMap.set(id, fanLight);
+                return fanLight;
             }
             // // 调光开关
             // if (data.extra.uiid === 36) {

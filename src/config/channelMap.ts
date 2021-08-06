@@ -12,6 +12,9 @@ const channelMap = new Map<number, number>([
     [114, 3], // 三通道开关微波雷达版
     [126, 2], // DualR3
     [138, 1], // MiniR3
+    [139, 2], // MiniR3
+    [140, 3], // MiniR3
+    [141, 4], // MiniR3
 ]);
 
 const getMaxChannelByUiid = (uiid: number) => {
