@@ -5,17 +5,17 @@
 ```
 ├─data 持久化存储的数据
 ├─dist 打包文件
-├─docs
+├─docs 开发指引
 ├─node_modules
-│  ├─coolkit-api
-│  └─coolkit-ws
+│  ├─coolkit-api 私有API请求库
+│  └─coolkit-ws 私有WebSocket库
 ├─src
 │  ├─apis
 │  ├─class
-│  ├─config
+│  ├─config 关键配置项
 │  ├─controller 设备种类文件
 │  ├─middleware
-│  ├─pages 前端打包好的文件
+│  ├─pages 前端打包好的页面文件
 │  ├─route
 │  ├─services
 │  ├─ts 接口声明文件

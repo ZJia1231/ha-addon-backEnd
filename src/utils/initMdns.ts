@@ -38,43 +38,37 @@ export default () => {
                 device.updateState(diyDevice.data?.switch!);
                 // 表示该diy设备在线
                 appendData('diy.json', [diyDevice.id, 'online'], true);
-            }
-            if (device instanceof LanSwitchController || device instanceof LanPowerDetectionSwitchController || device instanceof LanTandHModificationController) {
+            } else if (device instanceof LanSwitchController || device instanceof LanPowerDetectionSwitchController) {
                 const decryptData = device.parseEncryptedData();
                 if (decryptData) {
                     device.updateState(decryptData.switch);
                     device.params = mergeDeviceParams(device.params, decryptData);
                 }
-            }
-            if (device instanceof LanMultiChannelSwitchController || device instanceof LanDualR3Controller) {
+            } else if (device instanceof LanMultiChannelSwitchController || device instanceof LanDualR3Controller) {
                 const decryptData = device.parseEncryptedData();
                 if (decryptData) {
                     device.updateState(decryptData.switches);
                     device.params = mergeDeviceParams(device.params, decryptData);
                 }
-            }
-            if (device instanceof LanTandHModificationController) {
+            } else if (device instanceof LanTandHModificationController) {
                 const decryptData = device.parseEncryptedData() as ITemperatureAndHumidityModificationParams;
                 if (decryptData) {
                     device.updateState(decryptData.switch);
                     device.updateTandH(decryptData.currentTemperature, decryptData.currentHumidity);
                     device.params = mergeDeviceParams(device.params, decryptData);
                 }
-            }
-            if (device instanceof LanDoubleColorLightController) {
+            } else if (device instanceof LanDoubleColorLightController) {
                 const decryptData = device.parseEncryptedData();
                 if (decryptData) {
                     device.updateState(decryptData);
                     device.params = mergeDeviceParams(device.params, decryptData);
                 }
-            }
-            if (device instanceof LanRFBridgeController) {
+            } else if (device instanceof LanRFBridgeController) {
                 const decryptData = device.parseEncryptedData();
                 if (decryptData) {
                     device.updateState(device.parseMdnsData2Ha(decryptData));
                 }
-            }
-            if (device instanceof LanUIID34Controller) {
+            } else if (device instanceof LanUIID34Controller) {
                 const decryptData = device.parseEncryptedData();
                 if (decryptData) {
                     const switches = device.parseMdnsData2Ck(decryptData);

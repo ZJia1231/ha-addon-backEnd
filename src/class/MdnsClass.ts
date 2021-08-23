@@ -102,8 +102,7 @@ export default class Mdns {
                         type: 1,
                     });
                     callback && callback(diyDevice);
-                }
-                if (tmp.txt?.type === ELanType.Plug) {
+                } else if (tmp.txt?.type === ELanType.Plug) {
                     console.log('Found Lan Switch');
                     const lanDevice = Controller.setDevice({
                         id: key,
@@ -112,8 +111,7 @@ export default class Mdns {
                         lanType: ELanType.Plug,
                     });
                     callback && callback(lanDevice);
-                }
-                if (tmp.txt?.type === ELanType.Strip) {
+                } else if (tmp.txt?.type === ELanType.Strip) {
                     console.log('Found Lan Multi-Switch');
                     const lanDevice = Controller.setDevice({
                         id: key,
@@ -122,8 +120,7 @@ export default class Mdns {
                         lanType: ELanType.Strip,
                     });
                     callback && callback(lanDevice);
-                }
-                if (tmp.txt?.type === ELanType.MultifunSwitch) {
+                } else if (tmp.txt?.type === ELanType.MultifunSwitch) {
                     console.log('Found Lan DualR3');
                     const dualR3 = Controller.setDevice({
                         id: key,
@@ -132,8 +129,7 @@ export default class Mdns {
                         lanType: ELanType.MultifunSwitch,
                     });
                     callback && callback(dualR3);
-                }
-                if (tmp.txt?.type === ELanType.EnhancedPlug) {
+                } else if (tmp.txt?.type === ELanType.EnhancedPlug) {
                     console.log('Found Lan 单通道插座增强版（用电统计）');
                     const device = Controller.setDevice({
                         id: key,
@@ -142,8 +138,7 @@ export default class Mdns {
                         lanType: ELanType.EnhancedPlug,
                     });
                     callback && callback(device);
-                }
-                if (tmp.txt?.type === ELanType.THPlug) {
+                } else if (tmp.txt?.type === ELanType.THPlug) {
                     console.log('Found Lan 单通道温湿度控制器');
                     const device = Controller.setDevice({
                         id: key,
@@ -152,8 +147,7 @@ export default class Mdns {
                         lanType: ELanType.THPlug,
                     });
                     callback && callback(device);
-                }
-                if (tmp.txt?.type === ELanType.RF) {
+                } else if (tmp.txt?.type === ELanType.RF) {
                     console.log('Found Lan RF-Bridge');
                     const device = Controller.setDevice({
                         id: key,
@@ -162,8 +156,16 @@ export default class Mdns {
                         lanType: ELanType.RF,
                     });
                     callback && callback(device);
-                }
-                if (tmp.txt?.type === ELanType.Light) {
+                } else if (tmp.txt?.type === ELanType.FanLight) {
+                    console.log('Found Lan 风扇灯');
+                    const device = Controller.setDevice({
+                        id: key,
+                        data: tmp as TypeLanDevice,
+                        type: 2,
+                        lanType: ELanType.FanLight,
+                    });
+                    callback && callback(device);
+                } else if (tmp.txt?.type === ELanType.Light) {
                     console.log('Found Lan 双色灯球 or RBG五色灯');
                     // todo 如何区分双色灯跟五色灯
                     // * 目前发现无法通过局域网进行控制
@@ -174,16 +176,6 @@ export default class Mdns {
                     //     lanType: ELanType.Light,
                     // });
                     // callback && callback(device);
-                }
-                if (tmp.txt?.type === ELanType.FanLight) {
-                    console.log('Found Lan 风扇灯');
-                    const device = Controller.setDevice({
-                        id: key,
-                        data: tmp as TypeLanDevice,
-                        type: 2,
-                        lanType: ELanType.FanLight,
-                    });
-                    callback && callback(device);
                 }
             }
         });

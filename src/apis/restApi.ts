@@ -46,19 +46,6 @@ const removeStates = async (entityId: string) => {
     });
 };
 
-const registerService = async (domain: string, service: string) => {
-    return restRequest({
-        method: 'POST',
-        url: `/api/events/service_registered`,
-        data: {
-            domain,
-            service,
-        },
-    }).catch((e) => {
-        console.log('registerService error: ', domain, ':', service);
-    });
-};
-
 const getAuth = async (clientId: string, code: string) => {
     const res = restRequestWithoutAuth({
         method: 'POST',
@@ -85,4 +72,4 @@ const refreshAuth = async (clientId: string, refreshToken: string) => {
     return await res;
 };
 
-export { getStateByEntityId, updateStates, removeStates, registerService, getAuth, refreshAuth };
+export { getStateByEntityId, updateStates, removeStates, getAuth, refreshAuth };

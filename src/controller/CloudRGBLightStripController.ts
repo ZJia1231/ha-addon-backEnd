@@ -1,11 +1,9 @@
+import _ from 'lodash';
 import CloudDeviceController from './CloudDeviceController';
 import { ICloudRGBLightStripParams } from '../ts/interface/ICloudDeviceParams';
 import ICloudDeviceConstructor from '../ts/interface/ICloudDeviceConstructor';
 import { updateStates } from '../apis/restApi';
 import coolKitWs from 'coolkit-ws';
-import { parseHS2RGB, parseRGB2HS } from '../utils/colorUitl';
-import { IRGBLightStripSocketParams } from '../ts/interface/ICkSocketParams';
-import _ from 'lodash';
 import { effectList, fakeTempList } from '../config/light';
 import { TypeHaRgbLightParams } from '../ts/type/TypeHaLightParams';
 

@@ -13,9 +13,6 @@ import initHaSocket from './utils/initHaSocket';
 import initCkApi from './utils/initCkApi';
 import { appId, appSecret } from './config/app';
 import { debugMode } from './config/config';
-import sleep from './utils/sleep';
-import serviceRegistered from './utils/serviceRegistered';
-import generateLovelace from './utils/generateLovelace';
 import redirectToAuth from './middleware/redirectToAuth';
 import AuthClass from './class/AuthClass';
 import eventBus from './utils/eventBus';
@@ -35,9 +32,6 @@ CkApi.init({
     }
     await initCkApi(); // 初始化v2接口并保持登录
     await initCkWs(); // 跟易微联Socket建立连接
-    // await sleep(3000);
-    // generateLovelace();
-    // serviceRegistered(); // 注册HA相关服务
 })();
 
 const app = express();

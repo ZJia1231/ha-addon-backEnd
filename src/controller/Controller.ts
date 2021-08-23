@@ -118,9 +118,10 @@ class Controller {
             }
             const old = Controller.getDevice(id);
             if (old instanceof LanDeviceController) {
-                old.iv = params?.iv;
-                old.encryptedData = params?.encryptedData;
-
+                if (params.iv && params.encryptedData) {
+                    old.iv = params?.iv;
+                    old.encryptedData = params?.encryptedData;
+                }
                 if (old.iv && old.devicekey && old.encryptedData) {
                     const tmpParams = old.parseEncryptedData();
                     tmpParams && (old.params = mergeDeviceParams(old.params, tmpParams));
@@ -128,9 +129,9 @@ class Controller {
                 return old;
             }
 
-            // 如果设备之前是Cloud设备,需要保持设备的位置不变,防止前端页面跳动
             let oldDeviceParams: any = {};
             if (old instanceof CloudDeviceController) {
+                // 如果设备之前是Cloud设备,需要保持设备的位置不变,防止前端页面跳动
                 oldDeviceParams = {
                     index: old.index,
                     devicekey: old.devicekey,
@@ -158,10 +159,7 @@ class Controller {
                 });
                 Controller.deviceMap.set(id, lanDevice);
                 return lanDevice;
-            }
-
-            if (lanType === ELanType.Strip) {
-                let mutiSwitch = {};
+            } else if (lanType === ELanType.Strip) {
                 const lanDevice = new LanMultiChannelSwitchController({
                     ...params,
                     ...oldDeviceParams,
@@ -169,9 +167,7 @@ class Controller {
                 });
                 Controller.deviceMap.set(id, lanDevice);
                 return lanDevice;
-            }
-
-            if (lanType === ELanType.MultifunSwitch) {
+            } else if (lanType === ELanType.MultifunSwitch) {
                 const lanDevice = new LanDualR3Controller({
                     ...params,
                     ...oldDeviceParams,
@@ -179,8 +175,7 @@ class Controller {
                 });
                 Controller.deviceMap.set(id, lanDevice);
                 return lanDevice;
-            }
-            if (lanType === ELanType.THPlug) {
+            } else if (lanType === ELanType.THPlug) {
                 const lanDevice = new LanTandHModificationController({
                     ...params,
                     ...oldDeviceParams,
@@ -188,8 +183,7 @@ class Controller {
                 });
                 Controller.deviceMap.set(id, lanDevice);
                 return lanDevice;
-            }
-            if (lanType === ELanType.EnhancedPlug) {
+            } else if (lanType === ELanType.EnhancedPlug) {
                 const lanDevice = new LanPowerDetectionSwitchController({
                     ...params,
                     ...oldDeviceParams,
@@ -197,8 +191,7 @@ class Controller {
                 });
                 Controller.deviceMap.set(id, lanDevice);
                 return lanDevice;
-            }
-            if (lanType === ELanType.RF) {
+            } else if (lanType === ELanType.RF) {
                 const lanDevice = new LanRFBridgeController({
                     ...params,
                     ...oldDeviceParams,
@@ -206,8 +199,7 @@ class Controller {
                 });
                 Controller.deviceMap.set(id, lanDevice);
                 return lanDevice;
-            }
-            if (lanType === ELanType.FanLight) {
+            } else if (lanType === ELanType.FanLight) {
                 const lanDevice = new LanUIID34Controller({
                     ...params,
                     ...oldDeviceParams,
