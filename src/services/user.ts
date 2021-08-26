@@ -114,6 +114,7 @@ const isLogin = async (req: Request, res: Response) => {
 };
 const auth = async (req: Request, res: Response) => {
     const { ip, headers } = req;
+    // 通过Addon安装无须HA认证
     if (_.get(headers, 'cookie') && isSupervisor) {
         res.json({
             error: 0,
@@ -123,7 +124,8 @@ const auth = async (req: Request, res: Response) => {
         });
         return;
     }
-    
+
+    // 通过Docker方式运行
     try {
         if (AuthClass.isValid(req.ip)) {
             res.json({

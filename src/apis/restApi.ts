@@ -46,6 +46,13 @@ const removeStates = async (entityId: string) => {
     });
 };
 
+/**
+ *
+ * @param {string} clientId
+ * @param {string} code
+ * @description 通过code换取auth
+ * @description https://developers.home-assistant.io/docs/auth_api
+ */
 const getAuth = async (clientId: string, code: string) => {
     const res = restRequestWithoutAuth({
         method: 'POST',
@@ -59,6 +66,13 @@ const getAuth = async (clientId: string, code: string) => {
     return await res;
 };
 
+/**
+ *
+ * @param {string} clientId
+ * @param {string} code
+ * @description 刷新Auth
+ * @description https://developers.home-assistant.io/docs/auth_api
+ */
 const refreshAuth = async (clientId: string, refreshToken: string) => {
     const res = restRequestWithoutAuth({
         method: 'POST',
